@@ -32,7 +32,8 @@ const HomeV1 = ({ navigation }) => {
   };
 
   const handleSearch = text => {
-    setSearchQuery(text);
+    navigation.navigate('Search', { otherParam: text});
+
   };
 
   const renderFoodCategories = () => {
@@ -43,14 +44,21 @@ const HomeV1 = ({ navigation }) => {
           onPress={() => console.log('All Categories')}
         />
         <FlatList
-          horizontal={true}
+        
+          horizontal={true}      
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+    
           data={categories}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <CategoryCardV1
               name={item.name}
               image={item.image}
-              onPress={() => console.log('Category Selected')}
+              onPress={() => 
+
+{ navigation.navigate('FoodByKeywords', { itemId: 42, otherParam: 'anything you want here' });}
+              }
             />
           )}
         />
@@ -59,7 +67,8 @@ const HomeV1 = ({ navigation }) => {
   };
   const renderSearchBar = () => {
     return (
-      <View style={styles.searchBarContainer}>
+      <View style={styles.searchBarContainer}                   
+>
         <View
           style={{
             marginHorizontal: SIZES.padding,
@@ -67,9 +76,11 @@ const HomeV1 = ({ navigation }) => {
           <Ionicons name="search" size={24} color={COLORS.gray4} />
         </View>
         <TextInput
+
           placeholder="Search dishes, restaurants"
           onChangeText={handleSearch}
           placeholderTextColor={COLORS.gray5}
+          value={searchQuery}
         />
       </View>
     );
@@ -90,12 +101,12 @@ const HomeV1 = ({ navigation }) => {
           renderItem={({ item, index }) => (
             <ShopCard
               image={item.image}
-              onPress={() => console.log('Pressed')}
               name={item.name}
               keywords={item.keywords}
               rating={item.rating}
               shipping={item.shipping}
               deliveryTime={item.deliveryTime}
+              onPress={() => navigation.navigate("FoodDetails")}
             />
           )}
         />
@@ -126,12 +137,12 @@ const HomeV1 = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.cartContainer}>
+          <View style={styles.cartContainer} >
             <View>
               <View style={styles.cartIconContainer}>
-                <Text style={styles.cartNum}>2</Text>
+                <Text style={styles.cartNum}  onPress={() => navigation.navigate("Cart")}>3</Text>
               </View>
-              <Feather name="shopping-bag" size={24} color={COLORS.white} />
+              <Feather name="shopping-bag" size={24} color={COLORS.white}  onPress={() => navigation.navigate("Cart")} />
             </View>
           </View>
         </View>

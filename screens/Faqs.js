@@ -41,7 +41,6 @@ const Faqs = ({ navigation }) => {
         const [expanded, setExpanded] = useState(-1);
       
         const toggleExpand = (index) => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           if (expanded === index) {
             setExpanded(-1);
           } else {

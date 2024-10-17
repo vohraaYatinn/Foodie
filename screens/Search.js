@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, StyleSheet, StatusBar, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS, icons } from '../constants'
 import Feather from "react-native-vector-icons/Feather"
@@ -13,8 +13,16 @@ import { recentKeywords } from '../data/keywords'
 import { commonStyles } from '../styles/CommonStyles'
 import Button from '../components/Button'
 
-const Search = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+const Search = ({ navigation, route }) => {
+  const { otherParam } = route.params;
+  const [searchQuery, setSearchQuery] = useState(otherParam);
+
+  useEffect(()=>{
+    if(otherParam){
+      setSearchQuery(otherParam)
+
+    }
+  },[otherParam])
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedStars, setSelectedStars] = useState(Array(5).fill(false));
 
@@ -40,6 +48,7 @@ const Search = ({ navigation }) => {
           placeholder='Search dishes, restaurants'
           onChangeText={handleSearch}
           placeholderTextColor={COLORS.gray5}
+          value={searchQuery}
         />
       </View>
     )

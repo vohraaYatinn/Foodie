@@ -13,7 +13,8 @@ const CustomModal = ({ modalVisible, setModalVisible, onPressGotIt, code }) => {
       >
         <View style={styles.modalContent}>
           <LinearGradient
-            colors={['#FFEB34', '#E76F00', '#E76F00']}
+          colors={['#D1C4E9', '#9575CD', '#7E57C2']}
+
             style={styles.gradientContainer}
           >
             <Text style={styles.title}>Hurry Offers!</Text>

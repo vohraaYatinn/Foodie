@@ -81,9 +81,13 @@ const AppNavigation = () => {
             <Stack.Navigator
                  screenOptions={{ headerShown: false}}
                 initialRouteName={
-                    isFirstLaunch ? 'Onboarding1' : 'Signup'
+                 'Onboarding1'
                 }
             >
+                              <Stack.Screen
+                  name="DrawerNavigation"
+                  component={DrawerNavigation}
+                />
                 <Stack.Screen
                     name="Onboarding1"
                     component={Onboarding1}
@@ -138,10 +142,7 @@ const AppNavigation = () => {
                   name="Main"
                   component={BottomTabNavigation}
                 />
-                <Stack.Screen
-                  name="DrawerNavigation"
-                  component={DrawerNavigation}
-                />
+
                 <Stack.Screen
                   name="FoodByKeywords"
                   component={FoodByKeywords}
