@@ -155,42 +155,7 @@ export const history = [
 ]
 
 export const notifications = [
-    { 
-        id: 1,
-        // image: images.food,
-        image: images.burger2,
-        avatar: images.avatar,
-        name: 'Tambir Ahmed',
-        message: 'New brand added',
-        time: "20 min ago"
-    },
-    { 
-        id: 2,
-        // image: images.food,
-        image: images.burger5,
-        avatar: images.avatar2,
-        name: 'Smith Ju',
-        message: 'add a new product',
-        time: "20 min ago"
-    },
-    { 
-        id: 3,
-        // image: images.food,
-        image: images.pizza6,
-        avatar: images.avatar3,
-        name: 'Pabel Vuyi',
-        message: 'New brand added',
-        time: "20 min ago"
-    },
-    { 
-        id: 4,
-        // image: images.food,
-        image: images.burger2,
-        avatar: images.avatar4,
-        name: 'Royal Bengol',
-        message: 'Like your comment',
-        time: "20 min ago"
-    }
+   
 ]
 
 export const messages = [

@@ -1,11 +1,15 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, StatusBar} from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS, icons, images } from '../constants'
 import { useNavigation } from '@react-navigation/native'
 import { commonStyles } from '../styles/CommonStyles'
 import Feather from "react-native-vector-icons/Feather"
 import Button from '../components/Button'
+import Toast from 'react-native-toast-message'; // Import Toast
+import useAxios from '../network/useAxios'
+import { PlaceOrder } from '../urls/urls'
+
 
 const PaymentCard = ({ cardImage, isSelected, onSelect, cardName }) => {
   const cardStyle = isSelected ? styles.selectedCard : styles.card;
@@ -24,6 +28,35 @@ const PaymentCard = ({ cardImage, isSelected, onSelect, cardName }) => {
 
 
 const PaymentMethod = ({ navigation }) => {
+
+  const notify = (message, action) =>{
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+  const [cartActionResponse, cartActionError, cartActionLoading, cartActionFetch] = useAxios()
+  const CustomerActionCart = () => {
+    cartActionFetch(PlaceOrder())
+}
+useEffect(() => {
+  if (cartActionError?.response) {
+      notify(cartActionError?.response?.data, "error")
+  }
+}, [cartActionError])
+
+useEffect(()=>{
+  if(cartActionResponse?.result == "success"){
+    notify(cartActionResponse?.message, "success")
+    setTimeout(() => {
+      navigation.navigate("PaymentSuccess")
+    }, 1000);
+
+  }
+},[cartActionResponse])
+
+
   const renderHeader = () => {
     const navigation = useNavigation()
     return (
@@ -69,12 +102,12 @@ const PaymentMethod = ({ navigation }) => {
 
     return (
       <View style={{ marginVertical: 22 }}>
-        <FlatList
+        {/* <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           horizontal
-        />
+        /> */}
         <TouchableOpacity
           onPress={() => console.log("Pressed")}
           style={{
@@ -89,16 +122,10 @@ const PaymentMethod = ({ navigation }) => {
             paddingHorizontal: 10
           }}>
           <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Text style={{ ...FONTS.h4, marginBottom: 10 }}>Mastercard</Text>
+            <Text style={{ ...FONTS.h4, marginBottom: 10 }}>Cash on delivery</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-              <Image
-                source={images.mastercard}
-                style={{
-                  width: 28,
-                  height: 16
-                }}
-              />
-              <Text style={{ fontSize: 12, fontFamily: "Sen Regular" }}>*****************436</Text>
+           
+              <Text style={{ fontSize: 12, fontFamily: "Sen Regular" }}>Pay on delivery when you get your order</Text>
             </View>
           </View>
           <View>
@@ -112,27 +139,7 @@ const PaymentMethod = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AddPaymentCard")}
-          style={{
-            height: 62,
-            width: SIZES.width - 32,
-            borderRadius: 10,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderColor: COLORS.gray,
-            borderWidth: 2
-          }}
-        >
-          <Feather name="plus" size={24} color={COLORS.primary} />
-          <Text style={{
-            fontSize: 16,
-            textTransform: "uppercase",
-            color: COLORS.primary,
-            marginLeft: 12
-          }}>ADD NEW</Text>
-        </TouchableOpacity>
+
       </View>
     )
   }
@@ -150,18 +157,16 @@ const PaymentMethod = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: 12
           }}>
-          <Text style={{
-            fontSize: 16,
-            fontFamily: "Sen Regular",
-            textTransform: "uppercase",
-            color: COLORS.black
-          }}>TOTAL: {" "}</Text>
-          <Text style={{ ...FONTS.h2 }}>$96</Text>
+    
         </View>
         <Button
           filled
           title="PAY & CONFIRM"
-          onPress={() => navigation.navigate("PaymentSuccess")}
+          onPress={() =>
+            CustomerActionCart()
+          
+          
+          }
         />
       </View>
     )
@@ -174,6 +179,7 @@ const PaymentMethod = ({ navigation }) => {
         {renderAvailablePayments()}
         {renderPaymentBtn()}
       </View>
+      <Toast/>
     </SafeAreaView>
   )
 }

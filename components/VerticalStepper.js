@@ -2,28 +2,41 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { COLORS } from '../constants';
 
-export default function VerticalStepper() {
+export default function VerticalStepper({content}) {
+
+  const dataCheck = {
+    "pending" :  <View style={styles.stepContainer}>
+    <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
+    <Text style={styles.stepText}>Waiting for restaurant to accept</Text>
+  </View>,
+    "accepted" :  <View style={styles.stepContainer}>
+    <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
+    <Text style={styles.stepText}>Your order has been accepted</Text>
+  </View>,
+    "delivered" :  <View style={styles.stepContainer}>
+    <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
+    <Text style={styles.stepText}>Your order has been delivered</Text>
+  </View>,
+    "cancelled" :  <View style={styles.stepContainer}>
+    <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
+    <Text style={styles.stepText}>Your order has been cancelled</Text>
+  </View>,
+    "Ondelivery" :  <View style={styles.stepContainer}>
+    <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
+    <Text style={styles.stepText}>Your order has been out for delivery</Text>
+  </View>,
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.stepContainer}>
-        <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
-        <Text style={styles.stepText}>Your order has been received</Text>
-      </View>
 
-      <View style={styles.stepContainer}>
-        <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]} />
-        <Text style={styles.stepText}>The restaurant is preparing your food</Text>
-      </View>
+      {content?.map((item)=>{
+        return(
+          dataCheck[item?.status]
+        )
+      })}
+    
 
-      <View style={styles.stepContainer}>
-        <View style={[styles.stepIndicator, {  backgroundColor: COLORS.primary }]}/>
-        <Text style={styles.stepText}>Your order has been picked up for delivery</Text>
-      </View>
-
-      <View style={styles.stepContainer}>
-        <View style={[styles.stepIndicator, {  backgroundColor: COLORS.gray4}]} />
-        <Text style={styles.stepText}>Order arriving soon!</Text>
-      </View>
     </View>
   );
 }

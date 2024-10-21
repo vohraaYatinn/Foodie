@@ -1,8 +1,8 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, FONTS, SIZES, illustrations, images } from '../constants'
-import Ionicons from "react-native-vector-icons/Ionicons"
+import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, FONTS, SIZES, illustrations, images } from '../constants';
+import Ionicons from "react-native-vector-icons/Ionicons";
 import Geolocation from '@react-native-community/geolocation';
 
 const LocationAccess = ({ navigation }) => {

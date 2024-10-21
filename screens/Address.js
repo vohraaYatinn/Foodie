@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons } from "../constants"
 import { useNavigation } from '@react-navigation/native'
@@ -8,8 +8,64 @@ import Feather from "react-native-vector-icons/Feather"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Button from '../components/Button'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { defaultAddress, deleteAddress, getAddresses } from '../urls/urls'
+import useAxios from '../network/useAxios'
 
 const Address = ({ navigation }) => {
+    const notify = (message, action) => {
+        Toast.show({
+            type: action,
+            text1: action,
+            text2: message
+        });
+    }
+    const [data, setData] = useState([])
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const [deleteLogin, deleteError, deleteLoading, deleteFetch] = useAxios()
+    const fetchDashboarfFunc = () => {
+        responseFetch(getAddresses())
+    }
+    const deleteAddressFunc = (id) => {
+        deleteFetch(deleteAddress({
+            addressId:id
+        }))
+    }
+    const changeAddressDefault = (id) => {
+        deleteFetch(defaultAddress({
+            addressId:id
+        }))
+    }
+    useEffect(()=>{
+      fetchDashboarfFunc()
+    },[])
+
+    useEffect(()=>{
+        if(responseLogin?.result == "success"){
+          setData(responseLogin?.data)
+        }
+      },[responseLogin])
+    useEffect(()=>{
+        if(deleteLogin?.result == "success"){
+            notify(deleteLogin?.message, "success")
+            fetchDashboarfFunc()
+        }
+      },[deleteLogin])
+        const handlePressGotIt = () => {
+          // Handle the logic when the "GOT IT" button is pressed
+          // For example, you can close the modal or perform any other action
+          setModalVisible(false);
+        };
+        useEffect(() => {
+            if (responseError?.response) {
+                notify(responseError?.response?.data, "error")
+            }
+          }, [responseError])
+        useEffect(() => {
+            if (deleteError?.response) {
+                notify(deleteError?.response?.data, "error")
+            }
+          }, [deleteError])
     const renderHeader = () => {
         const navigation = useNavigation()
         return (
@@ -40,84 +96,59 @@ const Address = ({ navigation }) => {
     const renderUserAddresses = () => {
         return (
             <View style={{ flexDirection: 'column', marginVertical: 22 }}>
-                <View style={styles.container}>
-                    <View
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="home" size={24} color="#2790C3" />
-                            </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text style={styles.boldBody}>Home</Text>
-                                <Text style={styles.textBody}>
-                                    2464 Royal Ln. Mesa, New Jersey 45463
-                                </Text>
-                            </View>
-                        </View>
-
+                {data.map((item)=>{
+                    return(
+                        <TouchableOpacity onPress={()=>{changeAddressDefault(item.id)}}>
+                        <View style={styles.container} >
                         <View
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 6,
-                                flexDirection: 'row',
-                                alignItems: 'center'
-                            }}
+                         
+                            style={styles.subContainer}
                         >
-                            <TouchableOpacity>
-                                <Feather name="edit" size={18} color={COLORS.primary} />
-                            </TouchableOpacity>
-                            <TouchableOpacity
+                            
+                            <View style={styles.subLeftContainer}>
+                                <View style={styles.rounded}>
+                                    {item.name == "home" ? <Feather name="home" size={24} color="#2790C3" />:                                <MaterialIcons name="work-outline" size={24} color="#A03BB1" />}
+                                </View>
+                                <View style={{ flexDirection: 'column' }}>
+                                    <Text style={styles.boldBody}>{item.name}{item.is_active ? " (Active)":""}</Text>
+                                    <Text style={styles.textBody}>
+                                        {item.street} &nbsp; {item.zip_code}
+                                    </Text>
+                                </View>
+                            </View>
+    
+                            <View
                                 style={{
-                                    marginLeft: 4
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 6,
+                                    flexDirection: 'row',
+                                    alignItems: 'center'
                                 }}
                             >
-                                <MaterialCommunityIcons name="delete-outline" size={22} color={COLORS.primary} />
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </View>
-                <View style={styles.container}>
-                    <View
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <MaterialIcons name="work-outline" size={24} color="#A03BB1" />
+                                {/* <TouchableOpacity>
+                                    <Feather name="edit" size={18} color={COLORS.primary} />
+                                </TouchableOpacity> */}
+                                <TouchableOpacity
+                                    style={{
+                                        marginLeft: 4
+                                    }}
+                                    onPress={()=>{
+                                        deleteAddressFunc(item.id)
+                                    }}
+                                >
+                                    <MaterialCommunityIcons name="delete-outline" size={22} color={COLORS.primary} />
+                                </TouchableOpacity>
                             </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text style={styles.boldBody}>WORK</Text>
-                                <Text style={styles.textBody}>
-                                    3891 Ranchview Dr. Richardson
-                                </Text>
-                            </View>
+    
                         </View>
-
-                        <View
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 6,
-                                flexDirection: 'row',
-                                alignItems: 'center'
-                            }}
-                        >
-                            <TouchableOpacity>
-                                <Feather name="edit" size={18} color={COLORS.primary} />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={{
-                                    marginLeft: 4
-                                }}
-                            >
-                                <MaterialCommunityIcons name="delete-outline" size={22} color={COLORS.primary} />
-                            </TouchableOpacity>
-                        </View>
-
                     </View>
-                </View>
+                    </TouchableOpacity>
+
+                    )
+                })}
+             
+               
             </View>
         )
     }
@@ -127,7 +158,8 @@ const Address = ({ navigation }) => {
             <StatusBar hidden={true} />
             <View style={{
                 flex: 1,
-                marginHorizontal: 16
+                marginHorizontal: 16,
+                marginBottom:100
             }}>
                 {renderHeader()}
                 {renderUserAddresses()}
@@ -142,6 +174,7 @@ const Address = ({ navigation }) => {
                     }}
                 />
             </View>
+            <Toast/>
         </SafeAreaView>
     )
 }

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, StatusBar, TouchableOpacity } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, icons, SIZES, COLORS, FONTS } from '../constants'
@@ -8,94 +8,54 @@ import RBSheet from "react-native-raw-bottom-sheet"
 import Feather from "react-native-vector-icons/Feather"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import VerticalStepper from '../components/VerticalStepper'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { getOrderView } from '../urls/urls'
+import useAxios from '../network/useAxios'
+import { test_url_images } from '../config/environment'
 
-const TrackingOrderV2 = ({ navigation }) => {
+const TrackingOrderV2 = ({ navigation, route }) => {
+  const { id } = route.params;
+  const notify = (message, action) => {
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+  const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+  const fetchDashboarfFunc = () => {
+    responseFetch(getOrderView({
+      uuid : id
+    }))
+}
+useEffect(()=>{
+  fetchDashboarfFunc()
+},[])
+const [data, setData] = useState([])
+useEffect(() => {
+  if (responseError?.response) {
+      notify(responseError?.response?.data, "error")
+  }
+}, [responseError])
+useEffect(()=>{
+  if(responseLogin?.result == "success"){
+    setData(responseLogin?.data[0])
+  }
+},[responseLogin])
   const bottomSheetRef = useRef(null);
 
   // Open the bottom sheet on component mount
   useEffect(() => {
     bottomSheetRef.current.open();
   }, []);
+  useEffect(()=>{
+
+  },[id])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor:COLORS.primary}}>
       <StatusBar hidden={true} />
-      <View style={{
-        position: 'absolute',
-        marginHorizontal: 16,
-        position: 'absolute',
-        flexDirection: 'row',
-        alignItems: 'center',
-        top: 22,
-        zIndex: 999
-      }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            height: 45,
-            width: 45,
-            borderRadius: 22.5,
-            backgroundColor: COLORS.black,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 16,
-            zIndex: 9999
-          }}
-        >
-          <Image
-            source={icons.arrowLeft}
-            resizeMode="contain"
-            style={{
-              height: 24,
-              width: 24,
-              tintColor: COLORS.white
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={{ ...FONTS.body3 }}>Track Order</Text>
-      </View>
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 48.8566,
-          longitude: 2.3522,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {orderList.map((item, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: item.latitude,
-              longitude: item.longitude,
-            }}
-            image={icons.mapMarkerIcon}
-            title={item.name}
-            description={item.description}
-            onPress={() => console.log("Move to another screen")}
-          >
-            <Callout tooltip>
-              <View>
-                <View style={styles.bubble}>
-                  <Text
-                    style={{
-                      ...FONTS.body4,
-                      fontWeight: 'bold',
-                      color: COLORS.black,
-                    }}
-                  >
-                    {item.name}
-                  </Text>
-                </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
-              </View>
-            </Callout>
-          </Marker>
-        ))}
-      </MapView>
+    
       <RBSheet
         ref={bottomSheetRef}
         height={500}
@@ -124,7 +84,7 @@ const TrackingOrderV2 = ({ navigation }) => {
             }}>
               <Image
                 // source={images.food}
-                source={images.burger1}
+                src={data?.order_items?.[0]?.item?.image && test_url_images + data?.order_items?.[0]?.item?.image}
                 style={{
                   height: 80,
                   width: 80,
@@ -137,16 +97,19 @@ const TrackingOrderV2 = ({ navigation }) => {
             <View style={{
               flexDirection: 'column',
             }}>
-              <Text style={{ ...FONTS.h4 }}>Uttora Coffee House</Text>
-              <Text style={styles.body3}>Orderd at 06 Sept, 10:00pm</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.h3}>2x</Text>
-                <Text style={styles.body3}>Burger</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.h3}>4x</Text>
-                <Text style={styles.body3}>Sandwitch</Text>
-              </View>
+              <Text style={{ ...FONTS.h4 }}>order #{data.uuid}</Text>
+              <Text style={styles.body3}>{data.ordered_at}</Text>
+
+              {data?.order_items?.map((item)=>{
+                return (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.h3}>{item?.quantity}x</Text>
+                  <Text style={styles.body3}>{item?.item?.name}</Text>
+                </View>
+                )
+              })}
+            
+            
             </View>
           </View>
           <View style={{
@@ -164,7 +127,7 @@ const TrackingOrderV2 = ({ navigation }) => {
             }}>Estimated delivery time</Text>
           </View>
 
-          <VerticalStepper />
+          <VerticalStepper content={data?.order_history}/>
 
           <View style={{
             flexDirection: 'row',
@@ -176,21 +139,33 @@ const TrackingOrderV2 = ({ navigation }) => {
               flexDirection: 'row',
               alignItems: 'center'
             }}>
-              <Image
-                source={images.avatar}
-                style={{
-                  height: 54,
-                  width: 54,
-                  borderRadius: 27
-                }}
-              />
+            
               <View style={{ marginLeft: 12 }}>
-                <Text style={{ ...FONTS.h4 }}>Linda Bi.</Text>
-                <Text style={{
-                  fontSize: 13,
-                  color: COLORS.gray5,
-                  fontFamily: "Sen Regular"
-                }}>Courier</Text>
+                <TouchableOpacity
+                 style={{
+                  height: 45,
+                  width: 45,
+                  borderRadius: 22.5,
+                  backgroundColor: COLORS.primary,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 16,
+                  zIndex: 9999}}
+                onPress={()=>{
+                  navigation.goBack()
+                }}>
+              <Image
+
+source={icons.arrowLeft}
+resizeMode="contain"
+style={{
+  height: 24,
+  width: 24,
+  tintColor: COLORS.white
+}}
+/>
+</TouchableOpacity>
+            
               </View>
             </View>
             <View
@@ -198,31 +173,13 @@ const TrackingOrderV2 = ({ navigation }) => {
                 flexDirection: 'row',
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  bottomSheetRef.current.close();
-                  navigation.navigate("Call")
-                }
-                }
-                style={styles.btn1}
-              >
-                <Feather name="phone" size={24} color={COLORS.white} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => 
-                  {
-                    bottomSheetRef.current.close();
-                    navigation.navigate("Message")
-                  }
-                  }
-                style={[styles.btn2, { marginLeft: 12 }]}
-              >
-                <FontAwesome5 name="facebook-messenger" size={24} color={COLORS.primary} />
-              </TouchableOpacity>
+             
+          
             </View>
           </View>
         </View>
       </RBSheet>
+      <Toast/>
     </SafeAreaView>
   )
 }

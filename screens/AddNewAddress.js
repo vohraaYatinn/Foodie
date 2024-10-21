@@ -9,6 +9,9 @@ import Input from '../components/Input'
 import { validateInput } from '../utils/actions/formActions'
 import { reducer } from '../utils/reducers/formReducers'
 import Button from '../components/Button'
+import useAxios from '../network/useAxios'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { addNewAddress } from '../urls/urls'
 
 const initialState = {
     inputValues: {
@@ -27,11 +30,39 @@ const initialState = {
 }
 
 const AddNewAddress = ({ navigation }) => {
+    const notify = (message, action) => {
+        Toast.show({
+            type: action,
+            text1: action,
+            text2: message
+        });
+    }
     const bottomSheetRef = useRef(null);
     const [error, setError] = useState()
     const [formState, dispatchFormState] = useReducer(reducer, initialState)
     const [selectedLabel, setSelectedLabel] = useState(null);
-
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const addNewAddressFunc = () => {
+        responseFetch(addNewAddress({...formState, "name":selectedLabel}))
+    }
+    useEffect(()=>{
+        if(responseLogin?.result == "success"){
+            notify(responseLogin?.message, "success")
+            setTimeout(() => {
+                navigation.navigate("Address")
+            }, 1000);
+                }
+      },[responseLogin])
+        const handlePressGotIt = () => {
+          // Handle the logic when the "GOT IT" button is pressed
+          // For example, you can close the modal or perform any other action
+          setModalVisible(false);
+        };
+        useEffect(() => {
+            if (responseError?.response) {
+                notify(responseError?.response?.data, "error")
+            }
+          }, [responseError])
     const handleLabelSelection = (label) => {
         setSelectedLabel(label)
     }
@@ -56,7 +87,7 @@ const AddNewAddress = ({ navigation }) => {
     }, []);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor:COLORS.primary }}>
             <StatusBar hidden={true} />
             <View style={{
                 position: 'absolute',
@@ -65,7 +96,8 @@ const AddNewAddress = ({ navigation }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 top: 22,
-                zIndex: 999
+                zIndex: 999,
+               
             }}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
@@ -90,47 +122,9 @@ const AddNewAddress = ({ navigation }) => {
                         }}
                     />
                 </TouchableOpacity>
-                <Text style={{ ...FONTS.body3 }}>Add New Address</Text>
+                <Text style={{ ...FONTS.body3, color:"white" }} >Add New Address</Text>
             </View>
-            <MapView
-                style={styles.map}
-                provider={PROVIDER_GOOGLE}
-                initialRegion={{
-                    latitude: 48.8566,
-                    longitude: 2.3522,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
-            >
-                <Marker
-                    coordinate={{
-                        latitude: 48.8566,
-                        longitude: 2.3522,
-                    }}
-                    image={icons.mapMarkerIcon}
-                    title="Move"
-                    description="Address"
-                    onPress={() => console.log("Move to another screen")}
-                >
-                    <Callout tooltip>
-                        <View>
-                            <View style={styles.bubble}>
-                                <Text
-                                    style={{
-                                        ...FONTS.body4,
-                                        fontWeight: 'bold',
-                                        color: COLORS.black,
-                                    }}
-                                >
-                                    User Address
-                                </Text>
-                            </View>
-                            <View style={styles.arrowBorder} />
-                            <View style={styles.arrow} />
-                        </View>
-                    </Callout>
-                </Marker>
-            </MapView>
+        
             <RBSheet
                 ref={bottomSheetRef}
                 height={530}
@@ -168,16 +162,15 @@ const AddNewAddress = ({ navigation }) => {
                             </View>
 
                             <View style={{ marginTop: 12 }}>
-                                <Text style={commonStyles.inputHeader}>Appartment</Text>
+                                <Text style={commonStyles.inputHeader}>City</Text>
                                 <Input
-                                    id="appartment"
+                                    id="city"
                                     onInputChanged={inputChangedHandler}
-                                    errorText={formState.inputValidities['appartment']}
+                                    errorText={formState.inputValidities['city']}
                                     placeholder="2143"
                                     placeholderTextColor={COLORS.black}
                                 />
                             </View>
-
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
                                 <View style={{ width: (SIZES.width - 32) / 2 - 10 }}>
                                     <Text style={commonStyles.inputHeader}>Street</Text>
@@ -203,7 +196,7 @@ const AddNewAddress = ({ navigation }) => {
                         </View>
                     </View>
                     <View>
-                        <Text style={{ fontSize: 13, fontFamily: "Sen Regular", marginBottom: 2 }}>DELIVER TIME</Text>
+                        <Text style={{ fontSize: 13, fontFamily: "Sen Regular", marginBottom: 2, marginTop:12 }}>DELIVER TIME</Text>
 
                         <View style={{ flexDirection: "row", marginVertical: 13 }}>
                             <TouchableOpacity
@@ -244,11 +237,12 @@ const AddNewAddress = ({ navigation }) => {
                         <Button
                             filled
                             title="SAVE LOCATION"
-                            onPress={() => navigation.navigate("Address")}
+                            onPress={() => addNewAddressFunc()}
                         />
                     </View>
                 </View>
             </RBSheet>
+            <Toast style={{zIndex:999}}/>
         </SafeAreaView>
     )
 }

@@ -38,7 +38,7 @@ const Settings = ({ navigation }) => {
         const [notificationEnabled, setNotificationEnabled] = useState(false);
         const [darkModeEnabled, setDarkModeEnabled] = useState(false);
         const [locationEnabled, setLocationEnabled] = useState(true);
-        const [currency, setCurrency] = useState('USD');
+        const [currency, setCurrency] = useState('EUR');
         const [language, setLanguage] = useState('English');
         const [isCurrencyModalVisible, setCurrencyModalVisible] = useState(false);
         const [isLanguageModalVisible, setLanguageModalVisible] = useState(false);
@@ -66,26 +66,13 @@ const Settings = ({ navigation }) => {
           };
 
           const currencies = [
-            { id: 'USD', name: 'USD - United States Dollar' },
-            { id: 'EUR', name: 'EUR - Euro' },
-            { id: 'GBP', name: 'GBP - British Pound Sterling' },
-            { "id": "JPY", name: "JPY - Japanese Yen" },
-            { "id": "CAD", name: "CAD - Canadian Dollar" },
-            { "id": "AUD", name: "AUD - Australian Dollar" },
-            { "id": "CHF", name: "CHF - Swiss Franc" },
-            { "id": "CNY", name: "CNY - Chinese Yuan" }
+            { id: 'EUR', name: 'EUR - Euro' }
             // Add more currencies here
           ];
         
           const languages = [
             { id: 'English', name: 'English' },
-            { id: 'Spanish', name: 'Spanish' },
-            { id: 'French', name: 'French' },
-            { "id": "German", name: "German" },
-            { "id": "Italian", name: "Italian" },
             { "id": "Portuguese", name: "Portuguese" },
-            { "id": "Japanese", name: "Japanese" },
-            { "id": "Chinese", name: "Chinese" }
             // Add more languages here
           ];
 
@@ -119,26 +106,6 @@ const Settings = ({ navigation }) => {
               />
             </View>
       
-            <View style={styles.settingContainer}>
-              <Text style={styles.settingLabel}>Dark Mode</Text>
-              <Switch
-                value={darkModeEnabled}
-                onValueChange={handleDarkModeToggle}
-                thumbColor={darkModeEnabled ? COLORS.primary : COLORS.white3}
-                trackColor={{ false: COLORS.white3, true: COLORS.primary }}
-              />
-            </View>
-
-            <View style={styles.settingContainer}>
-        <Text style={styles.settingLabel}>Enable Location</Text>
-        <Switch
-          value={locationEnabled}
-          onValueChange={handleLocationToggle}
-          thumbColor={locationEnabled ? COLORS.primary : COLORS.white3}
-          trackColor={{false: COLORS.white3, true: COLORS.primary }}
-        />
-      </View>
-
       <View style={styles.settingContainer}>
         <Text style={styles.settingLabel}>Currency</Text>
         <TouchableOpacity

@@ -3,7 +3,7 @@ import React from 'react'
 import { FONTS, COLORS } from '../constants'
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 
-const SubHeader = ({ title, onPress }) => {
+const SubHeader = ({ title, onPress, seeAll }) => {
   return (
     <View style={{
         flexDirection: 'row',
@@ -16,7 +16,7 @@ const SubHeader = ({ title, onPress }) => {
           onPress={onPress}
           style={{ flexDirection: 'row', alignItems: 'center' }}
         >
-          <Text style={{ fontSize: 16, fontFamily: "Sen Regular" }}>See All</Text>
+          <Text style={{ fontSize: 16, fontFamily: "Sen Regular" }}>{seeAll && "See All"}</Text>
           <View>
             <MaterialIcons name="keyboard-arrow-right" size={24} color={COLORS.gray4} />
           </View>

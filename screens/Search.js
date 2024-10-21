@@ -12,17 +12,60 @@ import { useNavigation } from '@react-navigation/native'
 import { recentKeywords } from '../data/keywords'
 import { commonStyles } from '../styles/CommonStyles'
 import Button from '../components/Button'
+import useAxios from '../network/useAxios'
+import { getAllMenu } from '../urls/urls'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment';
 
 const Search = ({ navigation, route }) => {
-  const { otherParam } = route.params;
+  const { otherParam, keywords } = route.params;
+
+  const notify = (message, action) => {
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+  const [data, setData] = useState([])
+
   const [searchQuery, setSearchQuery] = useState(otherParam);
+  const [responseDish, ErrorDish, LoadingDish, FetchDish] = useAxios()
+  const searchDished = () => {
+    FetchDish(getAllMenu({
+      search : searchQuery
+    }))
+}
+useEffect(() => {
+  if (ErrorDish?.response) {
+      notify(ErrorDish?.response?.data, "error")
+  }
+}, [ErrorDish])
+useEffect(()=>{
+  if(responseDish?.result == "success"){
+    setData(responseDish?.data)
+  }
+},[responseDish])
 
   useEffect(()=>{
     if(otherParam){
       setSearchQuery(otherParam)
-
     }
   },[otherParam])
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (searchQuery) {
+        searchDished(); // Call search function after debounce delay
+      }
+    }, 500); // 500ms debounce delay
+
+    // Cleanup the timeout if searchQuery changes or component unmounts
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]); // Dependency on searchQuery
+
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedStars, setSelectedStars] = useState(Array(5).fill(false));
 
@@ -59,15 +102,15 @@ const Search = ({ navigation, route }) => {
     const navigation = useNavigation();
     return (
       <View>
-        <Text style={{ ...FONTS.body3, marginBottom: 6 }}>Recent Keywords</Text>
+        <Text style={{ ...FONTS.body3, marginBottom: 6 }}>Categories</Text>
         <FlatList
           horizontal={true}
-          data={recentKeywords}
+          data={keywords}
           keyExtractor={item => item.id}
           renderItem=
           {({ item, index }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("FoodByKeywords")}
+              onPress={() => { navigation.navigate('FoodByKeywords', { itemId: item.id , name:item.name})} }
               style={{
                 height: 46,
                 alignItems: 'center',
@@ -91,19 +134,19 @@ const Search = ({ navigation, route }) => {
   const renderSuggestedRestaurants = () => {
     const navigation = useNavigation()
     return (
-      <View style={{ marginVertical: 8 }}>
-        <Text style={{ ...FONTS.body3, marginBottom: 6 }}>Suggested Restaurants</Text>
+      <View style={{ marginVertical: 8 , marginTop:20}}>
+        <Text style={{ ...FONTS.body3, marginBottom: 6 }}>Searched Dish</Text>
         {
-          suggestedRestaurants.map((item, index) => (
+          data.map((item, index) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("RestaurantView")}
+            onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.id })}
               key={index}
               style={{
                 flexDirection: 'row',
                 marginVertical: 8
               }}>
               <Image
-                source={item.image}
+                src={item.image && test_url_images + item.image}
                 style={{
                   width: 60,
                   height: 50,
@@ -113,8 +156,8 @@ const Search = ({ navigation, route }) => {
               <View style={{ flexDirection: "column", marginLeft: 12 }}>
                 <Text style={{ fontSize: 16, fontFamily: "Sen Regular", marginBottom: 4 }}>{item.name}</Text>
                 <View style={{ flexDirection: "row" }}>
-                  <Octicons name="star" size={24} color={COLORS.primary} />
-                  <Text style={{ marginLeft: 8 }}>{item.rating}</Text>
+                 
+                  <Text style={{ marginLeft: 8 }}>€ {item.price}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -124,44 +167,6 @@ const Search = ({ navigation, route }) => {
     )
   }
 
-  // Render Popular Foods
-  const renderPopularFoods = () => {
-    return (
-      <View style={{ marginBottom: 8, marginBottom: 80 }}>
-        <Text style={{ ...FONTS.body3, marginBottom: 6 }}>Popular Fast food</Text>
-        <FlatList
-          horizontal={true}
-          data={popularFastFoods}
-          keyExtractor={item => item.id}
-          renderItem=
-          {({ item, index }) => (
-            <View style={{
-              flexDirection: 'column',
-              width: 154,
-              alignItems: 'center',
-              borderWidth: 1,
-              borderColor: COLORS.gray6,
-              paddingVertical: 12,
-              borderRadius: 12,
-              marginRight: 12
-            }}>
-              <Image
-                source={item.image}
-                resizeMode='contain'
-                style={{
-                  width: 122,
-                  height: 84,
-                  borderRadius: 15
-                }}
-              />
-              <Text style={{ fontSize: 15, fontFamily: "Sen Bold", marginVertical: 4 }}>{item.name}</Text>
-              <Text style={{ fontSize: 13, fontFamily: "Sen Regular" }}>{item.restaurant}</Text>
-            </View>
-          )}
-        />
-      </View>
-    )
-  }
 
 
   // Render Search Modal box
@@ -444,13 +449,9 @@ const Search = ({ navigation, route }) => {
             backgroundColor: COLORS.tertiaryBlack
           }}>
             <View>
-              <View style={styles.shoppingBagContainer}>
-                <Text style={{
-                  fontSize: 16,
-                  color: COLORS.white
-                }}>2</Text>
-              </View>
+             <TouchableOpacity  onPress={() => navigation.navigate("Cart")}>
               <Feather name="shopping-bag" size={24} color={COLORS.white} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -458,10 +459,11 @@ const Search = ({ navigation, route }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           {renderKeywords()}
           {renderSuggestedRestaurants()}
-          {renderPopularFoods()}
+       
         </ScrollView>
       </View>
       {renderSearchModal()}
+      <Toast/>
     </SafeAreaView>
   )
 }

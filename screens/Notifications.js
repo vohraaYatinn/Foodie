@@ -10,6 +10,9 @@ import { messages, notifications } from '../data/utils'
 const NotificationsRoute = () => (
   <View style={{ flex: 1 }}>
     <FlatList
+     style={{
+      marginTop:20
+    }}
       data={notifications}
       keyExtractor={item => item.id}
       renderItem={({ item, index }) => (
@@ -180,9 +183,7 @@ const Notifications = ({ navigation }) => {
   const [index, setIndex] = React.useState(0);
 
   const [routes] = React.useState([
-    { key: 'first', title: 'Notifications' },
-    { key: 'second', title: 'Messages' },
-  ])
+    { key: 'first', title: 'Notifications' },  ])
 
   const renderTabBar = props => (
     <TabBar
@@ -231,6 +232,7 @@ const Notifications = ({ navigation }) => {
             onIndexChange={setIndex}
             initialLayout={{ width: layout.width }}
             renderTabBar={renderTabBar}
+           
           />
         </View>
       </View>

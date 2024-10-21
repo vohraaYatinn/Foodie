@@ -8,6 +8,7 @@ import Feather from "react-native-vector-icons/Feather"
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { ScrollView } from 'react-native-virtualized-view'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Menu = () => {
     const renderHeader = () => {
@@ -130,7 +131,7 @@ const Menu = () => {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => navigation.navigate("Cart")}
                         style={styles.subContainer}
                     >
@@ -146,7 +147,7 @@ const Menu = () => {
                                 style={styles.iconRight}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Notifications")}
                         style={styles.subContainer}
@@ -164,7 +165,7 @@ const Menu = () => {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => navigation.navigate("PaymentMethod")}
                         style={styles.subContainer}
                     >
@@ -180,7 +181,7 @@ const Menu = () => {
                                 style={styles.iconRight}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 <View style={styles.container}>
@@ -201,7 +202,7 @@ const Menu = () => {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => navigation.navigate("UserReviews")}
                         style={styles.subContainer}
                     >
@@ -217,7 +218,7 @@ const Menu = () => {
                                 style={styles.iconRight}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Settings")}
                         style={styles.subContainer}
@@ -239,7 +240,10 @@ const Menu = () => {
 
                 <View style={[styles.container, { marginBottom: 100 }]}>
                     <TouchableOpacity
-                        onPress={() => console.log("Log out")}
+                        onPress={async() => {
+                            await AsyncStorage.removeItem('tokenJson')
+                            navigation.navigate('Login')}
+                                              }
                         style={styles.subContainer}
                     >
                         <View style={styles.subLeftContainer}>

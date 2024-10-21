@@ -62,7 +62,7 @@ const BottomTabNavigation = () => {
                 }}
             />
 
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Search"
                 component={Search}
                 options={{
@@ -87,11 +87,11 @@ const BottomTabNavigation = () => {
                         )
                     },
                 }}
-            />
+            /> */}
 
             <Tab.Screen
-                name="MessageV2"
-                component={MessageV2}
+                name="Notidication"
+                component={Notifications}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (

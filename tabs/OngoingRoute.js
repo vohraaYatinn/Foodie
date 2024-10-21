@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { orders } from '../data/utils';
 import { COLORS } from '../constants';
 import { useNavigation } from '@react-navigation/native';
+import useAxios from '../network/useAxios';
+import { fetchCustomerOrders } from '../urls/urls';
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment';
 
 const OngoingRoute = () => {
-    const navigation = useNavigation()
+  const navigation = useNavigation()
+
+  const notify = (message, action) => {
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const fetchDashboarfFunc = () => {
+      responseFetch(fetchCustomerOrders({
+        status:"ongoing"
+      }))
+  }
+  useEffect(()=>{
+    fetchDashboarfFunc()
+  },[])
+  const [data, setData] = useState([])
+  useEffect(() => {
+    if (responseError?.response) {
+        notify(responseError?.response?.data, "error")
+    }
+  }, [responseError])
+  useEffect(()=>{
+    if(responseLogin?.result == "success"){
+      setData(responseLogin?.data)
+    }
+  },[responseLogin])
+    
   return (
     <View style={styles.container}>
       <FlatList
-        data={orders}
+        data={data}
         keyExtractor={item => item.id}
         renderItem={({ item, index }) => (
           <View style={styles.itemContainer}>
@@ -19,14 +52,14 @@ const OngoingRoute = () => {
             <View style={styles.infoContainer}>
               <View style={styles.infoLeft}>
                 <Image
-                  source={item.image}
+                  src={test_url_images + item.order_items[0]?.item?.image}
                   style={styles.itemImage}
                 />
                 <View style={styles.itemDetails}>
-                  <Text style={styles.itemName}>{item.name}</Text>
+                  <Text style={styles.itemName}>Order #{item.uuid}</Text>
                   <View style={styles.itemSubDetails}>
-                    <Text style={styles.itemPrice}>${item.price}</Text>
-                    <Text style={styles.itemItems}> | {item.numberOfItems} Items</Text>
+                    <Text style={styles.itemPrice}>€ {item.total_amount}</Text>
+                    <Text style={styles.itemItems}> | {item.order_items?.length} Items</Text>
                   </View>
                 </View>
               </View>
@@ -34,7 +67,10 @@ const OngoingRoute = () => {
             </View>
             <View style={styles.actionsContainer}>
               <TouchableOpacity 
-                onPress={()=>navigation.navigate("TrackingOrders")}
+                onPress={()=>
+                  navigation.navigate('TrackingOrders', { id: item.id})
+                
+                }
                 style={styles.trackOrderButton}>
                 <Text style={styles.trackOrderButtonText}>Track Order</Text>
               </TouchableOpacity>
@@ -47,6 +83,7 @@ const OngoingRoute = () => {
           </View>
         )}
       />
+      <Toast/>
     </View>
   );
 };

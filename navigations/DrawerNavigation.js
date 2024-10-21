@@ -7,9 +7,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
 import { COLORS, images } from "../constants";
 import { Address, Menu, Notifications, PaymentMethod, Cart, MyOrders, HomeV1, HomeV2, Search, HomeV3 } from "../screens";
+import { useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Drawer = createDrawerNavigator();
 const DrawerNavigation = () => {
+  const [userDetails, setUserName] = useState({})
+  const getUser = async() => {
+
+    const userName = await AsyncStorage.getItem('userName')
+    const userPhone = await AsyncStorage.getItem('phoneNumber')
+    setUserName({
+      name:userName,
+      phone:userPhone
+    })
+}
+useEffect(()=>{
+  getUser()
+},[])
   return (
       <Drawer.Navigator
         drawerContent={
@@ -39,14 +54,14 @@ const DrawerNavigation = () => {
                       fontFamily: "Sen Bold",
                       color: COLORS.black
                     }}
-                  >Vishal Khadok</Text>
+                  >{userDetails?.name}</Text>
                   <Text
                     style={{
                       fontSize: 16,
                       color: COLORS.black,
                       fontFamily: "Sen Regular"
                     }}
-                  >Product Manager</Text>
+                  >{userDetails?.phone}</Text>
                 </View>
                 <DrawerItemList {...props} />
               </SafeAreaView>
@@ -108,7 +123,7 @@ const DrawerNavigation = () => {
           }}
           component={Search}
         />
-          <Drawer.Screen
+          {/* <Drawer.Screen
           name="Whishlist"
           options={{
             drawerLabel: "Wishlist",
@@ -118,7 +133,7 @@ const DrawerNavigation = () => {
             )
           }}
           component={Cart}
-        />
+        /> */}
 
         <Drawer.Screen
           name="Delivery Address"
@@ -132,7 +147,7 @@ const DrawerNavigation = () => {
           component={Address}
         />
 
-        
+{/*         
         <Drawer.Screen
           name="Payment Methods"
           options={{
@@ -143,7 +158,7 @@ const DrawerNavigation = () => {
             )
           }}
           component={PaymentMethod}
-        />
+        /> */}
 
         <Drawer.Screen
           name="Notifications"
@@ -157,7 +172,7 @@ const DrawerNavigation = () => {
           component={Notifications}
         />
 
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Help"
           options={{
             drawerLabel: "Help",
@@ -168,7 +183,7 @@ const DrawerNavigation = () => {
           }}
           component={Menu}
         />
-    
+     */}
 
       </Drawer.Navigator>
   )

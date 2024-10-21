@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, FlatList, StatusBar } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons } from '../constants'
 import * as Animatable from "react-native-animatable"
@@ -8,8 +8,65 @@ import { commonStyles } from "../styles/CommonStyles"
 import Input from '../components/Input'
 import Button from '../components/Button'
 import { cartData } from '../data/utils'
+import useAxios from '../network/useAxios'
+import { CartAction, fetchCartCustomer } from '../urls/urls'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment'
 
 const Cart = ({ navigation }) => {
+
+  const notify = (message, action) =>{
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+  const [data, setData] = useState([])
+  const [totalAmount, setTotalAmount] = useState(0)
+  const [address, setAddress] = useState([])
+  const [cartResponse, cartError, cartLoading, cartFetch] = useAxios()
+  const [cartActionResponse, cartActionError, cartActionLoading, cartActionFetch] = useAxios()
+  const calculatePrice = (data) => {
+    let price = 0;
+  }
+  const fetchCustomerCart = () => {
+    cartFetch(fetchCartCustomer())
+}
+  const CustomerActionCart = (id, action) => {
+    cartActionFetch(CartAction({
+      id:id,
+      action:action
+    }))
+}
+useEffect(()=>{
+  fetchCustomerCart()
+},[])
+
+useEffect(() => {
+  if (cartError?.response) {
+      notify(cartError?.response?.data, "error")
+  }
+}, [cartError])
+
+useEffect(()=>{
+  if(cartResponse?.result == "success"){
+    setData(cartResponse?.data)
+    setTotalAmount(cartResponse?.total_amount)
+    setAddress(cartResponse?.address)
+  }
+},[cartResponse])
+useEffect(() => {
+  if (cartActionError?.response) {
+      notify(cartActionError?.response?.data, "error")
+  }
+}, [cartActionError])
+
+useEffect(()=>{
+  if(cartActionResponse?.result == "success"){
+    fetchCustomerCart()
+  }
+},[cartActionResponse])
   const [quantity, setQuantity] = useState(1);
 
   const decreaseQuantity = () => {
@@ -54,7 +111,7 @@ const Cart = ({ navigation }) => {
         </View>
 
         <FlatList
-          data={cartData}
+          data={data}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => {
 
@@ -63,7 +120,7 @@ const Cart = ({ navigation }) => {
                 <View style={{ marginRight: 2, width: 120 }}>
                   <Image
                     // source={images.food}
-                    source={item.image}
+                    src={test_url_images + item?.item.image}
                     resizeMode='contain'
                     style={{
                       height: 120,
@@ -88,9 +145,9 @@ const Cart = ({ navigation }) => {
                         fontFamily: "Sen Regular",
                         textTransform: 'capitalize',
                         marginRight: 20
-                      }}>{item.name}</Text>
+                      }}>{item?.item.name}</Text>
                     <TouchableOpacity
-                      onPress={() => console.log("Close cart items")}
+                      onPress={() => CustomerActionCart(item?.id, "delete")}
                       style={{
                         height: 26,
                         width: 26,
@@ -117,17 +174,16 @@ const Cart = ({ navigation }) => {
                     fontSize: 20,
                     fontFamily: "Sen Bold",
                     color: COLORS.white,
-                    marginVertical: 6
-                  }}>${item.price}</Text>
+                    marginVertical: 6,
+                    
+                  }}>€ {item?.item?.price * item?.quantity}</Text>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={{
-                      fontSize: 16,
-                      color: COLORS.white,
-                      fontFamily: "Sen Regular"
-                    }}>{item.size}"</Text>
+                   
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <TouchableOpacity
-                        onPress={decreaseQuantity}
+                        onPress={()=>{
+                          CustomerActionCart(item?.id, "decrement")
+                        }}
                         style={cartStyles.roundedBtn}
                       >
                         <Text style={cartStyles.body2}>-</Text>
@@ -137,10 +193,11 @@ const Cart = ({ navigation }) => {
                         fontFamily: "Sen Regular",
                         color: COLORS.white,
                         marginHorizontal: 12
-                      }}>{quantity}</Text>
+                      }}>{item?.quantity}</Text>
                       <TouchableOpacity
-                        onPress={increaseQuantity}
-                        style={cartStyles.roundedBtn}
+                        onPress={()=>{
+                          CustomerActionCart(item?.id, "increment")
+                        }}                        style={cartStyles.roundedBtn}
                       >
                         <Text style={cartStyles.body2}>+</Text>
                       </TouchableOpacity>
@@ -158,14 +215,14 @@ const Cart = ({ navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
           <Text style={cartStyles.body3}>Delivery Address</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("EditCart")}
+            onPress={() => navigation.navigate("Address")}
           >
             <Text style={cartStyles.body3Color}>Edit</Text>
           </TouchableOpacity>
         </View>
         <Input
           id="Address"
-          placeholder="2118 Thornridge Cir. Syracuse"
+          placeholder={address?.[0]?.street}
           placeholderTextColor={COLORS.gray4}
           editable={false}
         />
@@ -173,10 +230,9 @@ const Cart = ({ navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 16 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={cartStyles.body3}>Total:</Text>
-            <Text style={{ fontSize: 24, fontFamily: "bold", color: COLORS.black, marginLeft: 12 }}>$90</Text>
+            <Text style={{ fontSize: 24, fontFamily: "bold", color: COLORS.black, marginLeft: 12 }}>€ {totalAmount}</Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={cartStyles.body3Color}>Breakdown</Text>
             <View style={{ marginLeft: 2 }}>
               <Image
                 source={icons.arrowRight}
@@ -197,6 +253,7 @@ const Cart = ({ navigation }) => {
           style={{ marginVertical: 2 }}
         />
       </Animatable.View>
+      <Toast/>
     </SafeAreaView>
   )
 }

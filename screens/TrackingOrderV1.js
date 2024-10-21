@@ -5,8 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, icons, SIZES, COLORS, FONTS } from '../constants'
 import { orderList } from '../data/utils'
 import RBSheet from "react-native-raw-bottom-sheet"
+import { useNavigation } from '@react-navigation/native'
 
 const TrackingOrderV1 = ({ navigation }) => {
+  const navigation2 = useNavigation();
+
   const bottomSheetRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +19,10 @@ const TrackingOrderV1 = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden={true} />
-      <View style={{
+      <View 
+                onPress={() => navigation2.goBack()}
+
+      style={{
         position: 'absolute',
         marginHorizontal: 16,
         position: 'absolute',
@@ -26,7 +32,7 @@ const TrackingOrderV1 = ({ navigation }) => {
         zIndex: 999
       }}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation2.goBack()}
           style={{
             height: 45,
             width: 45,
@@ -128,7 +134,10 @@ const TrackingOrderV1 = ({ navigation }) => {
           <View style={{
             flexDirection: 'column',
           }}>
-            <Text style={{ ...FONTS.h4 }}>Uttora Coffee House</Text>
+            <TouchableOpacity onPress={() => navigation2.goBack()}
+            >
+            <Text style={{ ...FONTS.h4 }} >Uttora Coffee House</Text>
+            </TouchableOpacity>
             <Text style={styles.body3}>Orderd at 06 Sept, 10:00pm</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.h3}>2x</Text>

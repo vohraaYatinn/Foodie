@@ -2,10 +2,9 @@ import {Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import React from 'react';
 import {COLORS} from '../constants';
 
-const CategoryCardV1 = ({name, image, onPress}) => {
+const CategoryCardV1 = ({name, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Image source={image} resizeMode="contain" style={styles.image} />
       <Text style={{fontSize: 16, fontFamily: "Sen Bold"}}>{name}</Text>
     </TouchableOpacity>
   );

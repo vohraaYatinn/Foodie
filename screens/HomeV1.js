@@ -9,7 +9,7 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { COLORS, SIZES, icons } from '../constants';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,11 +20,44 @@ import CustomModal from '../components/CustomModal';
 import SubHeader from '../components/SubHeader';
 import CategoryCardV1 from '../components/CategoryCardV1';
 import ShopCard from '../components/ShopCard';
+import useAxios from '../network/useAxios';
+import { fetchDashboard } from '../urls/urls';
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment';
+import { useTranslation } from 'react-i18next';
+
 
 const HomeV1 = ({ navigation }) => {
+  const notify = (message, action) => {
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(true);
-
+  const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+  const fetchDashboarfFunc = () => {
+    responseFetch(fetchDashboard())
+}
+useEffect(()=>{
+  fetchDashboarfFunc()
+},[])
+const [data, setData] = useState({
+  category:[],
+  order:[]
+})
+useEffect(() => {
+  if (responseError?.response) {
+      notify(responseError?.response?.data, "error")
+  }
+}, [responseError])
+useEffect(()=>{
+  if(responseLogin?.result == "success"){
+    setData(responseLogin?.data)
+  }
+},[responseLogin])
   const handlePressGotIt = () => {
     // Handle the logic when the "GOT IT" button is pressed
     // For example, you can close the modal or perform any other action
@@ -32,9 +65,23 @@ const HomeV1 = ({ navigation }) => {
   };
 
   const handleSearch = text => {
-    navigation.navigate('Search', { otherParam: text});
+    navigation.navigate('Search', { otherParam: text, keywords: data?.category});
 
   };
+
+  const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting('Good Morning!');
+    } else if (currentHour < 18) {
+      setGreeting('Good Afternoon!');
+    } else {
+      setGreeting('Good Evening!');
+    }
+  }, []);
+
 
   const renderFoodCategories = () => {
     return (
@@ -49,15 +96,15 @@ const HomeV1 = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
     
-          data={categories}
+          data={data?.category||[] }
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <CategoryCardV1
               name={item.name}
-              image={item.image}
+          
               onPress={() => 
 
-{ navigation.navigate('FoodByKeywords', { itemId: 42, otherParam: 'anything you want here' });}
+{ navigation.navigate('FoodByKeywords', { itemId: item.id, name:item.name });}
               }
             />
           )}
@@ -88,25 +135,28 @@ const HomeV1 = ({ navigation }) => {
 
   const renderRestaurants = () => {
     return (
-      <View style={{ height: 'auto' }}>
+      <View style={{ height: 'auto'}}>
         <SubHeader
-          title="Open Restaurants"
+          title="Best Sellers"
           onPress={() => navigation.navigate("OpenShops")}
+          seeAll = {true}
         />
 
         <FlatList
           nestedScrollEnabled
-          data={restaurants}
+          data={data?.order }
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <ShopCard
-              image={item.image}
-              name={item.name}
+              image={test_url_images + item?.menu?.image}
+              name={item?.menu?.name}
+              description={item?.menu?.description}
               keywords={item.keywords}
               rating={item.rating}
               shipping={item.shipping}
               deliveryTime={item.deliveryTime}
-              onPress={() => navigation.navigate("FoodDetails")}
+
+              onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.menu?.id })}
             />
           )}
         />
@@ -129,9 +179,9 @@ const HomeV1 = ({ navigation }) => {
                 flexDirection: 'column',
                 marginLeft: 12,
               }}>
-              <Text style={styles.deliverTo}>DELIVER TO</Text>
-              <View style={styles.itemCenter}>
-                <Text style={styles.location}>Halab lab office</Text>
+              <Text style={styles.deliverTo}>Deliver To</Text>
+              <View style={styles.itemCenter} >
+                <Text style={styles.location} >{data?.user?.active_addresses?.[0]?.city}</Text>
                 <Image source={icons.arrowDown2} style={styles.arrowDown} />
               </View>
             </View>
@@ -139,19 +189,19 @@ const HomeV1 = ({ navigation }) => {
 
           <View style={styles.cartContainer} >
             <View>
-              <View style={styles.cartIconContainer}>
+              {/* <View style={styles.cartIconContainer}>
                 <Text style={styles.cartNum}  onPress={() => navigation.navigate("Cart")}>3</Text>
-              </View>
+              </View> */}
               <Feather name="shopping-bag" size={24} color={COLORS.white}  onPress={() => navigation.navigate("Cart")} />
             </View>
           </View>
         </View>
 
         <View style={styles.greetingsContainer}>
-          <Text style={styles.greetingsName}>Hey Halal,</Text>
-          <Text style={styles.greetingsTime}>Good Afternoon!</Text>
-        </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.greetingsName}>Hey {data?.user?.full_name},</Text>
+          <Text style={styles.greetingsTime}>{greeting}</Text>
+          </View>
+        <ScrollView showsVerticalScrollIndicator={false} >
           {renderSearchBar()}
           {renderFoodCategories()}
           {renderRestaurants()}
@@ -161,8 +211,9 @@ const HomeV1 = ({ navigation }) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         onPressGotIt={handlePressGotIt}
-        code="#1243CD2"
+        code="Order your favorite dishes"
       />
+       <Toast/>
     </SafeAreaView>
   );
 };

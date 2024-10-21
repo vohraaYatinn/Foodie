@@ -1,5 +1,5 @@
 import { View, Image, TouchableOpacity, Text, StyleSheet, StatusBar } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons, images } from '../constants'
 import { commonStyles } from '../styles/CommonStyles'
@@ -10,9 +10,65 @@ import Fontisto from "react-native-vector-icons/Fontisto"
 import Octicons from "react-native-vector-icons/Octicons"
 import { ScrollView } from 'react-native-virtualized-view'
 import Button from "../components/Button"
+import useAxios from '../network/useAxios'
+import { fetchSingleMenuItem, addToCartCustomer } from '../urls/urls'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment'
 
 const ingridents = [icons.salt, icons.chickenLeg, icons.onion, icons.chili]
-const FoodDetailsV1 = () => {
+const FoodDetailsV1 = ({ navigation, route }) => {
+  const [quantity, setQuantity] = useState(1);
+
+  const notify = (message, action) =>{
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+  const { itemId } = route.params;
+  const [data, setData] = useState({
+  })
+  const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+  const [cartResponse, cartError, cartLoading, cartFetch] = useAxios()
+  const fetchDashboarfFunc = () => {
+    responseFetch(fetchSingleMenuItem({
+      menuId:itemId
+    }))
+}
+const addToCart = () => {
+  cartFetch(addToCartCustomer({
+    menuId:itemId,
+    quantity:quantity
+  }))
+} 
+useEffect(()=>{
+  fetchDashboarfFunc()
+},[itemId])
+
+useEffect(() => {
+  if (responseError?.response) {
+      notify(responseError?.response?.data, "error")
+  }
+}, [responseError])
+
+useEffect(()=>{
+  if(responseLogin?.result == "success"){
+    setData(responseLogin?.data)
+  }
+},[responseLogin])
+useEffect(() => {
+  if (cartError?.response) {
+      notify(cartError?.message, "error")
+  }
+}, [cartError])
+useEffect(() => {
+  if (cartResponse?.result == "success") {
+
+    notify(cartResponse?.message, "success")
+  }
+}, [cartResponse])
+
   const renderHeader = () => {
     const navigation = useNavigation()
     return (
@@ -38,7 +94,6 @@ const FoodDetailsV1 = () => {
 
   const renderFoodDetails = () => {
     const [isFavourite, setIsFavourite] = useState(false);
-    const [quantity, setQuantity] = useState(2);
     const navigation = useNavigation();
 
     const [selectedSize, setSelectedSize] = useState(null);
@@ -70,7 +125,7 @@ const FoodDetailsV1 = () => {
           </TouchableOpacity>
           <Image
             // source={images.food}
-            source={images.burger3}
+            src={test_url_images + data?.image}
             resizeMode='contain'
             style={{
               width: SIZES.width - 32,
@@ -107,121 +162,49 @@ const FoodDetailsV1 = () => {
                 fontFamily: "Sen Regular",
                 fontSize: 14
               }}
-            >Uttora Coffe House</Text>
+            >{data?.category?.name}</Text>
           </View>
           <Text style={{
             fontSize: 18,
             fontFamily: "Sen Bold",
             textTransform: 'capitalize',
             marginVertical: 10
-          }}>pizza calzone european</Text>
+          }}>{data?.name}</Text>
           <Text style={{
             fontSize: 13,
             fontFamily: "Sen Regular",
             color: COLORS.gray5
           }}>
-            Prosciutto e funghi is a pizza variety that is topped with tomato sauce.</Text>
-
+            {data?.description}</Text>
+{/* 
           <View style={{ flexDirection: "row", marginTop: 16 }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Octicons name="star" size={24} color={COLORS.primary} />
               <Text style={{ marginLeft: 8 }}>4.7</Text>
             </View>
-            <View style={{ flexDirection: "row", alignItems: "center", marginHorizontal: SIZES.padding3 }}>
-              <MaterialCommunityIcons name="truck-delivery-outline" size={24} color={COLORS.primary} />
-              <Text style={{ marginLeft: 8 }}>Free</Text>
-            </View>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+           
+            <View style={{ flexDirection: "row", alignItems: "center", marginLeft:20 }}>
               <Fontisto name="stopwatch" size={22} color={COLORS.primary} />
               <Text style={{ marginLeft: 8 }}>20 min</Text>
             </View>
-          </View>
+          </View> */}
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-            <Text style={{ fontSize: 14, fontFamily: "Sen Regular", marginRight: 20 }}>SIZE: </Text>
-
-            <View style={{ flexDirection: "row", marginVertical: 18 }}>
-              <TouchableOpacity
-                style={[
-                  styles.checkboxContainer,
-                  selectedSize === "10”" && styles.selectedCheckbox
-                ]}
-                onPress={() => handleSizeSelection("10”")}
-              >
-                <Text style={[selectedSize === "10”" && styles.checkboxText]}>10”</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.checkboxContainer,
-                  selectedSize === "14”" && styles.selectedCheckbox
-                ]}
-                onPress={() => handleSizeSelection("14”")}
-              >
-                <Text style={[selectedSize === "14”" && styles.checkboxText]}>14”</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.checkboxContainer,
-                  selectedSize === "16”" && styles.selectedCheckbox
-                ]}
-                onPress={() => handleSizeSelection("16”")}
-              >
-                <Text style={
-                  [
-                    selectedSize === "16”" && styles.checkboxText
-                  ]
-                }>16”</Text>
-              </TouchableOpacity>
-
-
-            </View>
-          </View>
-
-          <View>
-            <Text style={{ fontSize: 14, fontFamily: "Sen Regular", textTransform: 'uppercase' }}>ingridents</Text>
-            <View style={{ flexDirection: 'row', marginVertical: 16 }}>
-              {
-                ingridents.map((item, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      height: 50,
-                      width: 50,
-                      borderRadius: 25,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: COLORS.orange,
-                      marginRight: 16
-                    }}>
-                    <Image
-                      source={item}
-                      resizeMode='contain'
-                      style={{
-                        height: 24,
-                        width: 24,
-                        tintColor: COLORS.primary
-                      }}
-                    />
-                  </View>
-                ))
-              }
-            </View>
-          </View>
+     
 
           <View style={{
             backgroundColor: COLORS.tertiaryGray,
             borderRadius: 24,
             paddingHorizontal: 10,
-            paddingVertical: 16
+            paddingVertical: 16,
+            marginTop:120
+
           }}>
             <View style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginBottom: 16,
             }}>
-              <Text style={{ fontSize: 28, fontFamily: "Sen Regular" }}>$32</Text>
+              <Text style={{ fontSize: 28, fontFamily: "Sen Regular" }}>€ {data?.price}</Text>
               <View style={{
                 backgroundColor: COLORS.blue,
                 width: 125,
@@ -234,7 +217,7 @@ const FoodDetailsV1 = () => {
               }}>
                 <TouchableOpacity
                   onPress={() => {
-                    if (quantity > 2) {
+                    if (quantity > 1) {
                       setQuantity(quantity - 1)
                     }
                   }}
@@ -267,8 +250,13 @@ const FoodDetailsV1 = () => {
             </View>
             <Button
               filled
-              onPress={() => navigation.navigate("Cart")}
+              onPress={() => addToCart()}
               title="ADD TO CART"
+            />
+            <Button
+              style={{marginTop:10}}
+              onPress={() => navigation.navigate("Cart")}
+              title="VIEW CART"
             />
           </View>
         </View>
@@ -284,6 +272,8 @@ const FoodDetailsV1 = () => {
           {renderFoodDetails()}
         </ScrollView>
       </View>
+      <Toast />
+
     </SafeAreaView>
   )
 }

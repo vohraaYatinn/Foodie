@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native-virtualized-view'
 import { COLORS, SIZES, FONTS, icons, images } from "../constants"
 import { useNavigation } from '@react-navigation/native'
@@ -7,8 +7,12 @@ import { commonStyles } from '../styles/CommonStyles'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Feather from "react-native-vector-icons/Feather"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-
+import useAxios from '../network/useAxios'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { fetchUserDetails } from '../urls/urls'
+import { test_url_images } from '../config/environment'
 const PersonalProfile = () => {
+
     const renderHeader = () => {
         const navigation = useNavigation()
         return (
@@ -48,17 +52,30 @@ const PersonalProfile = () => {
     const renderUserProfile = () => {
         return (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 16 }}>
-                <Image
-                    source={images.avatar2}
-                    resizeMode='contain'
-                    style={{
-                        height: 100,
-                        width: 100,
-                        borderRadius: 50
-                    }}
-                />
+                {data?.image && test_url_images ? 
+                  <Image
+                  src={test_url_images + data?.image}
+                  resizeMode='contain'
+                  style={{
+                      height: 100,
+                      width: 100,
+                      borderRadius: 50
+                  }}
+              /> :
+              <Image
+              source={images.avatar2}
+              resizeMode='contain'
+              style={{
+                  height: 100,
+                  width: 100,
+                  borderRadius: 50
+              }}
+          />
+            
+            }
+              
                 <View style={{ marginLeft: 12 }}>
-                    <Text style={{ ...FONTS.h4 }}>Vishal Khadok</Text>
+                    <Text style={{ ...FONTS.h4 }}>{data?.full_name}</Text>
                     <Text style={{
                         fontSize: 12,
                         fontFamily: "Sen Regular",
@@ -83,7 +100,7 @@ const PersonalProfile = () => {
                             </View>
                             <View style={{ flexDirection: 'column' }}>
                                 <Text style={styles.boldBody}>Full Name</Text>
-                                <Text style={styles.textBody}>Vishal Khadok</Text>
+                                <Text style={styles.textBody}>{data?.full_name}</Text>
                             </View>
                         </View>
 
@@ -97,7 +114,7 @@ const PersonalProfile = () => {
                             </View>
                             <View style={{ flexDirection: 'column' }}>
                                 <Text style={styles.boldBody}>Email</Text>
-                                <Text style={styles.textBody}>hello@gmail.com</Text>
+                                <Text style={styles.textBody}>{data?.email}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -110,7 +127,7 @@ const PersonalProfile = () => {
                             </View>
                             <View style={{ flexDirection: 'column' }}>
                                 <Text style={styles.boldBody}>Phone Number</Text>
-                                <Text style={styles.textBody}>408-278-248</Text>
+                                <Text style={styles.textBody}>+351 - {data?.phone_number}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -119,6 +136,34 @@ const PersonalProfile = () => {
         )
     }
 
+
+    const notify = (message, action) => {
+        Toast.show({
+            type: action,
+            text1: action,
+            text2: message
+        });
+    }
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const [data, setData] = useState({})
+    const fetchUserFunc = () => {
+        responseFetch(fetchUserDetails())
+    }
+    useEffect(()=>{
+      fetchUserFunc()
+    },[])
+    useEffect(() => {
+        if (responseError?.response) {
+            notify(responseError?.response?.data, "error")
+        }
+      }, [responseError])
+      useEffect(()=>{
+        if(responseLogin?.result == "success"){
+          setData(responseLogin?.data)
+        }
+      },[responseLogin])
+
+      
     return (
         <SafeAreaView
             style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -133,6 +178,7 @@ const PersonalProfile = () => {
                     {renderUserProfileInfo()}
                 </ScrollView>
             </View>
+            <Toast/>
         </SafeAreaView>
     )
 }

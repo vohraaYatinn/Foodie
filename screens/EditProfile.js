@@ -11,6 +11,9 @@ import Button from '../components/Button'
 import { validateInput } from '../utils/actions/formActions'
 import { reducer } from '../utils/reducers/formReducers'
 import { ScrollView } from 'react-native-virtualized-view'
+import useAxios from '../network/useAxios'
+import { fetchUserDetails, EditUserDetails } from '../urls/urls'
+import Toast from 'react-native-toast-message'; // Import Toast
 
 const isTestMode = true
 
@@ -32,9 +35,56 @@ const initialState = {
 
 
 const EditProfile = () => {
+    const navigation = useNavigation()
+
+    const notify = (message, action) => {
+        Toast.show({
+            type: action,
+            text1: action,
+            text2: message
+        });
+    }
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const [Editresponse,EditError,EditLoading,EditFetch] = useAxios()
+    const [formState, dispatchFormState] = useReducer(reducer, initialState)
+
+
+    const [data, setData] = useState({})
+    const fetchUserFunc = () => {
+        responseFetch(fetchUserDetails())
+    }
+    const EditUserData = () => {
+        EditFetch(EditUserDetails())
+    }
+    useEffect(()=>{
+      fetchUserFunc()
+    },[])
+    useEffect(() => {
+        if (responseError?.response) {
+            notify(responseError?.response?.data, "error")
+        }
+      }, [responseError])
+      useEffect(()=>{
+        if(responseLogin?.result == "success"){
+          setData(responseLogin?.data)
+        }
+      },[responseLogin])
+    useEffect(() => {
+        if (EditError?.response) {
+            notify(EditError?.response?.data, "error")
+        }
+      }, [EditError])
+      useEffect(()=>{
+        if(Editresponse?.result == "success"){
+            notify(Editresponse?.message, "success")
+            setTimeout(() => {
+                navigation.navigate("PersonalProfile")
+            }, 1000);
+
+        }
+      },[Editresponse])
     const [selectedImage, setSelectedImage] = useState(null);
     const [error, setError] = useState();
-    const [formState, dispatchFormState] = useReducer(reducer, initialState)
 
     const inputChangedHandler = useCallback(
         (inputId, inputValue) => {
@@ -72,7 +122,6 @@ const EditProfile = () => {
   
 
     const renderHeader = () => {
-        const navigation = useNavigation()
         return (
             <View style={{
                 flexDirection: 'row',
@@ -99,7 +148,6 @@ const EditProfile = () => {
     }
 
     const renderEditProfileForm = () => {
-        const navigation = useNavigation()
         return (
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <View style={{ marginVertical: 12 }}>
@@ -157,8 +205,8 @@ const EditProfile = () => {
                     <Input
                         id="fullName"
                         onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['fullName']}
-                        placeholder="John Doe"
+                        // errorText={formState.inputValidities['fullName']}
+                        placeholder={data?.full_name}
                         placeholderTextColor="rgba(0,0,0,0.5)"
                     />
                     <Text style={commonStyles.inputHeader}>Email</Text>
@@ -166,31 +214,21 @@ const EditProfile = () => {
                         id="email"
                         onInputChanged={inputChangedHandler}
                         errorText={formState.inputValidities['email']}
-                        placeholder="example@gmail.com"
+                        placeholder={data?.email}
                         placeholderTextColor="rgba(0,0,0,0.5)"
                         keyboardType="email-address"
                     />
-                    <Text style={commonStyles.inputHeader}>Phone Number</Text>
-                    <Input
-                        id="phoneNumber"
-                        onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['phoneNumber']}
-                        placeholder="111-111-111-222"
-                        placeholderTextColor="rgba(0,0,0,0.5)"
-                        keyboardType="numeric"
-                    />
-                    <Text style={commonStyles.inputHeader}>Bio</Text>
-                    <Input
-                        id="bio"
-                        onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['bio']}
-                        placeholder="I love Australia"
-                        placeholderTextColor="rgba(0,0,0,0.5)"
-                    />
+
                     <Button
                         title="SAVE"
                         filled
-                        onPress={() => navigation.navigate("PersonalProfile")}
+                        onPress={() => 
+                            EditUserData()
+                           
+
+
+
+                        }
                         style={{
                             marginTop: 12,
                             marginBottom: 30
@@ -216,6 +254,7 @@ const EditProfile = () => {
                     {renderEditProfileForm()}
                 </ScrollView>
             </View>
+            <Toast/>
         </SafeAreaView>
     )
 }

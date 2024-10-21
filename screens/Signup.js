@@ -10,6 +10,10 @@ import { reducer } from '../utils/reducers/formReducers'
 import { commonStyles } from '../styles/CommonStyles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import useAxios from '../network/useAxios'
+import { signupCustomer } from '../urls/urls'
+import Toast from 'react-native-toast-message'; // Import Toast
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const isTestMode = true
 
@@ -30,9 +34,47 @@ const initialState = {
 }
 
 const Signup = ({ navigation }) => {
+    const checkToken = async() => {
+        const getToken = await AsyncStorage.getItem('tokenJson')
+        if(getToken){
+            navigation.navigate("Main")}
+    }
+    const addToken = async(token) => {
+        await AsyncStorage.setItem('tokenJson', token)
+
+    }
+    useEffect(()=>{
+        checkToken()
+    },[])
+    const [formState, dispatchFormState] = useReducer(reducer, initialState)
+    const notify = (message, action) =>{
+        Toast.show({
+            type: action,
+            text1: action,
+            text2: message
+        });
+    }
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const signupFunction = () => {
+        responseFetch(signupCustomer(formState))
+    }
+    useEffect(() => {
+        if (responseError?.response) {
+            notify(responseError?.response?.data, "error")
+        }
+      }, [responseError])
+    useEffect(()=>{
+        if(responseLogin?.result == "success"){
+            addToken(responseLogin?.token)
+            notify(responseLogin?.message, "success")
+            setTimeout(() => {
+                navigation.navigate('LocationAccess')
+
+            }, 1000);
+        }
+    },[responseLogin])
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(false)
-    const [formState, dispatchFormState] = useReducer(reducer, initialState)
 
     const inputChangedHandler = useCallback(
         (inputId, inputValue) => {
@@ -73,6 +115,17 @@ const Signup = ({ navigation }) => {
                         placeholder="John Doe"
                         placeholderTextColor={COLORS.black}
                     />
+                    <Text style={commonStyles.inputHeader}>Phone (+351)</Text>
+                    <Input
+                        id="phone"
+                        onInputChanged={inputChangedHandler}
+                        errorText={formState.inputValidities['phone']}
+                        placeholder="2xx xxx xxx"
+                        placeholderTextColor={COLORS.black}
+                        maxLength={9}
+                        keyboardType="numeric"
+                        
+                    />
                     <Text style={commonStyles.inputHeader}>Email</Text>
                     <Input
                         id="email"
@@ -108,11 +161,15 @@ const Signup = ({ navigation }) => {
                         title="SIGN UP"
                         isLoading={isLoading}
                         filled
-                        onPress={() => navigation.navigate('Login')}
+                        onPress={() => 
+                            signupFunction()
+                        
+                        }
                         style={commonStyles.btn1}
                     />
                 </KeyboardAwareScrollView>
             </Animatable.View>
+            <Toast />
         </SafeAreaView>
     )
 }

@@ -1,52 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { history } from '../data/utils';
 import { COLORS } from '../constants';
 import { useNavigation } from '@react-navigation/native';
+import { fetchCustomerOrders } from '../urls/urls';
+import useAxios from '../network/useAxios';
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment';
 
 const HistoryRoute = () => {
     const navigation = useNavigation()
+
+  const notify = (message, action) => {
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+    const fetchDashboarfFunc = () => {
+      responseFetch(fetchCustomerOrders({
+        status:"history"
+      }))
+  }
+  useEffect(()=>{
+    fetchDashboarfFunc()
+  },[])
+  const [data, setData] = useState([])
+  useEffect(() => {
+    if (responseError?.response) {
+        notify(responseError?.response?.data, "error")
+    }
+  }, [responseError])
+  useEffect(()=>{
+    if(responseLogin?.result == "success"){
+      setData(responseLogin?.data)
+    }
+  },[responseLogin])
+    
   return (
     <View style={styles.container}>
       <FlatList
-        data={history}
+        data={data}
         keyExtractor={item => item.id}
         renderItem={({ item, index }) => (
           <View style={styles.itemContainer}>
-            <View style={styles.statusContainer}>
-              <Text style={styles.typeText}>{item.type}</Text>
-              <Text style={[styles.statusText, { color: item.status == "Completed" ? COLORS.green : COLORS.red, marginLeft: 12 }]}>
-                {item.status}
-              </Text>
-            </View>
-            <View style={styles.infoContainer}>
-              <View style={styles.infoLeft}>
-                <Image
-                  source={item.image}
-                  style={styles.itemImage}
-                />
-                <View style={styles.itemDetails}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <View style={styles.itemSubDetails}>
-                    <Text style={styles.itemPrice}>${item.price}</Text>
-                    <Text style={styles.itemDate}> | {item.date}</Text>
-                    <Text style={styles.itemItems}> | {item.numberOfItems} Items</Text>
-                  </View>
+          <View style={styles.typeContainer}>
+            <Text style={styles.typeText}>{item.type}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <View style={styles.infoLeft}>
+              <Image
+                src={test_url_images + item.order_items[0]?.item?.image}
+                style={styles.itemImage}
+              />
+              <View style={styles.itemDetails}>
+                <Text style={styles.itemName}>Order #{item.uuid}</Text>
+                <View style={styles.itemSubDetails}>
+                  <Text style={styles.itemPrice}>€ {item.total_amount}</Text>
+                  <Text style={styles.itemItems}> | {item.order_items?.length} Items</Text>
                 </View>
               </View>
-              <Text style={styles.receiptText}>{item.receipt}</Text>
             </View>
-            <View style={styles.actionsContainer}>
-              <TouchableOpacity 
-                onPress={()=>navigation.navigate("AddReviews")}
-                style={styles.rateButton}>
-                <Text style={styles.rateButtonText}>Rate</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.reorderButton}>
-                <Text style={styles.reorderButtonText}>Re-Order</Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.receiptText}>{item.receipt}</Text>
           </View>
+          <View style={styles.actionsContainer}>
+            <TouchableOpacity 
+              onPress={()=>navigation.navigate("TrackingOrders")}
+              style={styles.trackOrderButton}>
+              <Text style={styles.trackOrderButtonText}>Track Order</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={()=>navigation.navigate("CancelOrders")}
+              style={styles.cancelButton}>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         )}
       />
     </View>

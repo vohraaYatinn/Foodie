@@ -97,7 +97,7 @@ const EditCart = ({ navigation }) => {
                     fontFamily: "Sen Bold",
                     color: COLORS.white,
                     marginVertical: 6
-                  }}>${item.price}</Text>
+                  }}>€ {item.price}</Text>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={{
                       fontSize: 16,

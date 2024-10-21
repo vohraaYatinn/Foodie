@@ -18,8 +18,8 @@ const CustomModal = ({ modalVisible, setModalVisible, onPressGotIt, code }) => {
             style={styles.gradientContainer}
           >
             <Text style={styles.title}>Hurry Offers!</Text>
-            <Text style={{ ...FONTS.h2, color: COLORS.white, marginVertical: 68 }}>{code}</Text>
-            <Text style={styles.discountText}>Use the coupon to get 25% discount</Text>
+            <Text style={{ ...FONTS.h2, color: COLORS.white, marginVertical: 68 }}>Order your favorite dishes</Text>
+            <Text style={styles.discountText}>Where delicious meals are just a tap away! t</Text>
             <TouchableOpacity
               onPress={onPressGotIt}
               style={styles.gotItButton}

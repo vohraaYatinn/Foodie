@@ -5,37 +5,37 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { COLORS, SIZES } from '../constants';
 
-const ShopCard = ({ image, onPress, name, keywords, rating, shipping, deliveryTime }) => {
+const ShopCard = ({ image, onPress, name,description, keywords, rating, shipping, deliveryTime }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={styles.shopCardContainer}
     >
       <Image
-        source={image}
+        src={image}
         style={styles.image}
       />
       <Text style={styles.shopName}>{name}</Text>
       <View style={styles.keywordsContainer}>
-        {keywords.map((keyword, index) => (
-          <Text key={index} style={styles.keywordText}>
-            {keyword}{index !== keywords.length - 1 ? "-" : ""}
+      
+          <Text style={styles.keywordText}>
+            {description?.slice(0,90)}
           </Text>
-        ))}
+     
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.infoRow}>
           <View style={styles.iconTextContainer}>
             <Octicons name="star" size={24} color={COLORS.primary} />
-            <Text style={styles.infoText}>{rating}</Text>
+            <Text style={styles.infoText}>{4}</Text>
           </View>
           <View style={styles.iconTextContainer}>
             <MaterialCommunityIcons name="truck-delivery-outline" size={24} color={COLORS.primary} />
-            <Text style={styles.infoText}>{shipping}</Text>
+            <Text style={styles.infoText}>{"shipping"}</Text>
           </View>
           <View style={styles.iconTextContainer}>
             <Fontisto name="stopwatch" size={22} color={COLORS.primary} />
-            <Text style={styles.infoText}>{deliveryTime} min</Text>
+            <Text style={styles.infoText}>{"10"} min</Text>
           </View>
         </View>
       </View>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.tertiaryGray,
     borderWidth: 1,
     paddingBottom: 2,
-    marginBottom: 12,
+    marginBottom: 20,
     borderRadius: 15,
   },
   image: {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   keywordsContainer: {
-    marginBottom: 4,
+    marginBottom: 20,
     flexDirection: 'row',
   },
   keywordText: {

@@ -1,5 +1,5 @@
 import { View, Text, FlatList, TouchableOpacity , Image, StatusBar } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS, SIZES, icons } from '../constants'
 import { commonStyles } from '../styles/CommonStyles'
@@ -13,9 +13,50 @@ import Octicons from "react-native-vector-icons/Octicons"
 import { popularBurgers } from '../data/foods'
 import { restaurants } from '../data/restaurants'
 import { ScrollView } from 'react-native-virtualized-view'
+import Toast from 'react-native-toast-message'; // Import Toast
+import { test_url_images } from '../config/environment';
+import { CategoryMenu } from '../urls/urls'
+import useAxios from '../network/useAxios'
 
-const FoodByKeywords = () => {
+const FoodByKeywords = ({route}) => {
+  const { itemId, name } = route.params;
+  const [data, setData] = useState([])
 
+  const notify = (message, action) => {
+    Toast.show({
+        type: action,
+        text1: action,
+        text2: message
+    });
+}
+
+  const [responseDish, ErrorDish, LoadingDish, FetchDish] = useAxios()
+  const searchDished = () => {
+    FetchDish(CategoryMenu({
+      categoryId : itemId
+    }))
+}
+useEffect(()=>{
+  if(itemId){
+    searchDished()
+  }
+},[itemId])
+useEffect(() => {
+  if (ErrorDish?.response) {
+      notify(ErrorDish?.response?.data, "error")
+  }
+}, [ErrorDish])
+
+useEffect(()=>{
+  if(responseDish?.result == "success"){
+    setData(responseDish?.data)
+  }
+},[responseDish])
+
+
+
+
+  useEffect(()=>{},[])
     const renderHeader = ()=>{
         const navigation = useNavigation()
         return (
@@ -26,7 +67,7 @@ const FoodByKeywords = () => {
                        style={commonStyles.header1Icon}
                        >
                         <Image
-                          resizeMode='contain'
+                          src='contain'
                           source={icons.arrowLeft}
                           style={{height: 24, width: 24, tintColor: COLORS.black}}
                         />
@@ -47,7 +88,7 @@ const FoodByKeywords = () => {
                         <Text style={{
                             fontSize: 12,
                             fontFamily: "Sen Bold"
-                        }}>Burger</Text>
+                        }}>{name}</Text>
                         <View>
                             <Image
                               source={icons.arrowDown2}
@@ -62,32 +103,7 @@ const FoodByKeywords = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity
-                      onPress={()=>navigation.navigate("Search")}
-                      style={{
-                        height: 45,
-                        width: 45,
-                        borderRadius: 22.5,
-                        backgroundColor: COLORS.black,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: 6
-                      }}
-                    >
-                        <Ionicons name="search" size={24} color={COLORS.white} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                       style={commonStyles.header1Icon}
-                       onPress={()=>console.log("Filtering")}
-                    >
-                        < Image
-                          source={icons.filter}
-                          style={{
-                            height: 24,
-                            width: 24
-                          }}
-                        />
-                    </TouchableOpacity>
+                 
                 </View>
             </View>
         )
@@ -97,7 +113,7 @@ const FoodByKeywords = () => {
       const navigation = useNavigation()
       return (
         <View style={{marginVertical: 22}}>
-          <Text style={{...FONTS.body3, marginBottom: 12}}>Popular Foods</Text>
+          <Text style={{...FONTS.body3, marginBottom: 12}}>Foods in {name}</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -106,9 +122,9 @@ const FoodByKeywords = () => {
             }}
           >
               {
-                popularBurgers.map((item,index) =>(
+                data.map((item,index) =>(
                   <TouchableOpacity
-                   onPress={() =>navigation.navigate("FoodDetails")}
+                   onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.id })}
                    key={index}
                   style={{
                     flexDirection: 'column',
@@ -123,12 +139,12 @@ const FoodByKeywords = () => {
                     marginBottom: 8
                     }}>
                       <Image
-                        source={item.image}
+                        src={test_url_images + item.image}
                         resizeMode='contain'
                         style={{width: "100%", height: 84, borderRadius: 15 }}
                       />
                       <Text style={{fontSize: 14, fontFamily: "bold", marginVertical: 4}}>{item.name}</Text>
-                      <Text style={{fontSize: 13, fontFamily: "Sen Regular", marginVertical: 4}}>{item.restaurant}</Text>
+                      <Text style={{fontSize: 13, fontFamily: "Sen Regular", marginVertical: 4}}>{item.category.name}</Text>
                       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                           <Text style={{fontSize: 15, fontFamily: "Sen Bold"}}>${item.price}</Text>
                           <TouchableOpacity 
@@ -152,80 +168,7 @@ const FoodByKeywords = () => {
       )
     }
 
-    const renderRestaurants = ()=>{
-      const navigation = useNavigation() 
-      return (
-        <View style={{height: "auto"}}>
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 8,
-            alignItems: 'center',
-            }}>
-              <Text style={{...FONTS.body2}}>Open Restaurants</Text>
-              <TouchableOpacity 
-                onPress={()=>console.log("See all open restaurants")}
-                style={{flexDirection: 'row', alignItems: 'center'}}
-              >
-                <Text style={{fontSize: 16, fontFamily: "Sen Regular"}}>See All</Text>
-                <View>
-                  <MaterialIcons name="keyboard-arrow-right" size={24} color={COLORS.gray4} />
-                </View>
-              </TouchableOpacity>
-           </View>
-           <FlatList
-             nestedScrollEnabled
-             data={restaurants}
-             keyExtractor={item => item.id}
-             renderItem=
-           {({ item, index })=>(
-              <TouchableOpacity 
-               onPress={()=>navigation.navigate("RestaurantView")}
-              style={{
-                width: SIZES.width - 32,
-                borderColor: COLORS.tertiaryGray,
-                borderWidth: 1,
-                paddingBottom: 2,
-                marginBottom: 12,
-                borderRadius: 15
-                }}>
-                  <Image
-                    source={item.image}
-                    style={{
-                      width: SIZES.width -32,
-                      height: 136,
-                      borderRadius: 15
-                    }}
-                  />
-                  <Text style={{fontSize: 18, fontFamily: "Sen Regular", marginVertical: 6}}>{item.name}</Text>
-                  <View style={{marginBottom: 4, flexDirection: 'row'}}>
-                    {item.keywords.map((keyword, index) => (
-                      <Text key={index} style={{ fontSize: 14, color: COLORS.gray5, textTransform: "capitalize" }}>
-                        {keyword}{index !== item.keywords.length - 1 ? "-" : ""}
-                      </Text>
-                    ))}
-                  </View>
-                  
-                  <View style={{flexDirection: "row"}}>
-                      <View style={{flexDirection: "row", alignItems: "center"}}>
-                         <Octicons name="star" size={24} color={COLORS.primary} />
-                         <Text style={{marginLeft: 8}}>{item.rating}</Text>
-                      </View> 
-                      <View style={{flexDirection: "row", alignItems: "center", marginHorizontal: SIZES.padding3}}>
-                      <MaterialCommunityIcons name="truck-delivery-outline" size={24} color={COLORS.primary} />
-                         <Text style={{marginLeft: 8}}>{item.shipping}</Text>
-                      </View> 
-                      <View style={{flexDirection: "row", alignItems: "center"}}>
-                      <Fontisto name="stopwatch" size={22} color={COLORS.primary} />
-                         <Text style={{marginLeft: 8}}>{item.deliveryTime} min</Text>
-                      </View> 
-                  </View>
-              </TouchableOpacity>
-             )}
-             />
-        </View>
-      )
-    }
+
   return (
    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
     <StatusBar hidden={true} />
@@ -233,9 +176,10 @@ const FoodByKeywords = () => {
         {renderHeader()}
         <ScrollView showsVerticalScrollIndicator={false}>
         {renderFoods()}
-        {renderRestaurants()}
+      
         </ScrollView>
       </View>
+      <Toast/>
    </SafeAreaView>
   )
 }

@@ -8,6 +8,10 @@ import Button from '../components/Button'
 import { validateInput } from '../utils/actions/formActions'
 import { reducer } from '../utils/reducers/formReducers'
 import { commonStyles } from '../styles/CommonStyles'
+import useAxios from '../network/useAxios'
+import { LoginCustomer } from '../urls/urls'
+import Toast from 'react-native-toast-message'; // Import Toast
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const isTestMode = true
 
@@ -24,11 +28,37 @@ const initialState = {
 }
 
 const Login = ({ navigation }) => {
+    const checkToken = async() => {
+        const getToken = await AsyncStorage.getItem('tokenJson')
+        if(getToken){
+            navigation.navigate("Main")}
+    }
+    useEffect(()=>{
+        checkToken()
+    },[])
+    const addToken = async(token) => {
+        await AsyncStorage.setItem('tokenJson', token)
+
+    }
+    const addUser = async(user) => {
+        await AsyncStorage.setItem('userName', user?.full_name)
+        await AsyncStorage.setItem('phoneNumber', user?.phone_number)
+
+    }
+    const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+
+
     const [isChecked, setChecked] = useState(false);
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const [formState, dispatchFormState] = useReducer(reducer, initialState)
-
+    const notify = (message, action) =>{
+        Toast.show({
+            type: action,
+            text1: action,
+            text2: message
+        });
+    }
     const inputChangedHandler = useCallback(
         (inputId, inputValue) => {
             const result = validateInput(inputId, inputValue)
@@ -42,6 +72,22 @@ const Login = ({ navigation }) => {
             Alert.alert('An error occured', error)
         }
     }, [error])
+    useEffect(() => {
+        if (responseError?.response) {
+            notify(responseError?.response?.data, "error")
+        }
+      }, [responseError])
+    useEffect(()=>{
+        if(responseLogin?.result == "success"){
+            addToken(responseLogin?.token)
+            addUser(responseLogin?.user)
+            notify(responseLogin?.message, "success")
+            setTimeout(() => {
+                navigation.navigate('LocationAccess')
+
+            }, 1000);
+        }
+    },[responseLogin])
 
     // implementing facebook authentication
     const facebookAuthHandler = () => {
@@ -56,6 +102,9 @@ const Login = ({ navigation }) => {
     // implementing google authentication
     const googleAuthHandler = () => {
         return null
+    }
+    const fetchLoginFunc = () => {
+        responseFetch(LoginCustomer(formState))
     }
 
     return (
@@ -73,7 +122,6 @@ const Login = ({ navigation }) => {
                 <Input
                     id="email"
                     onInputChanged={inputChangedHandler}
-                    errorText={formState.inputValidities['email']}
                     placeholder="example@gmail.com"
                     placeholderTextColor={COLORS.black}
                     keyboardType="email-address"
@@ -81,7 +129,6 @@ const Login = ({ navigation }) => {
                 <Text style={commonStyles.inputHeader}>Password</Text>
                 <Input
                     onInputChanged={inputChangedHandler}
-                    errorText={formState.inputValidities['password']}
                     autoCapitalize="none"
                     id="password"
                     placeholder="*************"
@@ -114,7 +161,10 @@ const Login = ({ navigation }) => {
                     title="LOG IN"
                     isLoading={isLoading}
                     filled
-                    onPress={() => navigation.navigate('LocationAccess')}
+                    onPress={() => fetchLoginFunc()
+                        // navigation.navigate('LocationAccess')
+                    
+                    }
                     style={commonStyles.btn}
                 />
                 <View style={commonStyles.center}>
@@ -125,9 +175,9 @@ const Login = ({ navigation }) => {
                         <Text style={{ ...FONTS.body4, color: COLORS.primary }}>SIGN UP</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={{ ...FONTS.body4, color: COLORS.black, textAlign: 'center' }}>Or</Text>
+                {/* <Text style={{ ...FONTS.body4, color: COLORS.black, textAlign: 'center' }}>Or</Text> */}
 
-                <View style={commonStyles.socialContainer}>
+                {/* <View style={commonStyles.socialContainer}>
                     <TouchableOpacity
                         onPress={facebookAuthHandler}
                         style={commonStyles.socialIconContainer}
@@ -158,8 +208,9 @@ const Login = ({ navigation }) => {
                             style={commonStyles.socialLogo}
                         />
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </Animatable.View>
+            <Toast/>
         </View>
     )
 }
