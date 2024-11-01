@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { history } from '../data/utils';
 import { COLORS } from '../constants';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { fetchCustomerOrders } from '../urls/urls';
 import useAxios from '../network/useAxios';
 import Toast from 'react-native-toast-message'; // Import Toast
@@ -24,9 +24,17 @@ const HistoryRoute = () => {
         status:"history"
       }))
   }
-  useEffect(()=>{
-    fetchDashboarfFunc()
-  },[])
+  useFocusEffect(
+    useCallback(() => {
+      // Code here runs every time the screen comes into focus
+      fetchDashboarfFunc()
+  
+      // Cleanup (optional) runs when the screen loses focus
+      return () => {
+       
+      };
+    }, [])
+  );
   const [data, setData] = useState([])
   useEffect(() => {
     if (responseError?.response) {
@@ -66,16 +74,15 @@ const HistoryRoute = () => {
             <Text style={styles.receiptText}>{item.receipt}</Text>
           </View>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity 
-              onPress={()=>navigation.navigate("TrackingOrders")}
-              style={styles.trackOrderButton}>
-              <Text style={styles.trackOrderButtonText}>Track Order</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              onPress={()=>navigation.navigate("CancelOrders")}
-              style={styles.cancelButton}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
+          <TouchableOpacity 
+                onPress={()=>
+                  navigation.navigate('TrackingOrders', { id: item.id})
+                
+                }
+                style={styles.trackOrderButton}>
+                <Text style={styles.trackOrderButtonText}>View Order</Text>
+              </TouchableOpacity>
+            
           </View>
         </View>
         )}

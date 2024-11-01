@@ -15,15 +15,19 @@ const Button = (props) => {
         ? COLORS.white || props.textColor
         : COLORS.primary || props.textColor
     const isLoading = props.isLoading || false
+    const disabled = props.disabled || false
+    
 
     return (
         <TouchableOpacity
+        disabled={disabled}
             style={{
                 ...styles.btn,
                 ...{ backgroundColor: bgColor },
                 ...props.style,
             }}
             onPress={props.onPress}
+
         >
             {isLoading && isLoading == true ? (
                 <ActivityIndicator size="small" color={COLORS.white} />

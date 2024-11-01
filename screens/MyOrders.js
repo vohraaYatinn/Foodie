@@ -7,6 +7,7 @@ import { commonStyles } from '../styles/CommonStyles'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import OngoingRoute from '../tabs/OngoingRoute'
 import HistoryRoute from '../tabs/HistoryRoute'
+import { useTranslation } from 'react-i18next'
 
 
 const renderScene = SceneMap({
@@ -17,6 +18,7 @@ const renderScene = SceneMap({
 const MyOrders = ({ navigation }) => {
   
   const layout = useWindowDimensions();
+  const { t } = useTranslation();
 
   const [index, setIndex] = React.useState(0);
 

@@ -62,16 +62,16 @@ useEffect(()=>{
         return (
             <View style={commonStyles.header1}>
                 <View style={{flexDirection: 'row',}}>
-                    <TouchableOpacity 
-                       onPress={()=>navigation.goBack()}
-                       style={commonStyles.header1Icon}
-                       >
-                        <Image
-                          src='contain'
-                          source={icons.arrowLeft}
-                          style={{height: 24, width: 24, tintColor: COLORS.black}}
-                        />
-                    </TouchableOpacity>
+                <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={commonStyles.header1Icon}
+            >
+              <Image
+                resizeMode='contain'
+                source={icons.arrowLeft}
+                style={{ height: 24, width: 24, tintColor: COLORS.black }}
+              />
+            </TouchableOpacity>
                     <TouchableOpacity
                       style={{
                         height: 45, 
@@ -148,8 +148,8 @@ useEffect(()=>{
                       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                           <Text style={{fontSize: 15, fontFamily: "Sen Bold"}}>${item.price}</Text>
                           <TouchableOpacity 
-                          onPress={() =>console.log("Add to cart")}
-                          style={{
+                   onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.id })}
+                   style={{
                             height: 30, 
                             width: 30, 
                             borderRadius: 15,

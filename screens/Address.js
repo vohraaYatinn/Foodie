@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons } from "../constants"
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { commonStyles } from '../styles/CommonStyles'
 import Feather from "react-native-vector-icons/Feather"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
@@ -36,9 +36,18 @@ const Address = ({ navigation }) => {
             addressId:id
         }))
     }
-    useEffect(()=>{
-      fetchDashboarfFunc()
-    },[])
+    useFocusEffect(
+        useCallback(() => {
+          // Code here runs every time the screen comes into focus
+          fetchDashboarfFunc()
+      
+          // Cleanup (optional) runs when the screen loses focus
+          return () => {
+           
+          };
+        }, [])
+      );
+
 
     useEffect(()=>{
         if(responseLogin?.result == "success"){
@@ -77,7 +86,7 @@ const Address = ({ navigation }) => {
             }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity
-                        onPress={() => navigation.goBack()}
+                        onPress={() => navigation.navigate("Home")}
                         style={commonStyles.header1Icon}
                     >
                         <Image

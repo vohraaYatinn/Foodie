@@ -5,8 +5,12 @@ import { COLORS, FONTS, SIZES, images } from '../constants';
 import PageContainer from '../components/PageContainer';
 import DotsView from '../components/DotsView';
 import Button from '../components/Button';
+import { useTranslation } from 'react-i18next';
+
 
 const Onboarding4 = ({ navigation }) => {
+  const { t } = useTranslation();
+
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -32,41 +36,42 @@ const Onboarding4 = ({ navigation }) => {
   }, [progress, navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="light" />
-      <PageContainer style={styles.pageContainer}>
-        <View style={styles.pageContainer}>
-          <Image source={images.onboarding4} resizeMode="contain" style={styles.image} />
+<SafeAreaView style={styles.container}>
+  <StatusBar style="light" />
+  <PageContainer style={styles.pageContainer}>
+    <View style={styles.pageContainer}>
+      <Image source={images.onboarding4} resizeMode="contain" style={styles.image} />
 
-          <View style={styles.titleContainer}>
-            <Text style={styles.title1}>Free delivery offers</Text>
-            <Text style={styles.title2}>FEELESS</Text>
-          </View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title1}>{t('onboarding4.free_delivery_offers')}</Text>
+        <Text style={styles.title2}>{t('onboarding4.feeless')}</Text>
+      </View>
 
-          <Text style={styles.bodyText}>
-            Order from your chosen chef with no delivery fee. You just place the order, we do the rest.
-          </Text>
+      <Text style={styles.bodyText}>
+        {t('onboarding4.body_text')}
+      </Text>
 
-          <View style={styles.dotsContainer}>
-            {progress < 1 && <DotsView progress={progress} numDots={4} />}
-          </View>
+      <View style={styles.dotsContainer}>
+        {progress < 1 && <DotsView progress={progress} numDots={4} />}
+      </View>
 
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Next"
-              filled
-              onPress={() => navigation.navigate('Login')}
-              style={styles.nextButton}
-            />
-            <Button
-              title="Skip"
-              onPress={() => navigation.navigate('Login')}
-              style={styles.skipButton}
-            />
-          </View>
-        </View>
-      </PageContainer>
-    </SafeAreaView>
+      <View style={styles.buttonContainer}>
+        <Button
+          title={t('onboarding4.next')}
+          filled
+          onPress={() => navigation.navigate('Login')}
+          style={styles.nextButton}
+        />
+        <Button
+          title={t('onboarding4.skip')}
+          onPress={() => navigation.navigate('Login')}
+          style={styles.skipButton}
+        />
+      </View>
+    </View>
+  </PageContainer>
+</SafeAreaView>
+
   );
 };
 

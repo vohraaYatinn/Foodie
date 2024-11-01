@@ -5,9 +5,20 @@ import { COLORS, FONTS, SIZES, images } from '../constants';
 import PageContainer from '../components/PageContainer';
 import DotsView from '../components/DotsView';
 import Button from '../components/Button';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useTranslation } from 'react-i18next';
 
 const Onboarding1 = ({ navigation }) => {
+  const { t } = useTranslation();
+
   const [progress, setProgress] = useState(0);
+  const getLanguage = async() => {
+    const varLang = await AsyncStorage.getItem('language', token)
+    i18n.changeLanguage(varLang)
+}
+useEffect(()=>{
+  getLanguage()
+})
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -33,40 +44,40 @@ const Onboarding1 = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="light" />
-      <PageContainer style={styles.pageContainer}>
+    <StatusBar style="light" />
+    <PageContainer style={styles.pageContainer}>
         <View style={styles.pageContainer}>
-          <Image source={images.onboarding1} resizeMode="contain" style={styles.image} />
+            <Image source={images.onboarding1} resizeMode="contain" style={styles.image} />
 
-          <View style={styles.titleContainer}>
-            <Text style={styles.title1}>All your favorites</Text>
-            <Text style={styles.title2}>FOODS</Text>
-          </View>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title1}>{t('onboarding.all_your_favorites')}</Text>
+                <Text style={styles.title2}>{t('onboarding.foods')}</Text>
+            </View>
 
-          <Text style={styles.bodyText}>
-            Get all your loved foods in one once place, you just place the order we do the rest
-          </Text>
+            <Text style={styles.bodyText}>
+                {t('onboarding.body_text')}
+            </Text>
 
-          <View style={styles.dotsContainer}>
-            {progress < 1 && <DotsView progress={progress} numDots={4} />}
-          </View>
+            <View style={styles.dotsContainer}>
+                {progress < 1 && <DotsView progress={progress} numDots={4} />}
+            </View>
 
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Next"
-              filled
-              onPress={() => navigation.navigate('Onboarding2')}
-              style={styles.nextButton}
-            />
-            <Button
-              title="Skip"
-              onPress={() => navigation.navigate('Login')}
-              style={styles.skipButton}
-            />
-          </View>
+            <View style={styles.buttonContainer}>
+                <Button
+                    title={t('onboarding.next')}
+                    filled
+                    onPress={() => navigation.navigate('Onboarding2')}
+                    style={styles.nextButton}
+                />
+                <Button
+                    title={t('onboarding.skip')}
+                    onPress={() => navigation.navigate('Login')}
+                    style={styles.skipButton}
+                />
+            </View>
         </View>
-      </PageContainer>
-    </SafeAreaView>
+    </PageContainer>
+</SafeAreaView>
   );
 };
 

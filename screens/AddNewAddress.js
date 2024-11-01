@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar } from 'react-native'
 import React, { useRef, useEffect, useReducer, useCallback, useState } from 'react'
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {  icons, SIZES, COLORS, FONTS } from '../constants'
 import RBSheet from "react-native-raw-bottom-sheet"

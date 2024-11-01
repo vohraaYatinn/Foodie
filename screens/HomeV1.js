@@ -9,7 +9,9 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useCallback} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { COLORS, SIZES, icons } from '../constants';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,9 +27,12 @@ import { fetchDashboard } from '../urls/urls';
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const HomeV1 = ({ navigation }) => {
+  const { t , i18n} = useTranslation();
+
   const notify = (message, action) => {
     Toast.show({
         type: action,
@@ -41,9 +46,23 @@ const HomeV1 = ({ navigation }) => {
   const fetchDashboarfFunc = () => {
     responseFetch(fetchDashboard())
 }
-useEffect(()=>{
-  fetchDashboarfFunc()
-},[])
+useFocusEffect(
+  useCallback(() => {
+    // Code here runs every time the screen comes into focus
+    fetchDashboarfFunc()
+
+    // Cleanup (optional) runs when the screen loses focus
+    return () => {
+     
+    };
+  }, [])
+);
+
+const handleLanguageChange = async() => {
+  const lang = await AsyncStorage.getItem('language')
+  i18n.changeLanguage(lang);
+};
+useEffect(()=>{handleLanguageChange()},[])
 const [data, setData] = useState({
   category:[],
   order:[]
@@ -87,7 +106,7 @@ useEffect(()=>{
     return (
       <View>
         <SubHeader
-          title="All Categories"
+          title={t('home.all_categories')}
           onPress={() => console.log('All Categories')}
         />
         <FlatList
@@ -124,7 +143,7 @@ useEffect(()=>{
         </View>
         <TextInput
 
-          placeholder="Search dishes, restaurants"
+          placeholder={t('home.search_placeholder')}
           onChangeText={handleSearch}
           placeholderTextColor={COLORS.gray5}
           value={searchQuery}
@@ -137,7 +156,7 @@ useEffect(()=>{
     return (
       <View style={{ height: 'auto'}}>
         <SubHeader
-          title="Best Sellers"
+          title={t('home.best_seller')}
           onPress={() => navigation.navigate("OpenShops")}
           seeAll = {true}
         />
@@ -164,57 +183,51 @@ useEffect(()=>{
     );
   };
   return (
-    <SafeAreaView style={styles.area}>
-      <View style={{ flex: 1, marginHorizontal: 16 }}>
-        <StatusBar hidden={true} />
-        <View style={styles.headerContainer}>
+<SafeAreaView style={styles.area}>
+  <View style={{ flex: 1, marginHorizontal: 16 }}>
+    <StatusBar hidden={true} />
+    <View style={styles.headerContainer}>
+      <View style={styles.itemCenter}>
+        <TouchableOpacity
+          onPress={() => navigation.toggleDrawer()}
+          style={styles.menuIconContainer}>
+          <Image source={icons.menu} style={styles.menuIcon} />
+        </TouchableOpacity>
+        <View style={{ flexDirection: 'column', marginLeft: 12 }}>
+          <Text style={styles.deliverTo}>{t('home.deliver_to')}</Text>
           <View style={styles.itemCenter}>
-            <TouchableOpacity
-              onPress={() => navigation.toggleDrawer()}
-              style={styles.menuIconContainer}>
-              <Image source={icons.menu} style={styles.menuIcon} />
-            </TouchableOpacity>
-            <View
-              style={{
-                flexDirection: 'column',
-                marginLeft: 12,
-              }}>
-              <Text style={styles.deliverTo}>Deliver To</Text>
-              <View style={styles.itemCenter} >
-                <Text style={styles.location} >{data?.user?.active_addresses?.[0]?.city}</Text>
-                <Image source={icons.arrowDown2} style={styles.arrowDown} />
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.cartContainer} >
-            <View>
-              {/* <View style={styles.cartIconContainer}>
-                <Text style={styles.cartNum}  onPress={() => navigation.navigate("Cart")}>3</Text>
-              </View> */}
-              <Feather name="shopping-bag" size={24} color={COLORS.white}  onPress={() => navigation.navigate("Cart")} />
-            </View>
+            <Text style={styles.location}>{data?.user?.active_addresses?.[0]?.city}</Text>
+            <Image source={icons.arrowDown2} style={styles.arrowDown} />
           </View>
         </View>
-
-        <View style={styles.greetingsContainer}>
-          <Text style={styles.greetingsName}>Hey {data?.user?.full_name},</Text>
-          <Text style={styles.greetingsTime}>{greeting}</Text>
-          </View>
-        <ScrollView showsVerticalScrollIndicator={false} >
-          {renderSearchBar()}
-          {renderFoodCategories()}
-          {renderRestaurants()}
-        </ScrollView>
       </View>
-      <CustomModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        onPressGotIt={handlePressGotIt}
-        code="Order your favorite dishes"
-      />
-       <Toast/>
-    </SafeAreaView>
+
+      <View style={styles.cartContainer}>
+        <View>
+          <Feather name="shopping-bag" size={24} color={COLORS.white} onPress={() => navigation.navigate("Cart")} />
+        </View>
+      </View>
+    </View>
+
+    <View style={styles.greetingsContainer}>
+      <Text style={styles.greetingsName}>{t('home.greetings_name')}{data?.user?.full_name },{" "}</Text>
+      <Text style={styles.greetingsTime}>{greeting}</Text>
+    </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {renderSearchBar()}
+      {renderFoodCategories()}
+      {renderRestaurants()}
+    </ScrollView>
+  </View>
+  <CustomModal
+    modalVisible={modalVisible}
+    setModalVisible={setModalVisible}
+    onPressGotIt={handlePressGotIt}
+    code={t('home.favorite_dishes')}
+  />
+  <Toast />
+</SafeAreaView>
+
   );
 };
 

@@ -9,10 +9,13 @@ import { COLORS, images } from "../constants";
 import { Address, Menu, Notifications, PaymentMethod, Cart, MyOrders, HomeV1, HomeV2, Search, HomeV3 } from "../screens";
 import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useTranslation } from "react-i18next";
 
 const Drawer = createDrawerNavigator();
 const DrawerNavigation = () => {
   const [userDetails, setUserName] = useState({})
+    const { t } = useTranslation();
+
   const getUser = async() => {
 
     const userName = await AsyncStorage.getItem('userName')
@@ -92,8 +95,8 @@ useEffect(()=>{
          <Drawer.Screen
           name="Home"
           options={{
-            drawerLabel: "Home",
-            title: "Home",
+            drawerLabel: t('drawerLabel.home'),
+            title: t('drawerLabel.home'),
             headerShadowVisible:false,
             drawerIcon: () => (
               <Ionicons name="home-outline" size={24} color={COLORS.black} />
@@ -105,24 +108,25 @@ useEffect(()=>{
           name="Orders"
           options={{
             drawerLabel: "Orders",
-            title: "Orders",
+            title:t('drawerLabel.orders'),
             drawerIcon: () => (
               <Ionicons name="gift-outline" size={24} color={COLORS.black} />
             )
           }}
           component={MyOrders}
         />
-        <Drawer.Screen
-          name="Search"
-          options={{
-            drawerLabel: "Search",
-            title: "Search",
-            drawerIcon: () => (
-              <Ionicons name="search-outline" size={24} color={COLORS.black} />
-            )
-          }}
-          component={Search}
-        />
+<Drawer.Screen
+  name="Search"
+  options={{
+    drawerLabel: t('drawerLabel.search'),
+    title: t('drawerLabel.search'),
+    drawerIcon: () => (
+      <Ionicons name="search-outline" size={24} color={COLORS.black} />
+    )
+  }}
+  component={Search}
+  initialParams={{ otherParam: '', keywords: '' }} // Set default values if needed
+/>
           {/* <Drawer.Screen
           name="Whishlist"
           options={{
@@ -138,8 +142,8 @@ useEffect(()=>{
         <Drawer.Screen
           name="Delivery Address"
           options={{
-            drawerLabel: "Delivery Address",
-            title: "Delivery Address",
+            drawerLabel:  "Delivery Address",
+            title:t('drawerLabel.delivery_address'),
             drawerIcon: () => (
               <Ionicons name="location-outline" size={24} color={COLORS.black} />
             )
@@ -164,7 +168,7 @@ useEffect(()=>{
           name="Notifications"
           options={{
             drawerLabel: "Notifications",
-            title: "Notifications",
+            title:t('drawerLabel.notifications'),
             drawerIcon: () => (
               <Ionicons name="notifications-outline" size={24} color={COLORS.black} />
             )

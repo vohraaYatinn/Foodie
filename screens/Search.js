@@ -16,9 +16,11 @@ import useAxios from '../network/useAxios'
 import { getAllMenu } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment';
+import { useTranslation } from 'react-i18next';
 
 const Search = ({ navigation, route }) => {
   const { otherParam, keywords } = route.params;
+  const { t } = useTranslation();
 
   const notify = (message, action) => {
     Toast.show({
@@ -417,7 +419,7 @@ useEffect(()=>{
             alignItems: 'center'
           }}>
             <TouchableOpacity
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => navigation.goBack()}
               style={styles.menuContainer}>
               <Image
                 source={icons.menu}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { orders } from '../data/utils';
 import { COLORS } from '../constants';
@@ -7,6 +7,7 @@ import useAxios from '../network/useAxios';
 import { fetchCustomerOrders } from '../urls/urls';
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment';
+import { useFocusEffect } from '@react-navigation/native';
 
 const OngoingRoute = () => {
   const navigation = useNavigation()
@@ -24,9 +25,18 @@ const OngoingRoute = () => {
         status:"ongoing"
       }))
   }
-  useEffect(()=>{
-    fetchDashboarfFunc()
-  },[])
+  useFocusEffect(
+    useCallback(() => {
+      // Code here runs every time the screen comes into focus
+      fetchDashboarfFunc()
+  
+      // Cleanup (optional) runs when the screen loses focus
+      return () => {
+       
+      };
+    }, [])
+  );
+
   const [data, setData] = useState([])
   useEffect(() => {
     if (responseError?.response) {
@@ -76,8 +86,9 @@ const OngoingRoute = () => {
               </TouchableOpacity>
               <TouchableOpacity 
                 onPress={()=>navigation.navigate("CancelOrders")}
+                disabled
                 style={styles.cancelButton}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText} >Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -12,6 +12,8 @@ import useAxios from '../network/useAxios'
 import { LoginCustomer } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useTranslation } from 'react-i18next';
+
 
 const isTestMode = true
 
@@ -28,6 +30,20 @@ const initialState = {
 }
 
 const Login = ({ navigation }) => {
+    const { t, i18n } = useTranslation();
+    const [lang, setLang] = useState("en")
+    const switchLanguage = () => {
+        if(lang == "en"){
+            setLang("pt")
+        }
+        else{
+            setLang("en")
+
+        }
+        i18n.changeLanguage(lang); // Change language dynamically
+      };
+
+
     const checkToken = async() => {
         const getToken = await AsyncStorage.getItem('tokenJson')
         if(getToken){
@@ -40,6 +56,22 @@ const Login = ({ navigation }) => {
         await AsyncStorage.setItem('tokenJson', token)
 
     }
+    const [selectedLanguage, setSelectedLanguage] = useState("");
+
+    const getLang = async(token) => {
+        const lang = AsyncStorage.getItem('language')
+        console.log(lang)
+        if (lang == "en"){
+          setSelectedLanguage("English")
+          i18n.changeLanguage('en');
+        }
+        else if(lang == "pt"){
+          setSelectedLanguage("Portuguese")
+          i18n.changeLanguage('pt');
+        }
+    }
+    useEffect(()=>{getLang(),[]})
+
     const addUser = async(user) => {
         await AsyncStorage.setItem('userName', user?.full_name)
         await AsyncStorage.setItem('phoneNumber', user?.phone_number)
@@ -89,129 +121,72 @@ const Login = ({ navigation }) => {
         }
     },[responseLogin])
 
-    // implementing facebook authentication
-    const facebookAuthHandler = () => {
-        return null
-    }
 
-    // implementing twitter authentication
-    const twitterAuthHandler = () => {
-        return null
-    }
-
-    // implementing google authentication
-    const googleAuthHandler = () => {
-        return null
-    }
     const fetchLoginFunc = () => {
         responseFetch(LoginCustomer(formState))
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
-            <StatusBar hidden />
-            <View style={commonStyles.header}>
-                <Text style={commonStyles.headerTitle}>Log In</Text>
-                <Text
-                    style={commonStyles.subHeaderTitle}>Please sign in to your existing account</Text>
-            </View>
-            <Animatable.View
-                animation="fadeInUpBig"
-                style={commonStyles.footer}>
-                <Text style={commonStyles.inputHeader}>Email</Text>
-                <Input
-                    id="email"
-                    onInputChanged={inputChangedHandler}
-                    placeholder="example@gmail.com"
-                    placeholderTextColor={COLORS.black}
-                    keyboardType="email-address"
-                />
-                <Text style={commonStyles.inputHeader}>Password</Text>
-                <Input
-                    onInputChanged={inputChangedHandler}
-                    autoCapitalize="none"
-                    id="password"
-                    placeholder="*************"
-                    placeholderTextColor={COLORS.black}
-                    secureTextEntry={true}
-                />
-
-                <View style={commonStyles.checkBoxContainer}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <CheckBox
-                            style={commonStyles.checkbox}
-                            value={isChecked}
-                            tintColor={isChecked ? COLORS.primary : "gray"}
-                            onValueChange={setChecked}
-                            boxType="square"
-                            onTintColor={COLORS.primary}
-                            onFillColor={COLORS.primary}
-                            onCheckColor={COLORS.white}
-                          />
-                        <Text style={{ ...FONTS.body4 }}>Remenber me</Text>
-                    </View>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("ForgotPassword")}
-                    >
-                        <Text style={{ ...FONTS.body4, color: COLORS.primary }}>Forgot Password ?</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <Button
-                    title="LOG IN"
-                    isLoading={isLoading}
-                    filled
-                    onPress={() => fetchLoginFunc()
-                        // navigation.navigate('LocationAccess')
-                    
-                    }
-                    style={commonStyles.btn}
-                />
-                <View style={commonStyles.center}>
-                    <Text style={{ ...FONTS.body4, color: COLORS.black }}>Don't have an account?{" "}</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Signup")}
-                    >
-                        <Text style={{ ...FONTS.body4, color: COLORS.primary }}>SIGN UP</Text>
-                    </TouchableOpacity>
-                </View>
-                {/* <Text style={{ ...FONTS.body4, color: COLORS.black, textAlign: 'center' }}>Or</Text> */}
-
-                {/* <View style={commonStyles.socialContainer}>
-                    <TouchableOpacity
-                        onPress={facebookAuthHandler}
-                        style={commonStyles.socialIconContainer}
-                    >
-                        <Image
-                            source={icons.google}
-                            resizeMode="contain"
-                            style={commonStyles.socialLogo}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={twitterAuthHandler}
-                        style={commonStyles.socialIconContainer}
-                    >
-                        <Image
-                            source={icons.twitter}
-                            resizeMode="contain"
-                            style={commonStyles.socialLogo}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={googleAuthHandler}
-                        style={commonStyles.socialIconContainer}
-                    >
-                        <Image
-                            source={icons.apple}
-                            resizeMode="contain"
-                            style={commonStyles.socialLogo}
-                        />
-                    </TouchableOpacity>
-                </View> */}
-            </Animatable.View>
-            <Toast/>
+        <StatusBar hidden />
+        <View style={commonStyles.header}>
+            <Text style={commonStyles.headerTitle}>{t('welcome')}</Text>
+            <Text style={commonStyles.subHeaderTitle}>{t('sign_in_to_account')}</Text>
         </View>
+        <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
+            <Text style={commonStyles.inputHeader}>{t('email')}</Text>
+            <Input
+                id="email"
+                onInputChanged={inputChangedHandler}
+                placeholder={t('email_placeholder')}
+                placeholderTextColor={COLORS.black}
+                keyboardType="email-address"
+            />
+            <Text style={commonStyles.inputHeader}>{t('password')}</Text>
+            <Input
+                onInputChanged={inputChangedHandler}
+                autoCapitalize="none"
+                id="password"
+                placeholder={t('password_placeholder')}
+                placeholderTextColor={COLORS.black}
+                secureTextEntry={true}
+            />
+
+            <View style={commonStyles.checkBoxContainer}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <CheckBox
+                        style={commonStyles.checkbox}
+                        value={isChecked}
+                        tintColor={isChecked ? COLORS.primary : "gray"}
+                        onValueChange={setChecked}
+                        boxType="square"
+                        onTintColor={COLORS.primary}
+                        onFillColor={COLORS.primary}
+                        onCheckColor={COLORS.white}
+                    />
+                    <Text style={{ ...FONTS.body4 }}>{t('remember_me')}</Text>
+                </View>
+                {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{t('forgot_password')}</Text>
+                </TouchableOpacity> */}
+            </View>
+
+            <Button
+                title={t('login')}
+                isLoading={responseLoading}
+                filled
+                onPress={() => fetchLoginFunc()}
+                style={commonStyles.btn}
+            />
+            <View style={commonStyles.center}>
+                <Text style={{ ...FONTS.body4, color: COLORS.black }}>{t('dont_have_account')}{' '}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{t('sign_up')}</Text>
+                </TouchableOpacity>
+            </View>
+        </Animatable.View>
+        <Toast/>
+    </View>
     )
 }
 

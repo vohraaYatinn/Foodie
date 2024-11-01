@@ -27,7 +27,7 @@ const PaymentSuccess = ({ navigation }) => {
           <Button
             filled
             title="TRACK ORDER"
-            onPress={() => navigation.navigate("TrackingOrders")}
+            onPress={() => navigation.navigate("Orders")}
           />
         </View>
       </View>

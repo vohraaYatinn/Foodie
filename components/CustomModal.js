@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { COLORS, FONTS, SIZES } from '../constants';
+import { useTranslation } from 'react-i18next';
 
 const CustomModal = ({ modalVisible, setModalVisible, onPressGotIt, code }) => {
+  const { t } = useTranslation();
+
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <TouchableOpacity
@@ -11,23 +14,26 @@ const CustomModal = ({ modalVisible, setModalVisible, onPressGotIt, code }) => {
         activeOpacity={0.1}
         style={styles.modalContainer}
       >
-        <View style={styles.modalContent}>
-          <LinearGradient
-          colors={['#D1C4E9', '#9575CD', '#7E57C2']}
-
-            style={styles.gradientContainer}
-          >
-            <Text style={styles.title}>Hurry Offers!</Text>
-            <Text style={{ ...FONTS.h2, color: COLORS.white, marginVertical: 68 }}>Order your favorite dishes</Text>
-            <Text style={styles.discountText}>Where delicious meals are just a tap away! t</Text>
-            <TouchableOpacity
-              onPress={onPressGotIt}
-              style={styles.gotItButton}
-            >
-              <Text style={styles.gotItButtonText}>GOT IT</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
+<View style={styles.modalContent}>
+  <LinearGradient
+    colors={['#D1C4E9', '#9575CD', '#7E57C2']}
+    style={styles.gradientContainer}
+  >
+    <Text style={styles.title}>{t('welcomeModal.hurry_offers')}</Text>
+    <Text style={{ ...FONTS.h2, color: COLORS.white, marginVertical: 68 }}>
+      {t('welcomeModal.order_favorite_dishes')}
+    </Text>
+    <Text style={styles.discountText}>
+      {t('welcomeModal.discount_text')}
+    </Text>
+    <TouchableOpacity
+      onPress={onPressGotIt}
+      style={styles.gotItButton}
+    >
+      <Text style={styles.gotItButtonText}>{t('welcomeModal.got_it')}</Text>
+    </TouchableOpacity>
+  </LinearGradient>
+</View>
       </TouchableOpacity>
     </Modal>
   );

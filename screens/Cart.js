@@ -103,11 +103,7 @@ useEffect(()=>{
             </TouchableOpacity>
             <Text style={{ marginLeft: 12, fontSize: 17, fontFamily: "Sen Regular", color: COLORS.white }}>Cart</Text>
           </View>
-          <TouchableOpacity
-            onPress={() => console.log("Edit Items")}
-          >
-            <Text style={{ fontSize: 14, fontFamily: "Sen Bold", textTransform: 'uppercase', color: COLORS.green }}>Done</Text>
-          </TouchableOpacity>
+        
         </View>
 
         <FlatList
@@ -248,8 +244,20 @@ useEffect(()=>{
 
         <Button
           filled
+          disabled={totalAmount == 0}
+          isLoading={cartActionLoading}
           title="PLACE ORDER"
-          onPress={() => navigation.navigate("PaymentMethod")}
+          onPress={() => {
+            if(address?.[0]?.street){
+              navigation.navigate("PaymentMethod")
+            }
+            else{
+              notify("You need to add a address", "error")
+
+            }
+          
+          
+          }}
           style={{ marginVertical: 2 }}
         />
       </Animatable.View>

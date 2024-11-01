@@ -33,7 +33,8 @@ const useAxios = () => {
                 setError(err);
             }
             if (err?.response?.status === 403) {
-                // router.push("/login")
+                await AsyncStorage.removeItem('tokenJson')
+                router.push("/login")
             }
             else{
                 setError(err);

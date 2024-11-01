@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { COLORS, FONTS, SIZES, icons, images } from '../constants'
@@ -9,8 +9,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { ScrollView } from 'react-native-virtualized-view'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useTranslation } from 'react-i18next'
 
 const Menu = () => {
+    const [getName, setGetName] = useState("")
+    const { t } = useTranslation();
+
+    const getUser = async() => {
+        const name = await AsyncStorage.getItem('userName')
+        setGetName(name)
+    }
+    useEffect(()=>{
+        getUser()
+    },[])
     const renderHeader = () => {
         const navigation = useNavigation()
         return (
@@ -60,7 +71,7 @@ const Menu = () => {
                     }}
                 />
                 <View style={{ marginLeft: 12 }}>
-                    <Text style={{ ...FONTS.h4 }}>Vishal Khadok</Text>
+                    <Text style={{ ...FONTS.h4 }}>{getName}</Text>
                     <Text style={{
                         fontSize: 12,
                         fontFamily: "Sen Regular",
@@ -75,192 +86,141 @@ const Menu = () => {
     const renderSettings = () => {
         const navigation = useNavigation()
         return (
-            <View style={{ flexDirection: 'column' }}>
-                <View style={styles.container}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("PersonalProfile")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="user" size={24} color={COLORS.primary} />
-                            </View>
-                            <Text style={styles.textBody}>Personal Info</Text>
+<View style={{ flexDirection: 'column' }}>
+            <View style={styles.container}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("PersonalProfile")}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="user" size={24} color={COLORS.primary} />
                         </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
+                        <Text style={styles.textBody}>{t('setting_draw.PersonalInfo')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Address")}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="map" size={24} color="#413DFB" />
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Address")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="map" size={24} color="#413DFB" />
-                            </View>
-                            <Text style={styles.textBody}>Addresses</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.container}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Cart")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="shopping-bag" size={24} color="#369BFF" />
-                            </View>
-                            <Text style={styles.textBody}>Cart</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity
-                        onPress={() => navigation.navigate("Cart")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="heart" size={24} color="#B33DFB" />
-                            </View>
-                            <Text style={styles.textBody}>Favourite</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity> */}
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Notifications")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Ionicons name="notifications-outline" size={24} color={COLORS.primary} />
-                            </View>
-                            <Text style={styles.textBody}>Notifications</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity
-                        onPress={() => navigation.navigate("PaymentMethod")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="credit-card" size={24} color="#369BFF" />
-                            </View>
-                            <Text style={styles.textBody}>Payment Method</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity> */}
-                </View>
-
-                <View style={styles.container}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Faqs")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="info" size={24} color={COLORS.primary} />
-                            </View>
-                            <Text style={styles.textBody}>FAQs</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity
-                        onPress={() => navigation.navigate("UserReviews")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="copy" size={24} color="#2AE1E1" />
-                            </View>
-                            <Text style={styles.textBody}>User Reviews</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity> */}
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Settings")}
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="settings" size={24} color="#413DFB" />
-                            </View>
-                            <Text style={styles.textBody}>Settings</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={[styles.container, { marginBottom: 100 }]}>
-                    <TouchableOpacity
-                        onPress={async() => {
-                            await AsyncStorage.removeItem('tokenJson')
-                            navigation.navigate('Login')}
-                                              }
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <MaterialIcons name="logout" size={24} color="#FB4A59" />
-                            </View>
-                            <Text style={styles.textBody}>Logout</Text>
-                        </View>
-                        <View>
-                            <Image
-                                source={icons.arrowRight}
-                                style={styles.iconRight}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                        <Text style={styles.textBody}>{t('setting_draw.Addresses')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
             </View>
+
+            <View style={styles.container}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Cart")}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="shopping-bag" size={24} color="#369BFF" />
+                        </View>
+                        <Text style={styles.textBody}>{t('setting_draw.Cart')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Notifications")}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Ionicons name="notifications-outline" size={24} color={COLORS.primary} />
+                        </View>
+                        <Text style={styles.textBody}>{t('setting_draw.Notifications')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.container}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Faqs")}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="info" size={24} color={COLORS.primary} />
+                        </View>
+                        <Text style={styles.textBody}>{t('setting_draw.FAQs')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Settings")}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="settings" size={24} color="#413DFB" />
+                        </View>
+                        <Text style={styles.textBody}>{t('setting_draw.Settings')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
+            </View>
+
+            <View style={[styles.container, { marginBottom: 100 }]}>
+                <TouchableOpacity
+                    onPress={async () => {
+                        await AsyncStorage.removeItem('tokenJson')
+                        navigation.navigate('Login')
+                    }}
+                    style={styles.subContainer}
+                >
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <MaterialIcons name="logout" size={24} color="#FB4A59" />
+                        </View>
+                        <Text style={styles.textBody}>{t('setting_draw.Logout')}</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={icons.arrowRight}
+                            style={styles.iconRight}
+                        />
+                    </View>
+                </TouchableOpacity>
+            </View>
+        </View>
         )
     }
     return (

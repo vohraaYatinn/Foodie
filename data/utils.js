@@ -155,7 +155,13 @@ export const history = [
 ]
 
 export const notifications = [
-   
+  {
+    id: 1,
+    image: images.avatar,
+    name: 'Royal Parvej',
+    message: 'Sounds awesome!',
+    time: '19:37',
+},
 ]
 
 export const messages = [

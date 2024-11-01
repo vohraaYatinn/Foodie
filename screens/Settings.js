@@ -3,8 +3,15 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, icons } from '../constants'
 import { commonStyles } from '../styles/CommonStyles'
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Settings = ({ navigation }) => {
+  const { t, i18n } = useTranslation();
+  const lang = AsyncStorage.getItem('language')
+  
+  console.log(lang)
+
     /**
      * Render header component
      */
@@ -39,7 +46,7 @@ const Settings = ({ navigation }) => {
         const [darkModeEnabled, setDarkModeEnabled] = useState(false);
         const [locationEnabled, setLocationEnabled] = useState(true);
         const [currency, setCurrency] = useState('EUR');
-        const [language, setLanguage] = useState('English');
+        const [language, setLanguage] = useState("Change");
         const [isCurrencyModalVisible, setCurrencyModalVisible] = useState(false);
         const [isLanguageModalVisible, setLanguageModalVisible] = useState(false);
 
@@ -59,11 +66,19 @@ const Settings = ({ navigation }) => {
             setCurrency(value);
             setCurrencyModalVisible(false);
           };
-        
-          const handleLanguageChange = (value) => {
-            setLanguage(value);
+
+          const addLanguage = async(token) => {
+            
+            await AsyncStorage.setItem('language', token)
+        }
+          const handleLanguageChange = async(value) => {
+            setLanguage(value.name);
             setLanguageModalVisible(false);
+            i18n.changeLanguage(value.name === 'English' ? 'en' : 'pt');
+            await addLanguage(value.name === 'English' ? 'en' : 'pt')
           };
+
+
 
           const currencies = [
             { id: 'EUR', name: 'EUR - Euro' }
@@ -71,8 +86,8 @@ const Settings = ({ navigation }) => {
           ];
         
           const languages = [
-            { id: 'English', name: 'English' },
-            { "id": "Portuguese", name: "Portuguese" },
+            { id: 'en', name: 'English' },
+            { id: "pt", name: "Portuguese" },
             // Add more languages here
           ];
 
@@ -87,17 +102,17 @@ const Settings = ({ navigation }) => {
         
           const renderLanguageItem = ({ item }) => (
             <TouchableOpacity
-              style={[styles.optionButton, language === item.id && styles.optionButtonSelected]}
-              onPress={() => handleLanguageChange(item.id)}
+              style={[styles.optionButton, lang === item.id && styles.optionButtonSelected]}
+              onPress={() => handleLanguageChange(item)}
             >
-              <Text style={[styles.optionText, language === item.id && styles.optionTextSelected]}>{item.name}</Text>
+              <Text style={[styles.optionText, lang === item.id && styles.optionTextSelected]}>{item.name}</Text>
             </TouchableOpacity>
           );
        
         return (
           <View style={styles.container}>
             <View style={styles.settingContainer}>
-              <Text style={styles.settingLabel}>Enable Notifications</Text>
+              <Text style={styles.settingLabel}>{t('setting_lang.enable_notification')}</Text>
               <Switch
                 value={notificationEnabled}
                 onValueChange={handleNotificationToggle}
@@ -107,7 +122,7 @@ const Settings = ({ navigation }) => {
             </View>
       
       <View style={styles.settingContainer}>
-        <Text style={styles.settingLabel}>Currency</Text>
+        <Text style={styles.settingLabel}>{t('setting_lang.Currency')}</Text>
         <TouchableOpacity
           style={styles.modalButton}
           onPress={() => setCurrencyModalVisible(true)}
@@ -120,7 +135,7 @@ const Settings = ({ navigation }) => {
           onRequestClose={() => setCurrencyModalVisible(false)}
         >
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Select Currency</Text>
+            <Text style={styles.modalTitle}>{t('setting_lang.Select_Currency')}</Text>
             <FlatList
               data={currencies}
               renderItem={renderCurrencyItem}
@@ -138,7 +153,7 @@ const Settings = ({ navigation }) => {
       </View>
 
       <View style={styles.settingContainer}>
-        <Text style={styles.settingLabel}>Language</Text>
+        <Text style={styles.settingLabel}>{t('setting_lang.language')}</Text>
         <TouchableOpacity
           style={styles.modalButton}
           onPress={() => setLanguageModalVisible(true)}

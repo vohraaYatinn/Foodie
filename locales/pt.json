@@ -1,0 +1,131 @@
+{
+    "welcome": "Bem-vindo",
+    "sign_in_to_account": "Por favor, faça login na sua conta existente",
+    "email": "Email",
+    "email_placeholder": "exemplo@gmail.com",
+    "password": "Senha",
+    "password_placeholder": "*************",
+    "remember_me": "Lembre-se de mim",
+    "forgot_password": "Esqueceu a senha?",
+    "login": "ENTRAR",
+    "dont_have_account": "Não tem uma conta?",
+    "sign_up": "CADASTRAR",
+    "langPage": {
+      "welcome": "BEM-VINDO",
+      "restaurant_name": "Os Magalhães - Sushi",
+      "default_language": "Idioma Padrão",
+      "select_language": "Selecione o Idioma",
+      "english": "Inglês",
+      "portuguese": "Português",
+      "cancel": "Cancelar",
+      "next": "Próximo"
+    },
+     "onboarding": {
+    "all_your_favorites": "Todos os seus favoritos",
+    "foods": "COMIDAS",
+    "body_text": "Obtenha todos os seus alimentos amados em um só lugar, basta fazer o pedido que nós fazemos o resto",
+    "next": "Próximo",
+    "skip": "Pular"
+  },
+  "onboarding2": {
+    "all_your_favorites": "Todos os seus favoritos",
+    "restaurants": "RESTAURANTES",
+    "body_text": "Encontre todos os restaurantes que você ama em um só lugar, você só faz o pedido, nós fazemos o resto.",
+    "next": "Próximo",
+    "skip": "Pular"
+  },
+  "onboarding3": {
+    "order_from_chosen": "Peça do escolhido",
+    "chef": "CHEF",
+    "body_text": "Peça do chef escolhido. Você só faz o pedido, nós fazemos o resto.",
+    "next": "Próximo",
+    "skip": "Pular"
+  },
+  "signup": {
+    "title": "Inscrever-se",
+    "subtitle": "Por favor, inscreva-se para começar",
+    "name": "Nome",
+    "name_placeholder": "João Silva",
+    "phone": "Telefone (+351)",
+    "phone_placeholder": "2xx xxx xxx",
+    "email": "Email",
+    "email_placeholder": "exemplo@gmail.com",
+    "password": "Senha",
+    "password_placeholder": "*************",
+    "password_confirm": "Re-Digitar Senha",
+    "password_confirm_placeholder": "*************",
+    "button": "INSCREVA-SE"
+  },
+  "onboarding4": {
+    "free_delivery_offers": "Ofertas de entrega gratuita",
+    "feeless": "SEM TAXA",
+    "body_text": "Peça ao seu chef escolhido sem taxa de entrega. Você faz o pedido, nós fazemos o resto.",
+    "next": "Próximo",
+    "skip": "Pular"
+  },
+  "welcomeModal": {
+    "hurry_offers": "Ofertas Rápidas!",
+    "order_favorite_dishes": "Peça seus pratos favoritos",
+    "discount_text": "Onde refeições deliciosas estão a apenas um toque!",
+    "got_it": "ENTENDI"
+  },
+  "home": {
+    "deliver_to": "Entregar a",
+    "greetings_name": "Olá ",
+    "favorite_dishes": "Peça seus pratos favoritos",
+    "all_categories": "Todas as Categorias",
+    "best_seller": "Mais Vendidos",
+    "see_all": "Ver Tudo",
+    "search_placeholder": "Buscar pratos, restaurantes"
+},
+    "drawerLabel": {
+      "home": "Início",
+      "orders": "Pedidos",
+      "search": "Buscar",
+      "delivery_address": "Endereço de Entrega",
+      "notifications": "Notificações"
+    },
+    "setting_draw": {
+        "PersonalInfo": "Informações Pessoais",
+        "Addresses": "Endereços",
+        "Cart": "Carrinho",
+        "Notifications": "Notificações",
+        "FAQs": "Perguntas Frequentes",
+        "Settings": "Configurações",
+        "Logout": "Sair"
+      },
+      "setting_lang":{
+        "enable_notification" : "Ativar notificações",
+        "Currency" : "Moeda",
+        "Select_Currency" : "Selecionar moeda",
+        "language" : "Idioma"
+      },
+      "faqs": {
+    "q1": {
+      "question": "Posso pedir entrega do Os Magalhães - Sushi em Lisboa?",
+      "answer": "Sim. A entrega do Os Magalhães - Sushi em Lisboa está disponível no Uber Eats."
+    },
+    "q2": {
+      "question": "Os Magalhães - Sushi entrega na minha área?",
+      "answer": "Insira seu endereço para ver se as entregas do Os Magalhães - Sushi estão disponíveis na sua localização em Lisboa."
+    },
+    "q3": {
+      "question": "Como faço para pedir entrega online do Os Magalhães - Sushi em Lisboa?",
+      "answer": "Após navegar pelo menu do Os Magalhães - Sushi, escolha os itens e adicione-os ao seu carrinho. Você pode então revisar, fazer e acompanhar seu pedido."
+    },
+    "q4": {
+      "question": "Onde posso encontrar os preços do menu online do Os Magalhães - Sushi?",
+      "answer": "Veja as informações de preço dos vários itens oferecidos pelo Os Magalhães - Sushi nesta página."
+    },
+    "q5": {
+      "question": "Como obtenho entrega gratuita no meu pedido do Os Magalhães - Sushi?",
+      "answer": "Se disponível na sua área, um dos benefícios é entrega gratuita em determinados pedidos."
+    },
+    "q6": {
+      "question": "Como pago pelo meu pedido no Os Magalhães - Sushi?",
+      "answer": "O pagamento é processado pelo seu cartão de crédito ou em dinheiro na entrega."
+    }
+  }
+  
+  }
+  

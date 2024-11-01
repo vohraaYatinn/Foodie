@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, StatusBar, TouchableOpacity } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, icons, SIZES, COLORS, FONTS } from '../constants'
 import { orderList } from '../data/utils'
@@ -117,6 +116,8 @@ useEffect(()=>{
             alignItems: 'center',
             marginVertical: 22
           }}>
+            {!(data?.status == "delivered" ||data?.status == "cancelled") &&
+            <>
             <Text style={{ ...FONTS.h3 }}>20 min</Text>
             <Text style={{
               fontFamily: "Sen Regular",
@@ -125,7 +126,10 @@ useEffect(()=>{
               textTransform: 'uppercase',
               marginTop: 8
             }}>Estimated delivery time</Text>
+            </>
+          }
           </View>
+          
 
           <VerticalStepper content={data?.order_history}/>
 

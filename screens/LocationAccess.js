@@ -4,8 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS, SIZES, illustrations, images } from '../constants';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Geolocation from '@react-native-community/geolocation';
+import { useTranslation } from 'react-i18next';
 
 const LocationAccess = ({ navigation }) => {
+    const { t } = useTranslation();
+
     const arrayGPS = [];
     const [gps, setGps] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -62,12 +65,12 @@ const LocationAccess = ({ navigation }) => {
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Main")}
                     style={styles.btn}>
-                    <Text style={styles.btnText}>Access Location</Text>
+                    <Text style={styles.btnText}>{t('Access Location')}</Text>
                     <View style={styles.iconContainer}>
                         <Ionicons name="location-outline" size={20} color={COLORS.white} />
                     </View>
                 </TouchableOpacity>
-                <Text style={styles.bottomText}>FOODIE WILL ACCESS YOUR LOCATION ONLY WHILE USING THE APP</Text>
+                <Text style={styles.bottomText}>{t('FOODIE WILL ACCESS YOUR LOCATION ONLY WHILE USING THE APP')}</Text>
             </View>
         </SafeAreaView>
     )

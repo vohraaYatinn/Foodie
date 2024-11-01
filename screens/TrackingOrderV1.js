@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, StatusBar, TouchableOpacity } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, icons, SIZES, COLORS, FONTS } from '../constants'
 import { orderList } from '../data/utils'
@@ -55,48 +54,7 @@ const TrackingOrderV1 = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={{ ...FONTS.body3 }}>Track Order</Text>
       </View>
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 48.8566,
-          longitude: 2.3522,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {orderList.map((item, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: item.latitude,
-              longitude: item.longitude,
-            }}
-            image={icons.mapMarkerIcon}
-            title={item.name}
-            description={item.description}
-            onPress={() => console.log("Move to another screen")}
-          >
-            <Callout tooltip>
-              <View>
-                <View style={styles.bubble}>
-                  <Text
-                    style={{
-                      ...FONTS.body4,
-                      fontWeight: 'bold',
-                      color: COLORS.black,
-                    }}
-                  >
-                    {item.name}
-                  </Text>
-                </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
-              </View>
-            </Callout>
-          </Marker>
-        ))}
-      </MapView>
+
       <RBSheet
         ref={bottomSheetRef}
         height={150}

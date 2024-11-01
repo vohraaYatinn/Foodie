@@ -46,6 +46,7 @@ import { Onboarding1,
 import { NavigationContainer } from '@react-navigation/native'
 import BottomTabNavigation from './BottomTabNavigation'
 import DrawerNavigation from './DrawerNavigation'
+import LangSelection from '../screens/LangSelection'
 
 const Stack = createNativeStackNavigator()
 
@@ -81,9 +82,13 @@ const AppNavigation = () => {
             <Stack.Navigator
                  screenOptions={{ headerShown: false}}
                 initialRouteName={
-                  isFirstLaunch ? 'Onboarding1' : "Login"
+                  isFirstLaunch ? 'LangSelection' : "Login"
                 }
             >
+                              <Stack.Screen
+                  name="LangSelection"
+                  component={LangSelection}
+                />
                               <Stack.Screen
                   name="DrawerNavigation"
                   component={DrawerNavigation}
