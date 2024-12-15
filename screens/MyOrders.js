@@ -67,7 +67,6 @@ const MyOrders = ({ navigation }) => {
           <Text style={{ marginLeft: 12, fontSize: 17, fontFamily: "Sen Regular" }}>My Orders</Text>
         </View>
         <TouchableOpacity
-          onPress={() => console.log("Pressed")}
           style={commonStyles.header1Icon}
         >
           <Image

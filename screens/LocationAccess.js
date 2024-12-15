@@ -40,11 +40,9 @@ const LocationAccess = ({ navigation }) => {
                         );
                         setGps(arrayGPS);
                     } catch (error) {
-                        console.log('Error fetching address:', error);
                     }
                 },
                 (error) => {
-                    console.log('Error getting location:', error);
                 },
                 { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
             );

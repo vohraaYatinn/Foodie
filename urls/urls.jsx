@@ -46,8 +46,8 @@ export const fetchUserDetails = (payload_data) => {
 export const EditUserDetails = (payload_data) => {
   return project.post(Urls.EDIT_USER_DETAILS, payload_data);
 };
-export const PlaceOrder = (payload_data) => {
-  return project.post(Urls.PLACE_ORDER, payload_data);
+export const PlaceOrderBeforePayment = (payload_data) => {
+  return project.post(Urls.PLACE_ORDER_BEFORE_PAYMENT, payload_data);
 };
 export const fetchCustomerOrders = (payload_data) => {
   return project.get(Urls.FETCH_CUSTOMER_ORDER, payload_data);
@@ -60,4 +60,28 @@ export const getAllMenu = (payload_data) => {
 };
 export const CategoryMenu = (payload_data) => {
   return project.get(Urls.CATEGORY_MENU, payload_data);
+};
+export const getCustomerNotification = (payload_data) => {
+  return project.get(Urls.GET_USER_NOTIFICATION, payload_data);
+};
+export const checkRestOfflineOnline = (payload_data) => {
+  return project.get(Urls.CHECK_REST_ONLINE, payload_data);
+};
+export const addNewReview = (payload_data) => {
+  return project.post(Urls.ADD_NEW_REVIEW, payload_data);
+};
+export const sendUserOtp = (payload_data) => {
+  return project.post(Urls.SEND_OTP, payload_data);
+};
+export const VerifyCode = (payload_data) => {
+  return project.get(Urls.VERIFY_CODE, payload_data);
+};
+export const InitiatePayment = (payload_data) => {
+  return project.post(Urls.INITIATE_PAYMENT_STATUS, payload_data);
+};
+export const FetchPaymentStatus = (payload_data) => {
+  return project.get(Urls.FETCH_PAYMENT_STATUS, payload_data);
+};
+export const PlaceOrderAfterPayment = (payload_data) => {
+  return project.post(Urls.PLACE_ORDER_AFTER_PAYMENT, payload_data);
 };

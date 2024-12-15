@@ -14,6 +14,7 @@ import useAxios from '../network/useAxios'
 import { fetchSingleMenuItem, addToCartCustomer } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment'
+import RatingComponentViewOnly from '../components/RatingComponentViewOnly'
 
 const ingridents = [icons.salt, icons.chickenLeg, icons.onion, icons.chili]
 const FoodDetailsV1 = ({ navigation, route }) => {
@@ -163,6 +164,7 @@ useEffect(() => {
                 fontSize: 14
               }}
             >{data?.category?.name}</Text>
+          
           </View>
           <Text style={{
             fontSize: 18,
@@ -170,12 +172,26 @@ useEffect(() => {
             textTransform: 'capitalize',
             marginVertical: 10
           }}>{data?.name}</Text>
-          <Text style={{
-            fontSize: 13,
-            fontFamily: "Sen Regular",
-            color: COLORS.gray5
-          }}>
-            {data?.description}</Text>
+          {
+          data &&   !data?.is_available &&       <Text
+             style={{
+               fontFamily: "Sen Regular",
+               fontSize: 14,
+               color:"red",
+             
+             }}
+           >(Out Of Stock)</Text>
+           
+           
+                
+          }
+        
+    
+   
+            <View style={{width:"40%"}}>
+            <RatingComponentViewOnly rating={data?.rating} />
+            </View> 
+
 {/* 
           <View style={{ flexDirection: "row", marginTop: 16 }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -189,6 +205,19 @@ useEffect(() => {
             </View>
           </View> */}
 
+{
+      data &&   data?.is_buy_one &&    
+     
+<View style={{ width: "50%", alignItems: "center", marginTop:10 }}>
+  <View style={styles.badge}>
+    <Text style={styles.badgeText}>(BUY 1 GET 1 FREE)</Text>
+  </View>
+</View>
+     
+
+
+     }
+       
      
 
           <View style={{
@@ -204,7 +233,12 @@ useEffect(() => {
               justifyContent: 'space-between',
               marginBottom: 16,
             }}>
-              <Text style={{ fontSize: 28, fontFamily: "Sen Regular" }}>€ {data?.price}</Text>
+                    <View style={styles.container}>
+      {/* Original price with strikethrough */}
+     {data?.price && <Text style={styles.strikeThroughPrice}>€ {(data?.price * 1.1).toFixed(2)}</Text>}
+      {/* Current price */}
+      <Text style={styles.priceName}>€ {data?.price}</Text>
+    </View>
               <View style={{
                 backgroundColor: COLORS.blue,
                 width: 125,
@@ -248,11 +282,14 @@ useEffect(() => {
                 </TouchableOpacity>
               </View>
             </View>
+
             <Button
               filled
+              disabled={!data?.is_available && true}
               onPress={() => addToCart()}
               title="ADD TO CART"
             />
+
             <Button
               style={{marginTop:10}}
               onPress={() => navigation.navigate("Cart")}
@@ -297,6 +334,29 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     fontFamily: "Sen Regular"
+  },
+  badge: {
+    backgroundColor: COLORS.primary, // A bright color for the badge
+    paddingVertical: 5, // Padding for height
+    paddingHorizontal: 15, // Padding for width
+    borderRadius: 20, // Rounded edges
+    alignSelf: "flex-start", // Shrink to fit the content
+  },
+  badgeText: {
+    color: "#FFFFFF", // White text for contrast
+    fontWeight: "bold", // Bold text
+    fontSize: 12, // Adjust font size as needed
+  },
+  strikeThroughPrice: {
+    textDecorationLine: 'line-through',
+    color: 'gray',
+    marginRight: 8,
+    fontSize: 16,
+  },
+  priceName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
   },
 })
 

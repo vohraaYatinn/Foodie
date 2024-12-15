@@ -40,7 +40,6 @@ const HomeV3 = () => {
       <View>
         <SubHeader
           title="All Categories"
-          onPress={() => console.log('All Categories')}
         />
         <FlatList
           horizontal={true}
@@ -49,7 +48,6 @@ const HomeV3 = () => {
           renderItem={({item, index}) => (
             <CategoryCardV3
               image={item.image}
-              onPress={() => console.log('Pressed')}
               name={item.name}
             />
           )}
@@ -88,7 +86,6 @@ const HomeV3 = () => {
           renderItem={({item, index}) => (
             <ShopCard
               image={item.image}
-              onPress={() => console.log('Pressed')}
               name={item.name}
               keywords={item.keywords}
               rating={item.rating}

@@ -116,6 +116,7 @@ const LangSelection = ({ navigation }) => {
   };
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
+        <requestUserPermission/>
       <StatusBar hidden={true} />
       <View style={commonStyles.header}>
           <TouchableOpacity

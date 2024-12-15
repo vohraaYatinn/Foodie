@@ -8,12 +8,15 @@ import Feather from "react-native-vector-icons/Feather"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import VerticalStepper from '../components/VerticalStepper'
 import Toast from 'react-native-toast-message'; // Import Toast
-import { getOrderView } from '../urls/urls'
+import { getOrderView, addNewReview } from '../urls/urls'
 import useAxios from '../network/useAxios'
 import { test_url_images } from '../config/environment'
+import RatingComponent from '../components/RatingComponent'
 
 const TrackingOrderV2 = ({ navigation, route }) => {
   const { id } = route.params;
+  const [rating, setRating] = useState(false);
+
   const notify = (message, action) => {
     Toast.show({
         type: action,
@@ -22,11 +25,28 @@ const TrackingOrderV2 = ({ navigation, route }) => {
     });
 }
   const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+  const [orderReviewResponse, orderReviewError, orderReviewLoading, orderReviewFetch] = useAxios()
+
+
   const fetchDashboarfFunc = () => {
     responseFetch(getOrderView({
       uuid : id
     }))
 }
+
+const orderReviewPost = () => {
+  orderReviewFetch(addNewReview({
+    uuid : id,
+    rating : rating
+  }))
+}
+
+useEffect(()=>{
+  if(rating){
+    orderReviewPost()
+  }
+},[rating])
+
 useEffect(()=>{
   fetchDashboarfFunc()
 },[])
@@ -36,6 +56,22 @@ useEffect(() => {
       notify(responseError?.response?.data, "error")
   }
 }, [responseError])
+
+useEffect(() => {
+  if (orderReviewError?.response) {
+      notify(orderReviewError?.response?.data, "error")
+  }
+}, [orderReviewError])
+
+
+// useEffect(() => {
+//   if (orderReviewResponse?.result == "success") {
+//       notify(orderReviewResponse?.message, "success")
+
+//   }
+// }, [orderReviewResponse])
+
+
 useEffect(()=>{
   if(responseLogin?.result == "success"){
     setData(responseLogin?.data[0])
@@ -75,6 +111,8 @@ useEffect(()=>{
           width: SIZES.width - 32,
           marginHorizontal: 16,
         }}>
+                  
+
           <View
             style={{ flexDirection: 'row' }}
           >
@@ -96,6 +134,7 @@ useEffect(()=>{
             <View style={{
               flexDirection: 'column',
             }}>
+              
               <Text style={{ ...FONTS.h4 }}>order #{data.uuid}</Text>
               <Text style={styles.body3}>{data.ordered_at}</Text>
 
@@ -110,13 +149,16 @@ useEffect(()=>{
             
             
             </View>
+            
           </View>
           <View style={{
             justifyContent: 'center',
             alignItems: 'center',
             marginVertical: 22
           }}>
-            {!(data?.status == "delivered" ||data?.status == "cancelled") &&
+             
+            
+            {!(data?.status == "delivered" ||data?.status == "cancelled") ?
             <>
             <Text style={{ ...FONTS.h3 }}>20 min</Text>
             <Text style={{
@@ -127,6 +169,12 @@ useEffect(()=>{
               marginTop: 8
             }}>Estimated delivery time</Text>
             </>
+
+          :
+          <>
+          <Text>Review your food</Text>
+              <RatingComponent rating={rating} setRating={setRating} data={data}/>
+              </>
           }
           </View>
           

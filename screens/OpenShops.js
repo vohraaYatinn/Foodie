@@ -11,7 +11,7 @@ import { getAllMenu } from '../urls/urls';
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment';
 
-const OpenShops = () => {
+const OpenShops = ({navigation}) => {
   const notify = (message, action) => {
     Toast.show({
         type: action,
@@ -53,12 +53,13 @@ useEffect(()=>{
               <ShopCard
               image={test_url_images + item?.image}
               name={item?.name}
+              price={item?.price}
               description={item?.description}
               keywords={item.keywords}
               rating={item.rating}
               shipping={item.shipping}
               deliveryTime={item.deliveryTime}
-              onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.menu?.id })}
+              onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.id })}
             />
             )}
           />

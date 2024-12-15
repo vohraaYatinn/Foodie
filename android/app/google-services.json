@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "775562941165",
+    "project_id": "restportguese",
+    "storage_bucket": "restportguese.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775562941165:android:ec3e1b6717a92f710db2e4",
+        "android_client_info": {
+          "package_name": "com.osmagalhaes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvhaMqICubVOJXQtxDLfV0K7AN87Ce28U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

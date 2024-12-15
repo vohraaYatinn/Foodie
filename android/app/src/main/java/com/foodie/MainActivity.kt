@@ -1,4 +1,4 @@
-package com.foodie
+package com.osmagalhaes
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

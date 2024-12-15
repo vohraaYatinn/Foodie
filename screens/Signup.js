@@ -34,7 +34,9 @@ const initialState = {
     formIsValid: false,
 }
 
-const Signup = ({ navigation }) => {
+const Signup = ({ navigation, route }) => {
+    const { phone } = route.params;
+
     const { t } = useTranslation();
 
     const checkToken = async() => {
@@ -58,8 +60,10 @@ const Signup = ({ navigation }) => {
         });
     }
     const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
-    const signupFunction = () => {
-        responseFetch(signupCustomer(formState))
+    const signupFunction = async() => {
+        const token = await AsyncStorage.getItem('token')
+
+        responseFetch(signupCustomer({...formState, phone:phone, token:token}))
     }
     useEffect(() => {
         if (responseError?.response) {
@@ -71,8 +75,7 @@ const Signup = ({ navigation }) => {
             addToken(responseLogin?.token)
             notify(responseLogin?.message, "success")
             setTimeout(() => {
-                navigation.navigate('LocationAccess')
-
+                navigation.navigate('Verification')
             }, 1000);
         }
     },[responseLogin])
@@ -115,16 +118,7 @@ const Signup = ({ navigation }) => {
                 placeholder={t('signup.name_placeholder')}
                 placeholderTextColor={COLORS.black}
             />
-            <Text style={commonStyles.inputHeader}>{t('signup.phone')}</Text>
-            <Input
-                id="phone"
-                onInputChanged={inputChangedHandler}
-                errorText={formState.inputValidities['phone']}
-                placeholder={t('signup.phone_placeholder')}
-                placeholderTextColor={COLORS.black}
-                maxLength={9}
-                keyboardType="numeric"
-            />
+
             <Text style={commonStyles.inputHeader}>{t('signup.email')}</Text>
             <Input
                 id="email"
@@ -158,7 +152,7 @@ const Signup = ({ navigation }) => {
                 title={t('signup.button')}
                 isLoading={responseLoading}
                 filled
-                onPress={() => signupFunction()}
+                onPress={() => signupFunction() }
                 style={commonStyles.btn1}
             />
         </KeyboardAwareScrollView>

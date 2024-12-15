@@ -45,7 +45,6 @@ const Menu = () => {
                     <Text style={{ marginLeft: 12, fontSize: 17, fontFamily: "Sen Regular" }}>Profile</Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() => console.log("Pressed")}
                     style={commonStyles.header1Icon}
                 >
                     <Image

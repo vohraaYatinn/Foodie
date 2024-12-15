@@ -1,184 +1,55 @@
 import { View, Text, TouchableOpacity, Image, useWindowDimensions, FlatList, StatusBar } from 'react-native'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { COLORS,  icons } from '../constants'
 import { commonStyles } from '../styles/CommonStyles'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
-import { messages, notifications } from '../data/utils'
+import { getCustomerNotification } from '../urls/urls'
+import { useFocusEffect } from '@react-navigation/native'
+import Toast from 'react-native-toast-message'; // Import Toast
+import useAxios from '../network/useAxios'
 
-
-const NotificationsRoute = () => (
-  <View style={{ flex: 1 }}>
-    <FlatList
-     style={{
-      marginTop:20
-    }}
-      data={notifications}
-      keyExtractor={item => item.id}
-      renderItem={({ item, index }) => (
-        <View
-          key={item.id}
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 12
-          }}
-        >
-          <View style={{
-            flexDirection: 'row'
-          }}>
-            <Image
-              source={item.avatar}
-              style={{
-                height: 54,
-                width: 54,
-                borderRadius: 27,
-                marginRight: 16
-              }}
-            />
-            <View style={{
-              flexDirection: 'column',
-              width: 150
-            }}>
-              <View style={{ flexDirection: 'row', width: 150, flexWrap: 'wrap' }}>
-                <Text style={{
-                  fontSize: 13,
-                  fontFamily: "Sen Bold",
-                  color: COLORS.black,
-                }}>{item.name}</Text>
-                <Text style={{
-                  fontSize: 13,
-                  fontFamily: "Sen Regular",
-                  color: COLORS.black,
-                  marginLeft: 2,
-                  flexWrap: 'wrap'
-                }}>{item.message}</Text>
-              </View>
-              <Text style={{
-                fontSize: 10,
-                fontFamily: "Sen Regular",
-                color: COLORS.black,
-                marginVertical: 16
-              }}>{item.time}</Text>
-            </View>
-          </View>
-
-          <Image
-            source={item.image}
-            style={{
-              height: 54,
-              width: 54,
-              borderRadius: 10,
-              borderColor: COLORS.gray,
-              borderWidth: 1
-            }}
-          />
-        </View>
-      )}
-    />
-  </View>
-)
-
-const MessagesRoute = () => (
-  <View style={{ flex: 1 }}>
-    <FlatList
-      data={messages}
-      keyExtractor={item => item.id}
-      renderItem={({ item, index }) => (
-        <View
-          key={item.id}
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginVertical: 12
-          }}
-        >
-          <View style={{
-            flexDirection: 'row'
-          }}>
-            <View>
-              <View style={{
-                position: 'absolute',
-                bottom: 10,
-                left: 48,
-                height: 8,
-                width: 8,
-                borderRadius: 4,
-                zIndex: 999,
-                backgroundColor: COLORS.green
-              }} />
-              <Image
-                source={item.image}
-                style={{
-                  height: 54,
-                  width: 54,
-                  borderRadius: 27,
-                  marginRight: 16
-                }}
-              />
-            </View>
-
-            <View style={{
-              flexDirection: 'column',
-              width: 150
-            }}>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{
-                  fontSize: 13,
-                  fontFamily: "Sen Bold",
-                  color: COLORS.black,
-                }}>{item.name}</Text>
-                <Text style={{
-                  fontSize: 13,
-                  fontFamily: "Sen Regular",
-                  color: COLORS.black,
-                  marginLeft: 2,
-                }}>{item.lastMessage}</Text>
-              </View>
-            </View>
-          </View>
-
-
-          <View style={{ flexDirection: 'column' }}>
-            <Text style={{
-              fontSize: 10,
-              fontFamily: "Sen Regular",
-              color: COLORS.black,
-              marginVertical: 12
-            }}>{item.time}</Text>
-            <View style={{
-              height: 22,
-              width: 22,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 11,
-              backgroundColor: item.pendingMessage !== 0 ? COLORS.primary : undefined,
-            }}>
-
-              <Text style={{
-                fontSize: 12,
-                fontFamily: "Sen Regular",
-                color: COLORS.white
-              }}>{item.pendingMessage}</Text>
-            </View>
-          </View>
-
-
-
-        </View>
-      )}
-    />
-  </View>
-)
-const renderScene = SceneMap({
-  first: NotificationsRoute,
-  second: MessagesRoute,
-});
 
 
 const Notifications = ({ navigation }) => {
-  const layout = useWindowDimensions();
+  const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+  const fetchDashboarfFunc = () => {
+    responseFetch(getCustomerNotification({
+      status:"ongoing"
+    }))
+}
+
+const notify = (message, action) => {
+  Toast.show({
+      type: action,
+      text1: action,
+      text2: message
+  });
+}
+useFocusEffect(
+  useCallback(() => {
+    // Code here runs every time the screen comes into focus
+    fetchDashboarfFunc()
+
+    // Cleanup (optional) runs when the screen loses focus
+    return () => {
+     
+    };
+  }, [])
+);
+useEffect(() => {
+  if (responseError?.response) {
+      notify(responseError?.response?.data, "error")
+  }
+}, [responseError])
+useEffect(()=>{
+  if(responseLogin?.result == "success"){
+    setNotification(responseLogin?.data)
+  }
+},[responseLogin])
+
+
+  const [notifications, setNotification] = useState([])
 
   const [index, setIndex] = React.useState(0);
 
@@ -226,16 +97,63 @@ const Notifications = ({ navigation }) => {
         <View style={{
           flex: 1,
         }}>
-          <TabView
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
-            renderTabBar={renderTabBar}
+         <View style={{ flex: 1 }}>
+    <FlatList
+     style={{
+      marginTop:20
+    }}
+      data={notifications}
+      keyExtractor={item => item.id}
+      renderItem={({ item, index }) => (
+        <View
+          key={item.id}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginVertical: 12
+          }}
+        >
+          <View style={{
+            flexDirection: 'row'
+          }}>
            
-          />
+            <View style={{
+              flexDirection: 'column',
+              width: 150,
+              marginLeft:10
+            }}>
+              <View style={{ flexDirection: 'row', width: 150, flexWrap: 'wrap' }}>
+                <Text style={{
+                  fontSize: 13,
+                  fontFamily: "Sen Bold",
+                  color: COLORS.black,
+                }}>{item.name}</Text>
+                <Text style={{
+                  fontSize: 13,
+                  fontFamily: "Sen Regular",
+                  color: COLORS.black,
+                  marginLeft: 2,
+                  flexWrap: 'wrap'
+                }}>{item.message}</Text>
+              </View>
+              <Text style={{
+                fontSize: 10,
+                fontFamily: "Sen Regular",
+                color: COLORS.black,
+                marginVertical: 16
+              }}>{item.stamp_at}</Text>
+            </View>
+          </View>
+<Text>
+         #{item?.order?.uuid}
+          </Text>
+        </View>
+      )}
+    />
+  </View>
         </View>
       </View>
+      <Toast style={{zIndex:999}}/>
     </SafeAreaProvider>
   )
 }

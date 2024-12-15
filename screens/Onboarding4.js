@@ -13,27 +13,27 @@ const Onboarding4 = ({ navigation }) => {
 
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 1) {
-          clearInterval(intervalId);
-          return prevProgress;
-        }
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setProgress((prevProgress) => {
+  //       if (prevProgress >= 1) {
+  //         clearInterval(intervalId);
+  //         return prevProgress;
+  //       }
 
-        return prevProgress + 0.4;
-      });
-    }, 2000);
+  //       return prevProgress + 0.4;
+  //     });
+  //   }, 2000);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
-  useEffect(() => {
-    if (progress >= 1) {
-      // navigate to the Login Screen
-      navigation.navigate('Login');
-    }
-  }, [progress, navigation]);
+  // useEffect(() => {
+  //   if (progress >= 1) {
+  //     // navigate to the Login Screen
+  //     navigation.navigate('Login');
+  //   }
+  // }, [progress, navigation]);
 
   return (
 <SafeAreaView style={styles.container}>

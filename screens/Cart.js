@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Image, FlatList, StatusBar } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, Image, FlatList, StatusBar , StyleSheet} from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons } from '../constants'
 import * as Animatable from "react-native-animatable"
@@ -12,6 +12,7 @@ import useAxios from '../network/useAxios'
 import { CartAction, fetchCartCustomer } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Cart = ({ navigation }) => {
 
@@ -39,9 +40,19 @@ const Cart = ({ navigation }) => {
       action:action
     }))
 }
-useEffect(()=>{
-  fetchCustomerCart()
-},[])
+useFocusEffect(
+  useCallback(() => {
+    // Code here runs every time the screen comes into focus
+    fetchCustomerCart()
+
+    // Cleanup (optional) runs when the screen loses focus
+    return () => {
+     
+    };
+  }, [])
+);
+
+
 
 useEffect(() => {
   if (cartError?.response) {
@@ -142,6 +153,18 @@ useEffect(()=>{
                         textTransform: 'capitalize',
                         marginRight: 20
                       }}>{item?.item.name}</Text>
+                  {!item?.item.is_available &&  <Text
+                      style={{
+                        fontSize: 13,
+                        color: COLORS.white,
+                        fontFamily: "Sen Regular",
+                        textTransform: 'capitalize',
+                        marginRight: 20,
+                        color:"red"
+                      }}>(Out of Stock)</Text> 
+                      }
+       
+
                     <TouchableOpacity
                       onPress={() => CustomerActionCart(item?.id, "delete")}
                       style={{
@@ -165,14 +188,26 @@ useEffect(()=>{
                       />
                     </TouchableOpacity>
                   </View>
+                  {
+     item?.item?.is_buy_one &&   item?.quantity>1  &&
+     
+<View style={{ width: "100%", alignItems: "center" }}>
+  <View style={styles.badge}>
+    <Text style={styles.badgeText}>BUY 1 GET 1 FREE</Text>
+  </View>
+</View>
+     
 
+
+     }
                   <Text style={{
                     fontSize: 20,
                     fontFamily: "Sen Bold",
                     color: COLORS.white,
                     marginVertical: 6,
                     
-                  }}>€ {item?.item?.price * item?.quantity}</Text>
+                  }}>€{(item?.item?.is_buy_one &&  item?.quantity>1 ) ? item?.item?.price * (item?.quantity - 1) : item?.item?.price * item?.quantity} </Text>
+                  
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                    
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -223,11 +258,13 @@ useEffect(()=>{
           editable={false}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 16 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={cartStyles.body3}>Total:</Text>
             <Text style={{ fontSize: 24, fontFamily: "bold", color: COLORS.black, marginLeft: 12 }}>€ {totalAmount}</Text>
           </View>
+          
+
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ marginLeft: 2 }}>
               <Image
@@ -242,14 +279,24 @@ useEffect(()=>{
           </View>
         </View>
 
+{totalAmount <15 &&
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom:10 }}>
+<Text style={{
+  color:"purple"
+}}>( Add Item Worth €15 to get free delivery )</Text>
+          </View>
+        }
+
         <Button
           filled
-          disabled={totalAmount == 0}
+          disabled={totalAmount == 0 || totalAmount <15}
           isLoading={cartActionLoading}
           title="PLACE ORDER"
           onPress={() => {
-            if(address?.[0]?.street){
+            if(address && address?.[0]?.street){
+              
               navigation.navigate("PaymentMethod")
+              // navigation.navigate("PaymentMethod")
             }
             else{
               notify("You need to add a address", "error")
@@ -265,5 +312,22 @@ useEffect(()=>{
     </SafeAreaView>
   )
 }
+
+
+const styles = StyleSheet.create({
+
+  badge: {
+    backgroundColor: COLORS.primary, // A bright color for the badge
+    paddingVertical: 5, // Padding for height
+    paddingHorizontal: 15, // Padding for width
+    borderRadius: 20, // Rounded edges
+    alignSelf: "flex-start", // Shrink to fit the content
+  },
+  badgeText: {
+    color: "#FFFFFF", // White text for contrast
+    fontWeight: "bold", // Bold text
+    fontSize: 12, // Adjust font size as needed
+  },
+});
 
 export default Cart

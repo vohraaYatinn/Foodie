@@ -5,6 +5,7 @@ import { images, icons, SIZES, COLORS, FONTS } from '../constants'
 import { orderList } from '../data/utils'
 import RBSheet from "react-native-raw-bottom-sheet"
 import { useNavigation } from '@react-navigation/native'
+import RatingComponent from '../components/RatingComponent'
 
 const TrackingOrderV1 = ({ navigation }) => {
   const navigation2 = useNavigation();

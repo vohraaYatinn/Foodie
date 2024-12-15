@@ -38,7 +38,6 @@ const renderHeader = () => {
             <Text style={{marginLeft: 12, fontSize: 17, fontFamily: "Sen Regular"}}>Restaurant View</Text>
           </View>
            <TouchableOpacity
-             onPress={()=>console.log("More")}
              style={commonStyles.header1Icon}
            >
                 <Image
@@ -160,7 +159,6 @@ const renderFoodsByCategories = () =>{
                   <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                       <Text style={{fontSize: 15, fontFamily: "Sen Bold"}}>${item.price}</Text>
                       <TouchableOpacity 
-                      onPress={() =>console.log("Add to cart")}
                       style={{
                         height: 30, 
                         width: 30, 

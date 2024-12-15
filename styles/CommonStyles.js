@@ -131,5 +131,12 @@ export const commonStyles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: 'center',
         marginTop: 20,
-    }
+    },
+    timerText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: COLORS.black,
+        textAlign: 'center',
+        marginVertical: 20,
+    },
 })

@@ -11,26 +11,26 @@ const Onboarding3 = ({ navigation }) => {
   const [progress, setProgress] = useState(0);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 1) {
-          clearInterval(intervalId);
-          return prevProgress;
-        }
-        return prevProgress + 0.5;
-      });
-    }, 2000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setProgress((prevProgress) => {
+  //       if (prevProgress >= 1) {
+  //         clearInterval(intervalId);
+  //         return prevProgress;
+  //       }
+  //       return prevProgress + 0.5;
+  //     });
+  //   }, 2000);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
-  useEffect(() => {
-    if (progress >= 1) {
-      // navigate to the Onboarding4 Screen
-      navigation.navigate('Onboarding4');
-    }
-  }, [progress, navigation]);
+  // useEffect(() => {
+  //   if (progress >= 1) {
+  //     // navigate to the Onboarding4 Screen
+  //     navigation.navigate('Onboarding4');
+  //   }
+  // }, [progress, navigation]);
 
   return (
 <SafeAreaView style={styles.container}>

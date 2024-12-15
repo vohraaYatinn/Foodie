@@ -92,7 +92,6 @@ const renderActionsButton = () =>{
     return (
         <Button
         title={Platform.OS == 'ios' ? "Rate us on App Store" : "Rate Us on Play Store"}
-        onPress={()=> console.log("Action to Open Play Store or App Store")}
         filled
         style={{
           width: SIZES.width - 32,

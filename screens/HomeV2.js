@@ -31,7 +31,6 @@ const HomeV2 = ({ navigation }) => {
       <View>
        <SubHeader
           title="All Categories"
-          onPress={() => console.log('All Categories')}
         />
 
         <FlatList
@@ -40,7 +39,6 @@ const HomeV2 = ({ navigation }) => {
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <CategoryCardV2
-            onPress={()=>console.log("Category Card")} 
             image={item.image} 
             name={item.name} 
             startingPrice={item.startingPrice}
@@ -82,7 +80,6 @@ const HomeV2 = ({ navigation }) => {
           renderItem={({ item, index }) => (
             <ShopCard
               image={item.image}
-              onPress={() => console.log('Pressed')}
               name={item.name}
               keywords={item.keywords}
               rating={item.rating}

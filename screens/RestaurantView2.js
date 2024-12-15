@@ -41,7 +41,6 @@ const RestaurantView2 = () => {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => console.log("Move to another screen")}
           style={commonStyles.header3Icon}
         >
           <Image
@@ -155,7 +154,6 @@ const RestaurantView2 = () => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Text style={{ fontSize: 15, fontFamily: "Sen Bold" }}>${item.price}</Text>
                   <TouchableOpacity
-                    onPress={() => console.log("Add to cart")}
                     style={{
                       height: 30,
                       width: 30,

@@ -10,7 +10,6 @@ const Settings = ({ navigation }) => {
   const { t, i18n } = useTranslation();
   const lang = AsyncStorage.getItem('language')
   
-  console.log(lang)
 
     /**
      * Render header component
@@ -111,15 +110,7 @@ const Settings = ({ navigation }) => {
        
         return (
           <View style={styles.container}>
-            <View style={styles.settingContainer}>
-              <Text style={styles.settingLabel}>{t('setting_lang.enable_notification')}</Text>
-              <Switch
-                value={notificationEnabled}
-                onValueChange={handleNotificationToggle}
-                thumbColor={notificationEnabled ? COLORS.primary : COLORS.white3}
-                trackColor={{ false: COLORS.white3, true: COLORS.primary }}
-              />
-            </View>
+           
       
       <View style={styles.settingContainer}>
         <Text style={styles.settingLabel}>{t('setting_lang.Currency')}</Text>

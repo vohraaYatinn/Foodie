@@ -8,7 +8,7 @@ import Feather from "react-native-vector-icons/Feather"
 import Button from '../components/Button'
 import Toast from 'react-native-toast-message'; // Import Toast
 import useAxios from '../network/useAxios'
-import { PlaceOrder } from '../urls/urls'
+import { PlaceOrderBeforePayment } from '../urls/urls'
 
 
 const PaymentCard = ({ cardImage, isSelected, onSelect, cardName }) => {
@@ -38,7 +38,7 @@ const PaymentMethod = ({ navigation }) => {
 }
   const [cartActionResponse, cartActionError, cartActionLoading, cartActionFetch] = useAxios()
   const CustomerActionCart = () => {
-    cartActionFetch(PlaceOrder())
+    cartActionFetch(PlaceOrderBeforePayment())
 }
 useEffect(() => {
   if (cartActionError?.response) {
@@ -48,11 +48,7 @@ useEffect(() => {
 
 useEffect(()=>{
   if(cartActionResponse?.result == "success"){
-    notify(cartActionResponse?.message, "success")
-    setTimeout(() => {
-      navigation.navigate("PaymentSuccess")
-    }, 1000);
-
+    navigation.navigate("Mbwayphonenumber")
   }
 },[cartActionResponse])
 
@@ -109,7 +105,6 @@ useEffect(()=>{
           horizontal
         /> */}
         <TouchableOpacity
-          onPress={() => console.log("Pressed")}
           style={{
             width: SIZES.width - 32,
             borderRadius: 10,
@@ -122,10 +117,10 @@ useEffect(()=>{
             paddingHorizontal: 10
           }}>
           <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Text style={{ ...FONTS.h4, marginBottom: 10 }}>Cash on delivery</Text>
+            <Text style={{ ...FONTS.h4, marginBottom: 10 }}>MBWay</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
            
-              <Text style={{ fontSize: 12, fontFamily: "Sen Regular" }}>Pay on delivery when you get your order</Text>
+              <Text style={{ fontSize: 12, fontFamily: "Sen Regular" }}>Pay through MBWay</Text>
             </View>
           </View>
           <View>
@@ -164,6 +159,8 @@ useEffect(()=>{
           title="PAY & CONFIRM"
           onPress={() =>
             CustomerActionCart()
+
+            // CustomerActionCart()
           
           
           }

@@ -75,7 +75,6 @@ const PaymentMethodNoCard = () => {
           horizontal
         />
         <TouchableOpacity
-          onPress={() => console.log("Pressed")}
           style={{
             width: SIZES.width - 32,
             borderRadius: 10,

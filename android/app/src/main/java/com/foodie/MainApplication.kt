@@ -1,4 +1,4 @@
-package com.foodie
+package com.osmagalhaes
 
 import android.app.Application
 import com.facebook.react.PackageList

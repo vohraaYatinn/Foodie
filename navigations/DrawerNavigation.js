@@ -10,6 +10,7 @@ import { Address, Menu, Notifications, PaymentMethod, Cart, MyOrders, HomeV1, Ho
 import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useTranslation } from "react-i18next";
+import CustomerCare from "../screens/CustomerCare";
 
 const Drawer = createDrawerNavigator();
 const DrawerNavigation = () => {
@@ -176,7 +177,9 @@ useEffect(()=>{
           component={Notifications}
         />
 
-        {/* <Drawer.Screen
+   
+
+        <Drawer.Screen
           name="Help"
           options={{
             drawerLabel: "Help",
@@ -185,9 +188,9 @@ useEffect(()=>{
               <Feather name="help-circle" size={24} color={COLORS.black} />
             )
           }}
-          component={Menu}
+          component={CustomerCare}
         />
-     */}
+    
 
       </Drawer.Navigator>
   )

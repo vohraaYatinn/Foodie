@@ -23,11 +23,12 @@ import SubHeader from '../components/SubHeader';
 import CategoryCardV1 from '../components/CategoryCardV1';
 import ShopCard from '../components/ShopCard';
 import useAxios from '../network/useAxios';
-import { fetchDashboard } from '../urls/urls';
+import { checkRestOfflineOnline, fetchDashboard } from '../urls/urls';
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomModalOffline from '../components/CustomModalOffline';
 
 
 const HomeV1 = ({ navigation }) => {
@@ -42,15 +43,20 @@ const HomeV1 = ({ navigation }) => {
 }
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(true);
+  const [modalOffline, setModalOffline] = useState(true);
   const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
+  const [checkRestOfflineLogin, checkRestOfflineError, checkRestOfflineLoading, checkRestOfflineFetch] = useAxios()
   const fetchDashboarfFunc = () => {
     responseFetch(fetchDashboard())
+}
+  const checkOnlineRest = () => {
+    checkRestOfflineFetch(checkRestOfflineOnline())
 }
 useFocusEffect(
   useCallback(() => {
     // Code here runs every time the screen comes into focus
     fetchDashboarfFunc()
-
+    checkOnlineRest()
     // Cleanup (optional) runs when the screen loses focus
     return () => {
      
@@ -63,6 +69,7 @@ const handleLanguageChange = async() => {
   i18n.changeLanguage(lang);
 };
 useEffect(()=>{handleLanguageChange()},[])
+const [isRestOnline, setIsRestOffline] = useState(false)
 const [data, setData] = useState({
   category:[],
   order:[]
@@ -77,9 +84,13 @@ useEffect(()=>{
     setData(responseLogin?.data)
   }
 },[responseLogin])
+useEffect(()=>{
+  if(checkRestOfflineLogin?.result == "success"){
+    setIsRestOffline(checkRestOfflineLogin?.data)
+  }
+},[checkRestOfflineLogin])
+
   const handlePressGotIt = () => {
-    // Handle the logic when the "GOT IT" button is pressed
-    // For example, you can close the modal or perform any other action
     setModalVisible(false);
   };
 
@@ -107,7 +118,6 @@ useEffect(()=>{
       <View>
         <SubHeader
           title={t('home.all_categories')}
-          onPress={() => console.log('All Categories')}
         />
         <FlatList
         
@@ -158,7 +168,6 @@ useEffect(()=>{
         <SubHeader
           title={t('home.best_seller')}
           onPress={() => navigation.navigate("OpenShops")}
-          seeAll = {true}
         />
 
         <FlatList
@@ -167,15 +176,17 @@ useEffect(()=>{
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <ShopCard
-              image={test_url_images + item?.menu?.image}
-              name={item?.menu?.name}
-              description={item?.menu?.description}
+            item={item}
+              image={test_url_images + item?.image}
+              name={item?.name}
+              price={item?.price}
+              description={item?.description}
               keywords={item.keywords}
-              rating={item.rating}
+              rating={item?.rating}
               shipping={item.shipping}
               deliveryTime={item.deliveryTime}
 
-              onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.menu?.id })}
+              onPress={() =>navigation.navigate('FoodDetails', { itemId: item?.id })}
             />
           )}
         />
@@ -219,6 +230,14 @@ useEffect(()=>{
       {renderRestaurants()}
     </ScrollView>
   </View>
+  {
+    !isRestOnline &&  
+    <CustomModalOffline
+    modalVisible={modalOffline}
+    setModalVisible={setModalOffline}
+    onPressGotIt={()=>{}}
+  />
+  }
   <CustomModal
     modalVisible={modalVisible}
     setModalVisible={setModalVisible}

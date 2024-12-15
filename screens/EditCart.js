@@ -46,7 +46,7 @@ const EditCart = ({ navigation }) => {
             <Text style={{ marginLeft: 12, fontSize: 17, fontFamily: "Sen Regular", color: COLORS.white }}>Cart</Text>
           </View>
           <TouchableOpacity
-            onPress={() => console.log("Edit Items")}
+          
           >
             <Text style={cartStyles.body3Color}>Edit Items</Text>
           </TouchableOpacity>

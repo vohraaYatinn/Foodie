@@ -10,8 +10,8 @@ import { reducer } from '../utils/reducers/formReducers'
 import { commonStyles } from '../styles/CommonStyles'
 import useAxios from '../network/useAxios'
 import { LoginCustomer } from '../urls/urls'
-import Toast from 'react-native-toast-message'; // Import Toast
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 
 
@@ -60,7 +60,6 @@ const Login = ({ navigation }) => {
 
     const getLang = async(token) => {
         const lang = AsyncStorage.getItem('language')
-        console.log(lang)
         if (lang == "en"){
           setSelectedLanguage("English")
           i18n.changeLanguage('en');
@@ -122,8 +121,9 @@ const Login = ({ navigation }) => {
     },[responseLogin])
 
 
-    const fetchLoginFunc = () => {
-        responseFetch(LoginCustomer(formState))
+    const fetchLoginFunc = async() => {
+        const token = await AsyncStorage.getItem('token')
+        responseFetch(LoginCustomer({...formState, token:token}))
     }
 
     return (
@@ -180,7 +180,13 @@ const Login = ({ navigation }) => {
             />
             <View style={commonStyles.center}>
                 <Text style={{ ...FONTS.body4, color: COLORS.black }}>{t('dont_have_account')}{' '}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+                <TouchableOpacity onPress={() => 
+                    
+                    navigation.navigate("Signupwithphone")
+                    // navigation.navigate("Verification")
+                    
+                    
+                    }>
                     <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{t('sign_up')}</Text>
                 </TouchableOpacity>
             </View>

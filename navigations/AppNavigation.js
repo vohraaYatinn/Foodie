@@ -5,6 +5,7 @@ import { Onboarding1,
     Onboarding2, 
     Onboarding3, 
     Signup, 
+    Signupwithphone,
     Verification,
     Login, 
     StartUpScreen, 
@@ -41,7 +42,10 @@ import { Onboarding1,
     UserReviews,
     Faqs,
     Settings,
-    SubmitQuestion
+    SubmitQuestion,
+    Mbwayphonenumber,
+    Mbwaytimer,
+    PaymentFail
 } from '../screens'
 import { NavigationContainer } from '@react-navigation/native'
 import BottomTabNavigation from './BottomTabNavigation'
@@ -96,6 +100,10 @@ const AppNavigation = () => {
                 <Stack.Screen
                     name="Onboarding1"
                     component={Onboarding1}
+                />
+                <Stack.Screen
+                    name="Signupwithphone"
+                    component={Signupwithphone}
                 />
                 <Stack.Screen
                     name="Onboarding2"
@@ -186,6 +194,10 @@ const AppNavigation = () => {
                   component={PaymentSuccess}
                 />
                 <Stack.Screen
+                  name="PaymentFail"
+                  component={PaymentFail}
+                />
+                <Stack.Screen
                   name="TrackingOrders"
                   component={TrackingOrderV2}
                 />
@@ -252,6 +264,14 @@ const AppNavigation = () => {
                 <Stack.Screen
                   name="SubmitQuestion"
                   component={SubmitQuestion}
+                />
+                <Stack.Screen
+                  name="Mbwayphonenumber"
+                  component={Mbwayphonenumber}
+                />
+                <Stack.Screen
+                  name="Mbwaytimer"
+                  component={Mbwaytimer}
                 />
             </Stack.Navigator>
         </NavigationContainer>

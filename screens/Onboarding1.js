@@ -20,27 +20,26 @@ useEffect(()=>{
   getLanguage()
 })
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 1) {
-          clearInterval(intervalId);
-          return prevProgress;
-        }
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setProgress((prevProgress) => {
+  //       if (prevProgress >= 1) {
+  //         clearInterval(intervalId);
+  //         return prevProgress;
+  //       }
 
-        return prevProgress + 0.5;
-      });
-    }, 2000);
+  //       return prevProgress + 0.5;
+  //     });
+  //   }, 2000);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
-  useEffect(() => {
-    if (progress >= 1) {
-      // navigate to the Onboarding2 Screen
-      navigation.navigate('Onboarding2');
-    }
-  }, [progress, navigation]);
+  // useEffect(() => {
+  //   if (progress >= 1) {
+  //     navigation.navigate('Onboarding2');
+  //   }
+  // }, [progress, navigation]);
 
   return (
     <SafeAreaView style={styles.container}>

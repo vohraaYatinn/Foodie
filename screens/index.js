@@ -4,6 +4,9 @@ import Onboarding3 from "./Onboarding3";
 import Onboarding4 from "./Onboarding4";
 import StartUpScreen from "./StartUpScreen";
 import Login from "./Login";
+import Mbwayphonenumber from "./Mbwayphonenumber"
+import Mbwaytimer from "./Mbwaytimer"
+import Signupwithphone from "./Signupwithphone";
 import Signup from "./Signup";
 import ResetPassword from "./ResetPassword";
 import ForgotPassword from "./ForgotPassword";
@@ -25,6 +28,7 @@ import PaymentMethod from "./PaymentMethod";
 import PaymentMethodNoCard from "./PaymentMethodNoCard";
 import AddPaymentCard from "./AddPaymentCard";
 import PaymentSuccess from "./PaymentSuccess";
+import PaymentFail from "./PaymentFail";
 import TrackingOrderV1 from "./TrackingOrderV1";
 import TrackingOrderV2 from "./TrackingOrderV2";
 import Call from "./Call";
@@ -54,6 +58,8 @@ export {
     StartUpScreen,
     Login,
     Signup,
+    Mbwayphonenumber,
+    Signupwithphone,
     ResetPassword,
     ForgotPassword,
     Verification,
@@ -74,6 +80,7 @@ export {
     PaymentMethodNoCard,
     AddPaymentCard,
     PaymentSuccess,
+    PaymentFail,
     TrackingOrderV1,
     TrackingOrderV2,
     Call,
@@ -93,5 +100,6 @@ export {
     Faqs,
     UserReviews,
     Settings,
-    SubmitQuestion
+    SubmitQuestion,
+    Mbwaytimer
 }

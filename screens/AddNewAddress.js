@@ -9,7 +9,7 @@ import { validateInput } from '../utils/actions/formActions'
 import { reducer } from '../utils/reducers/formReducers'
 import Button from '../components/Button'
 import useAxios from '../network/useAxios'
-import Toast from 'react-native-toast-message'; // Import Toast
+import Toast from 'react-native-toast-message';
 import { addNewAddress } from '../urls/urls'
 
 const initialState = {
@@ -53,8 +53,6 @@ const AddNewAddress = ({ navigation }) => {
                 }
       },[responseLogin])
         const handlePressGotIt = () => {
-          // Handle the logic when the "GOT IT" button is pressed
-          // For example, you can close the modal or perform any other action
           setModalVisible(false);
         };
         useEffect(() => {
@@ -80,7 +78,6 @@ const AddNewAddress = ({ navigation }) => {
         }
     }, [error])
 
-    // Open the bottom sheet on component mount
     useEffect(() => {
         bottomSheetRef.current.open();
     }, []);
@@ -98,35 +95,13 @@ const AddNewAddress = ({ navigation }) => {
                 zIndex: 999,
                
             }}>
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={{
-                        height: 45,
-                        width: 45,
-                        borderRadius: 22.5,
-                        backgroundColor: COLORS.black,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: 16,
-                        zIndex: 9999
-                    }}
-                >
-                    <Image
-                        source={icons.arrowLeft}
-                        resizeMode="contain"
-                        style={{
-                            height: 24,
-                            width: 24,
-                            tintColor: COLORS.white
-                        }}
-                    />
-                </TouchableOpacity>
-                <Text style={{ ...FONTS.body3, color:"white" }} >Add New Address</Text>
+         
             </View>
         
             <RBSheet
                 ref={bottomSheetRef}
-                height={530}
+                height={630}
+                zIndex={100}
                 openDuration={250}
                 closeOnDragDown={true}
                 closeOnPressMask={false}
@@ -154,7 +129,6 @@ const AddNewAddress = ({ navigation }) => {
                                     id="address"
                                     onInputChanged={inputChangedHandler}
                                     errorText={formState.inputValidities['address']}
-                                    placeholder="3235 Royal Ln. mesa, new jersy 34567"
                                     placeholderTextColor={COLORS.black}
 
                                 />
@@ -166,7 +140,6 @@ const AddNewAddress = ({ navigation }) => {
                                     id="city"
                                     onInputChanged={inputChangedHandler}
                                     errorText={formState.inputValidities['city']}
-                                    placeholder="2143"
                                     placeholderTextColor={COLORS.black}
                                 />
                             </View>
@@ -177,7 +150,6 @@ const AddNewAddress = ({ navigation }) => {
                                         id="street"
                                         onInputChanged={inputChangedHandler}
                                         errorText={formState.inputValidities['street']}
-                                        placeholder="hason nagar"
                                         placeholderTextColor={COLORS.black}
                                     />
                                 </View>
@@ -187,7 +159,6 @@ const AddNewAddress = ({ navigation }) => {
                                         id="postalCode"
                                         onInputChanged={inputChangedHandler}
                                         errorText={formState.inputValidities['postalCode']}
-                                        placeholder="3456"
                                         placeholderTextColor={COLORS.black}
                                     />
                                 </View>
@@ -237,6 +208,13 @@ const AddNewAddress = ({ navigation }) => {
                             filled
                             title="SAVE LOCATION"
                             onPress={() => addNewAddressFunc()}
+                        />
+                        <Button
+                            style={{
+                                marginTop:10
+                            }}
+                            title="GO BACK"
+                            onPress={() => navigation.goBack()}
                         />
                     </View>
                 </View>
