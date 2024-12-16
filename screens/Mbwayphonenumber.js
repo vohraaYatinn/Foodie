@@ -30,6 +30,7 @@ const initialState = {
 }
 
 const Mbwayphonenumber = ({ navigation }) => {
+    
     const { t, i18n } = useTranslation();
     const [lang, setLang] = useState("en")
     const switchLanguage = () => {
@@ -119,11 +120,17 @@ const Mbwayphonenumber = ({ navigation }) => {
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
         <StatusBar hidden />
+        
+        {/* Header */}
         <View style={commonStyles.header}>
-            <Text style={commonStyles.headerTitle}>{"MBway"}</Text>
-            <Text style={commonStyles.subHeaderTitle}>{"Please enter your mbway number"}</Text>
+            <Text style={commonStyles.headerTitle}>{t('mbway.title')}</Text>
+            <Text style={commonStyles.subHeaderTitle}>{t('mbway.subtitle')}</Text>
         </View>
+
+        {/* Animated Footer */}
         <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
+            
+            {/* Input Field */}
             <Text style={commonStyles.inputHeader}>{t('signup.phone')}</Text>
             <Input
                 id="phone"
@@ -135,21 +142,17 @@ const Mbwayphonenumber = ({ navigation }) => {
                 keyboardType="numeric"
             />
 
-
-            <View style={commonStyles.checkBoxContainer}>
-               
-            </View>
-
+            {/* Button */}
             <Button
-                title={"Pay"}
+                title={t('mbway.pay_button')}
                 isLoading={responseLoading}
                 filled
                 onPress={() => fetchLoginFunc()}
                 style={commonStyles.btn}
             />
-           
         </Animatable.View>
-        <Toast/>
+        
+        <Toast />
     </View>
     )
 }

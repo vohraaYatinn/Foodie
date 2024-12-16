@@ -11,8 +11,11 @@ import Button from '../components/Button'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { defaultAddress, deleteAddress, getAddresses } from '../urls/urls'
 import useAxios from '../network/useAxios'
+import { useTranslation } from "react-i18next";
 
 const Address = ({ navigation }) => {
+        const { t } = useTranslation();
+    
     const notify = (message, action) => {
         Toast.show({
             type: action,
@@ -163,28 +166,28 @@ const Address = ({ navigation }) => {
     }
     return (
         <SafeAreaView
-            style={{ flex: 1, backgroundColor: COLORS.white }}>
-            <StatusBar hidden={true} />
-            <View style={{
-                flex: 1,
-                marginHorizontal: 16,
-                marginBottom:100
-            }}>
-                {renderHeader()}
-                {renderUserAddresses()}
-                <Button
-                    filled
-                    title="ADD NEW ADDRESS"
-                    onPress={() => navigation.navigate("AddNewAddress")}
-                    style={{
-                        position: 'absolute',
-                        bottom: 40,
-                        width: SIZES.width - 32
-                    }}
-                />
-            </View>
-            <Toast/>
-        </SafeAreaView>
+        style={{ flex: 1, backgroundColor: COLORS.white }}>
+        <StatusBar hidden={true} />
+        <View style={{
+            flex: 1,
+            marginHorizontal: 16,
+            marginBottom: 100
+        }}>
+            {renderHeader()}
+            {renderUserAddresses()}
+            <Button
+                filled
+                title={t("edit_address.add_new_address")}
+                onPress={() => navigation.navigate("AddNewAddress")}
+                style={{
+                    position: 'absolute',
+                    bottom: 40,
+                    width: SIZES.width - 32
+                }}
+            />
+        </View>
+        <Toast />
+    </SafeAreaView>
     )
 }
 

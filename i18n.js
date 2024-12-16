@@ -6,7 +6,7 @@ import en from './locales/en.json';
 import pt from './locales/pt.json';
 
 // Detect device language
-const deviceLanguage = RNLocalize.getLocales()[0]?.languageCode || 'en';
+const deviceLanguage = RNLocalize.getLocales()[0]?.languageCode || 'pt';
 
 // Initialize i18next
 i18n.use(initReactI18next).init({
@@ -16,7 +16,7 @@ i18n.use(initReactI18next).init({
     pt: { translation: pt }
   },
   lng: deviceLanguage, // Set language based on device locale
-  fallbackLng: 'en', // Default language
+  fallbackLng: 'pt', // Default language
   interpolation: {
     escapeValue: false // React already escapes values, so no need to do it here
   }

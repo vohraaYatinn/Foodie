@@ -11,7 +11,10 @@ import useAxios from '../network/useAxios'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { fetchUserDetails } from '../urls/urls'
 import { test_url_images } from '../config/environment'
+import { useTranslation } from "react-i18next";
+
 const PersonalProfile = () => {
+        const { t } = useTranslation();
 
     const renderHeader = () => {
         const navigation = useNavigation()
@@ -90,49 +93,43 @@ const PersonalProfile = () => {
     const renderUserProfileInfo = () => {
         return (
             <View style={{ flexDirection: 'column' }}>
-                <View style={styles.container}>
-                    <TouchableOpacity
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="user" size={24} color={COLORS.primary} />
-                            </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text style={styles.boldBody}>Full Name</Text>
-                                <Text style={styles.textBody}>{data?.full_name}</Text>
-                            </View>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.subContainer}>
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="user" size={24} color="#413DFB" />
                         </View>
-
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <MaterialCommunityIcons name="email-outline" size={24} color="#413DFB" />
-                            </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text style={styles.boldBody}>Email</Text>
-                                <Text style={styles.textBody}>{data?.email}</Text>
-                            </View>
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text style={styles.boldBody}>{t("personal_profile.full_name")}</Text>
+                            <Text style={styles.textBody}>{data?.full_name}</Text>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.subContainer}
-                    >
-                        <View style={styles.subLeftContainer}>
-                            <View style={styles.rounded}>
-                                <Feather name="phone" size={24} color="#369BFF" />
-                            </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text style={styles.boldBody}>Phone Number</Text>
-                                <Text style={styles.textBody}>+351 - {data?.phone_number}</Text>
-                            </View>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.subContainer}>
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <MaterialCommunityIcons name="email-outline" size={24} color="#413DFB" />
                         </View>
-                    </TouchableOpacity>
-                </View>
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text style={styles.boldBody}>{t("personal_profile.email")}</Text>
+                            <Text style={styles.textBody}>{data?.email}</Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.subContainer}>
+                    <View style={styles.subLeftContainer}>
+                        <View style={styles.rounded}>
+                            <Feather name="phone" size={24} color="#369BFF" />
+                        </View>
+                        <View style={{ flexDirection: 'column' }}>
+                            <Text style={styles.boldBody}>{t("personal_profile.phone_number")}</Text>
+                            <Text style={styles.textBody}>+351 - {data?.phone_number}</Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
             </View>
+        </View>
+
         )
     }
 

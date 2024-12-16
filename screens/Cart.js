@@ -13,8 +13,10 @@ import { CartAction, fetchCartCustomer } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment'
 import { useFocusEffect } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next';
 
 const Cart = ({ navigation }) => {
+  const { t } = useTranslation();
 
   const notify = (message, action) =>{
     Toast.show({
@@ -243,71 +245,63 @@ useEffect(()=>{
 
       </View>
       <Animatable.View animation="fadeInUpBig" style={cartStyles.footer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-          <Text style={cartStyles.body3}>Delivery Address</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Address")}
-          >
-            <Text style={cartStyles.body3Color}>Edit</Text>
-          </TouchableOpacity>
-        </View>
-        <Input
-          id="Address"
-          placeholder={address?.[0]?.street}
-          placeholderTextColor={COLORS.gray4}
-          editable={false}
-        />
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={cartStyles.body3}>Total:</Text>
-            <Text style={{ fontSize: 24, fontFamily: "bold", color: COLORS.black, marginLeft: 12 }}>€ {totalAmount}</Text>
-          </View>
-          
-
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ marginLeft: 2 }}>
-              <Image
-                source={icons.arrowRight}
-                style={{
-                  height: 18,
-                  width: 18,
-                  tintColor: COLORS.black
-                }}
-              />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                <Text style={cartStyles.body3}>{t("cart_page.delivery_address")}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Address")}>
+                    <Text style={cartStyles.body3Color}>{t("cart_page.edit")}</Text>
+                </TouchableOpacity>
             </View>
-          </View>
-        </View>
-
-{totalAmount <15 &&
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom:10 }}>
-<Text style={{
-  color:"purple"
-}}>( Add Item Worth €15 to get free delivery )</Text>
-          </View>
-        }
-
-        <Button
-          filled
-          disabled={totalAmount == 0 || totalAmount <15}
-          isLoading={cartActionLoading}
-          title="PLACE ORDER"
-          onPress={() => {
-            if(address && address?.[0]?.street){
-              
-              navigation.navigate("PaymentMethod")
-              // navigation.navigate("PaymentMethod")
-            }
-            else{
-              notify("You need to add a address", "error")
-
-            }
-          
-          
-          }}
-          style={{ marginVertical: 2 }}
-        />
-      </Animatable.View>
+            <Input
+                id="Address"
+                placeholder={address?.[0]?.street}
+                placeholderTextColor={COLORS.gray4}
+                editable={false}
+            />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={cartStyles.body3}>{t("cart_page.total")}</Text>
+                    <Text style={{
+                        fontSize: 24,
+                        fontFamily: "bold",
+                        color: COLORS.black,
+                        marginLeft: 12
+                    }}>
+                        € {totalAmount}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image
+                        source={icons.arrowRight}
+                        style={{
+                            height: 18,
+                            width: 18,
+                            tintColor: COLORS.black
+                        }}
+                    />
+                </View>
+            </View>
+            {totalAmount < 15 && (
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <Text style={{ color: "purple" }}>
+                        {t("cart_page.add_item_message", { amount: 15 })}
+                    </Text>
+                </View>
+            )}
+            <Button
+                filled
+                disabled={totalAmount === 0 || totalAmount < 15}
+                isLoading={cartActionLoading}
+                title={t("cart_page.place_order")}
+                onPress={() => {
+                    if (address && address?.[0]?.street) {
+                        navigation.navigate("PaymentMethod");
+                    } else {
+                        notify(t("cart_page.address_error"), "error");
+                    }
+                }}
+                style={{ marginVertical: 2 }}
+            />
+        </Animatable.View>
       <Toast/>
     </SafeAreaView>
   )

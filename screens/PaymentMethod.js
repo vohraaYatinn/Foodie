@@ -9,6 +9,7 @@ import Button from '../components/Button'
 import Toast from 'react-native-toast-message'; // Import Toast
 import useAxios from '../network/useAxios'
 import { PlaceOrderBeforePayment } from '../urls/urls'
+import { useTranslation } from 'react-i18next';
 
 
 const PaymentCard = ({ cardImage, isSelected, onSelect, cardName }) => {
@@ -28,6 +29,7 @@ const PaymentCard = ({ cardImage, isSelected, onSelect, cardName }) => {
 
 
 const PaymentMethod = ({ navigation }) => {
+  const { t } = useTranslation();
 
   const notify = (message, action) =>{
     Toast.show({
@@ -104,36 +106,38 @@ useEffect(()=>{
           keyExtractor={(item) => item.id}
           horizontal
         /> */}
-        <TouchableOpacity
-          style={{
-            width: SIZES.width - 32,
-            borderRadius: 10,
-            backgroundColor: COLORS.gray,
-            height: 82,
-            marginVertical: 12,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: 10
-          }}>
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Text style={{ ...FONTS.h4, marginBottom: 10 }}>MBWay</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-           
-              <Text style={{ fontSize: 12, fontFamily: "Sen Regular" }}>Pay through MBWay</Text>
-            </View>
-          </View>
-          <View>
-            <Image
-              source={icons.arrowDown}
-              style={{
-                height: 12,
-                width: 12,
-                tintColor: COLORS.black
-              }}
-            />
-          </View>
-        </TouchableOpacity>
+         <TouchableOpacity
+                style={{
+                    width: SIZES.width - 32,
+                    borderRadius: 10,
+                    backgroundColor: COLORS.gray,
+                    height: 82,
+                    marginVertical: 12,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 10,
+                }}
+            >
+                <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Text style={{ ...FONTS.h4, marginBottom: 10 }}>{t("payment_method.mbway_title")}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 12, fontFamily: "Sen Regular" }}>
+                            {t("payment_method.mbway_description")}
+                        </Text>
+                    </View>
+                </View>
+                <View>
+                    <Image
+                        source={icons.arrowDown}
+                        style={{
+                            height: 12,
+                            width: 12,
+                            tintColor: COLORS.black,
+                        }}
+                    />
+                </View>
+            </TouchableOpacity>
 
       </View>
     )
@@ -156,7 +160,7 @@ useEffect(()=>{
         </View>
         <Button
           filled
-          title="PAY & CONFIRM"
+          title= {t("payment_method.payconfirm")}
           onPress={() =>
             CustomerActionCart()
 

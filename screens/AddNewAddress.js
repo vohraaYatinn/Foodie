@@ -11,6 +11,7 @@ import Button from '../components/Button'
 import useAxios from '../network/useAxios'
 import Toast from 'react-native-toast-message';
 import { addNewAddress } from '../urls/urls'
+import { useTranslation } from "react-i18next";
 
 const initialState = {
     inputValues: {
@@ -29,6 +30,8 @@ const initialState = {
 }
 
 const AddNewAddress = ({ navigation }) => {
+    const { t } = useTranslation();
+
     const notify = (message, action) => {
         Toast.show({
             type: action,
@@ -83,144 +86,116 @@ const AddNewAddress = ({ navigation }) => {
     }, []);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor:COLORS.primary }}>
-            <StatusBar hidden={true} />
-            <View style={{
-                position: 'absolute',
-                marginHorizontal: 16,
-                position: 'absolute',
-                flexDirection: 'row',
-                alignItems: 'center',
-                top: 22,
-                zIndex: 999,
-               
-            }}>
-         
-            </View>
-        
-            <RBSheet
-                ref={bottomSheetRef}
-                height={630}
-                zIndex={100}
-                openDuration={250}
-                closeOnDragDown={true}
-                closeOnPressMask={false}
-                customStyles={{
-                    wrapper: {
-                        backgroundColor: "transparent",
-                    },
-                    draggableIcon: {
-                        backgroundColor: COLORS.gray6,
-                        width: 100
-                    }
-                }}
-            >
-                <View style={{
-                    width: SIZES.width - 32,
-                    marginHorizontal: 16,
-                }}>
-                    <View
-                        style={{ flexDirection: 'row' }}
-                    >
-                        <View style={{ marginVertical: 0 }}>
-                            <View style={{ marginTop: 0, width: SIZES.width - 32 }}>
-                                <Text style={commonStyles.inputHeader}>Address</Text>
-                                <Input
-                                    id="address"
-                                    onInputChanged={inputChangedHandler}
-                                    errorText={formState.inputValidities['address']}
-                                    placeholderTextColor={COLORS.black}
-
-                                />
-                            </View>
-
-                            <View style={{ marginTop: 12 }}>
-                                <Text style={commonStyles.inputHeader}>City</Text>
-                                <Input
-                                    id="city"
-                                    onInputChanged={inputChangedHandler}
-                                    errorText={formState.inputValidities['city']}
-                                    placeholderTextColor={COLORS.black}
-                                />
-                            </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
-                                <View style={{ width: (SIZES.width - 32) / 2 - 10 }}>
-                                    <Text style={commonStyles.inputHeader}>Street</Text>
-                                    <Input
-                                        id="street"
-                                        onInputChanged={inputChangedHandler}
-                                        errorText={formState.inputValidities['street']}
-                                        placeholderTextColor={COLORS.black}
-                                    />
-                                </View>
-                                <View style={{ width: (SIZES.width - 32) / 2 - 10 }}>
-                                    <Text style={commonStyles.inputHeader}>Post Code</Text>
-                                    <Input
-                                        id="postalCode"
-                                        onInputChanged={inputChangedHandler}
-                                        errorText={formState.inputValidities['postalCode']}
-                                        placeholderTextColor={COLORS.black}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View>
-                        <Text style={{ fontSize: 13, fontFamily: "Sen Regular", marginBottom: 2, marginTop:12 }}>DELIVER TIME</Text>
-
-                        <View style={{ flexDirection: "row", marginVertical: 13 }}>
-                            <TouchableOpacity
-                                style={[
-                                    styles.checkboxContainer,
-                                    selectedLabel === "home" && styles.selectedCheckbox
-                                ]}
-                                onPress={() => handleLabelSelection("home")}
-                            >
-                                <Text style={[selectedLabel === "home" && styles.checkboxText]}>Home</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={[
-                                    styles.checkboxContainer,
-                                    selectedLabel === "work" && styles.selectedCheckbox
-                                ]}
-                                onPress={() => handleLabelSelection("work")}
-                            >
-                                <Text style={[selectedLabel === "work" && styles.checkboxText]}>Work</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={[
-                                    styles.checkboxContainer,
-                                    selectedLabel === "other" && styles.selectedCheckbox
-                                ]}
-                                onPress={() => handleLabelSelection("other")}
-                            >
-                                <Text style={
-                                    [
-                                        selectedLabel === "other" && styles.checkboxText
-                                    ]
-                                }>Other</Text>
-                            </TouchableOpacity>
-
-                        </View>
-                        <Button
-                            filled
-                            title="SAVE LOCATION"
-                            onPress={() => addNewAddressFunc()}
-                        />
-                        <Button
-                            style={{
-                                marginTop:10
-                            }}
-                            title="GO BACK"
-                            onPress={() => navigation.goBack()}
-                        />
-                    </View>
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
+        <StatusBar hidden={true} />
+        <RBSheet
+          ref={bottomSheetRef}
+          height={630}
+          zIndex={100}
+          openDuration={250}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: { backgroundColor: 'transparent' },
+            draggableIcon: { backgroundColor: COLORS.gray6, width: 100 },
+          }}
+        >
+          <View style={{ width: SIZES.width - 32, marginHorizontal: 16 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ marginVertical: 0 }}>
+                <View style={{ marginTop: 0, width: SIZES.width - 32 }}>
+                  <Text style={commonStyles.inputHeader}>{t('new_address.address')}</Text>
+                  <Input
+                    id="address"
+                    onInputChanged={inputChangedHandler}
+                    errorText={formState.inputValidities['address']}
+                    placeholderTextColor={COLORS.black}
+                  />
                 </View>
-            </RBSheet>
-            <Toast style={{zIndex:999}}/>
-        </SafeAreaView>
+  
+                <View style={{ marginTop: 12 }}>
+                  <Text style={commonStyles.inputHeader}>{t('new_address.city')}</Text>
+                  <Input
+                    id="city"
+                    onInputChanged={inputChangedHandler}
+                    errorText={formState.inputValidities['city']}
+                    placeholderTextColor={COLORS.black}
+                  />
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+                  <View style={{ width: (SIZES.width - 32) / 2 - 10 }}>
+                    <Text style={commonStyles.inputHeader}>{t('new_address.street')}</Text>
+                    <Input
+                      id="street"
+                      onInputChanged={inputChangedHandler}
+                      errorText={formState.inputValidities['street']}
+                      placeholderTextColor={COLORS.black}
+                    />
+                  </View>
+                  <View style={{ width: (SIZES.width - 32) / 2 - 10 }}>
+                    <Text style={commonStyles.inputHeader}>{t('new_address.postal_code')}</Text>
+                    <Input
+                      id="postalCode"
+                      onInputChanged={inputChangedHandler}
+                      errorText={formState.inputValidities['postalCode']}
+                      placeholderTextColor={COLORS.black}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View>
+              <Text style={{ fontSize: 13, fontFamily: 'Sen Regular', marginBottom: 2, marginTop: 12 }}>
+                {t('new_address.deliver_time')}
+              </Text>
+  
+              <View style={{ flexDirection: 'row', marginVertical: 13 }}>
+                <TouchableOpacity
+                  style={[
+                    styles.checkboxContainer,
+                    selectedLabel === 'home' && styles.selectedCheckbox,
+                  ]}
+                  onPress={() => handleLabelSelection('home')}
+                >
+                  <Text style={[selectedLabel === 'home' && styles.checkboxText]}>{t('new_address.home')}</Text>
+                </TouchableOpacity>
+  
+                <TouchableOpacity
+                  style={[
+                    styles.checkboxContainer,
+                    selectedLabel === 'work' && styles.selectedCheckbox,
+                  ]}
+                  onPress={() => handleLabelSelection('work')}
+                >
+                  <Text style={[selectedLabel === 'work' && styles.checkboxText]}>{t('new_address.work')}</Text>
+                </TouchableOpacity>
+  
+                <TouchableOpacity
+                  style={[
+                    styles.checkboxContainer,
+                    selectedLabel === 'other' && styles.selectedCheckbox,
+                  ]}
+                  onPress={() => handleLabelSelection('other')}
+                >
+                  <Text style={[selectedLabel === 'other' && styles.checkboxText]}>{t('new_address.other')}</Text>
+                </TouchableOpacity>
+              </View>
+  
+              <Button
+                filled
+                title={t('new_address.save_location')}
+                onPress={() => addNewAddressFunc()}
+              />
+              <Button
+                style={{ marginTop: 10 }}
+                title={t('new_address.go_back')}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          </View>
+        </RBSheet>
+        <Toast style={{ zIndex: 999 }} />
+      </SafeAreaView>
     )
 }
 

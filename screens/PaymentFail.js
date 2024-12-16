@@ -3,8 +3,11 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS, SIZES, images } from '../constants'
 import Button from '../components/Button'
+import { useTranslation } from 'react-i18next'
 
 const PaymentFail = ({ navigation }) => {
+        const { t } = useTranslation();
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar hidden={true} />
@@ -17,8 +20,8 @@ const PaymentFail = ({ navigation }) => {
             height: SIZES.height * 0.4
           }}
         />
-        <Text style={{ ...FONTS.h3, marginVertical: 12 }}>Sorry!</Text>
-        <Text style={{ ...FONTS.body4, textAlign: 'center' }}>Payment failed! Please try again later</Text>
+        <Text style={{ ...FONTS.h3, marginVertical: 12 }}>{t('payment_fail.title')}</Text>
+        <Text style={{ ...FONTS.body4, textAlign: 'center' }}>{t('payment_fail.subtitle')}</Text>
         <View style={{
           position: 'absolute',
           bottom: 30,
@@ -26,7 +29,7 @@ const PaymentFail = ({ navigation }) => {
         }}>
           <Button
             filled
-            title="VIEW CART"
+            title={t('payment_fail.view_cart_button')}
             onPress={() => navigation.navigate("Cart")}
           />
         </View>

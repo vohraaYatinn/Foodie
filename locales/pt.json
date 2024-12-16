@@ -125,6 +125,62 @@
       "question": "Como pago pelo meu pedido no Os Magalhães - Sushi?",
       "answer": "O pagamento é processado pelo seu cartão de crédito ou em dinheiro na entrega."
     }
+  },
+  "new_address": {
+    "address": "Endereço",
+    "city": "Cidade",
+    "street": "Rua",
+    "postal_code": "Código Postal",
+    "deliver_time": "Tempo de Entrega",
+    "home": "Casa",
+    "work": "Trabalho",
+    "other": "Outro",
+    "save_location": "Salvar Localização",
+    "go_back": "Voltar",
+    "success_message": "Endereço adicionado com sucesso",
+    "error_message": "Ocorreu um erro"
+  },
+  "edit_address": {
+    "add_new_address": "Adicionar Novo Endereço"
+  },
+  "personal_profile": {
+    "full_name": "Nome Completo",
+    "email": "Email",
+    "phone_number": "Número de Telefone"
+  },
+  "product_section": {
+    "add_to_cart": "ADICIONAR AO CARRINHO",
+    "view_cart": "VER CARRINHO"
+  },
+  "cart_page": {
+    "delivery_address": "Endereço de Entrega",
+    "edit": "Editar",
+    "total": "Total",
+    "add_item_message": "Adicione um item no valor de €{{amount}} para obter entrega grátis",
+    "place_order": "FAZER PEDIDO",
+    "address_error": "Você precisa adicionar um endereço"
+  },
+  "payment_method": {
+    "mbway_title": "MBWay",
+    "mbway_description": "Pague através do MBWay",
+    "payconfirm":"PAGUE E CONFIRME"
+  },
+  "mbway": {
+    "title": "MBWay",
+    "subtitle": "Por favor insira o seu número MBWay",
+    "pay_button": "Pagar",
+        "timer_message": "Você tem 3 minutos para autenticar esta transação",
+    "time_remaining": "Tempo Restante:"
+  },
+  "payment_success": {
+    "title": "Parabéns!",
+    "subtitle": "Você fez o pagamento com sucesso, aproveite nosso serviço!",
+    "track_order_button": "ACOMPANHAR PEDIDO"
+  },
+  "payment_fail": {
+    "title": "Desculpe!",
+    "subtitle": "Pagamento falhou! Por favor, tente novamente mais tarde",
+    "view_cart_button": "VER CARRINHO"
   }
   
   }

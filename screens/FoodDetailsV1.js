@@ -15,10 +15,14 @@ import { fetchSingleMenuItem, addToCartCustomer } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment'
 import RatingComponentViewOnly from '../components/RatingComponentViewOnly'
+import { useTranslation } from "react-i18next";
+
 
 const ingridents = [icons.salt, icons.chickenLeg, icons.onion, icons.chili]
 const FoodDetailsV1 = ({ navigation, route }) => {
   const [quantity, setQuantity] = useState(1);
+          const { t } = useTranslation();
+  
 
   const notify = (message, action) =>{
     Toast.show({
@@ -287,13 +291,13 @@ useEffect(() => {
               filled
               disabled={!data?.is_available && true}
               onPress={() => addToCart()}
-              title="ADD TO CART"
+              title={t("product_section.add_to_cart")}
             />
 
             <Button
               style={{marginTop:10}}
               onPress={() => navigation.navigate("Cart")}
-              title="VIEW CART"
+              title={t("product_section.view_cart")}
             />
           </View>
         </View>

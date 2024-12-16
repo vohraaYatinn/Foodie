@@ -167,21 +167,28 @@ const Mbwaytimer = ({ navigation, route }) => {
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
-        <StatusBar hidden />
-        <View style={commonStyles.header}>
-            <Text style={commonStyles.headerTitle}>{"MBway"}</Text>
-            <Text style={commonStyles.subHeaderTitle}>
-                {"You have 3 minutes to authenticate this transaction"}
-            </Text>
+<View style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
+            <StatusBar hidden />
+            
+            {/* Header */}
+            <View style={commonStyles.header}>
+                <Text style={commonStyles.headerTitle}>{t('mbway.title')}</Text>
+                <Text style={commonStyles.subHeaderTitle}>
+                    {t('mbway.timer_message')}
+                </Text>
+            </View>
+
+            {/* Animated Footer */}
+            <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
+                
+                {/* Timer */}
+                <Text style={commonStyles.timerText}>
+                    {`${t('mbway.time_remaining')} ${formatTime(timeLeft)}`}
+                </Text>
+            </Animatable.View>
+            
+            <Toast />
         </View>
-        <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
-            <Text style={commonStyles.timerText}>
-                {`Time Remaining: ${formatTime(timeLeft)}`}
-            </Text>
-        </Animatable.View>
-        <Toast />
-    </View>
     )
 }
 
