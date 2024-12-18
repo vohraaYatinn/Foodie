@@ -85,8 +85,8 @@ const Settings = ({ navigation }) => {
           ];
         
           const languages = [
-            { id: 'en', name: 'English' },
-            { id: "pt", name: "Portuguese" },
+            { id: 'pt', name: 'English' },
+            { id: "en", name: "Portuguese" },
             // Add more languages here
           ];
 

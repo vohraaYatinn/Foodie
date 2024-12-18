@@ -42,10 +42,10 @@ const LangSelection = ({ navigation }) => {
   }
   const getLang = async(token) => {
       const lang = AsyncStorage.getItem('language')
-      if (lang == "en"){
+      if (lang == "pt"){
         setSelectedLanguage("English")
       }
-      else if(lang == "pt"){
+      else if(lang == "en"){
         setSelectedLanguage("Portuguese")
       }
   }
@@ -96,8 +96,8 @@ const LangSelection = ({ navigation }) => {
     const handleLanguageChange = async(lang) => {
       setSelectedLanguage(lang);
       setIsModalVisible(false);
-      i18n.changeLanguage(lang === 'English' ? 'en' : 'pt');
-      await addLanguage(lang === 'English' ? 'en' : 'pt')
+      i18n.changeLanguage(lang === 'English' ? 'pt' : 'en');
+      await addLanguage(lang === 'English' ? 'pt' : 'en')
 
   };
     useEffect(() => {
@@ -116,7 +116,6 @@ const LangSelection = ({ navigation }) => {
   };
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
-        <requestUserPermission/>
       <StatusBar hidden={true} />
       <View style={commonStyles.header}>
           <TouchableOpacity

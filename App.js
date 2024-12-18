@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Ignore all log notifications
 LogBox.ignoreAllLogs();
-async function requestUserPermission() {
+const requestUserPermission = async() => {
   const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||

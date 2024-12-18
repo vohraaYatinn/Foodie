@@ -1,219 +1,224 @@
-{
-    "welcome": "Bem-vindo",
-    "sign_in_to_account": "Por favor, faça login na sua conta existente",
-    "email": "Email",
-    "email_placeholder": "exemplo@gmail.com",
-    "email__phone_number":"E-mail / número de telefone",
 
-    "password": "Senha",
+  
+
+  {
+    "welcome": "Welcome",
+    "sign_in_to_account": "Please sign in to your existing account",
+    "email": "Email",
+    "email__phone_number":"Email / Phone Number",
+    "email_placeholder": "example@gmail.com",
+    "password": "Password",
     "password_placeholder": "*************",
-    "remember_me": "Lembre-se de mim",
-    "forgot_password": "Esqueceu a senha?",
-    "login": "ENTRAR",
-    "dont_have_account": "Não tem uma conta?",
-    "sign_up": "CADASTRAR",
-    "langPage": {
-      "welcome": "BEM-VINDO",
-      "restaurant_name": "Os Magalhães - Sushi",
-      "default_language": "Idioma Padrão",
-      "select_language": "Selecione o Idioma",
-      "english": "Inglês",
-      "portuguese": "Português",
-      "cancel": "Cancelar",
-      "next": "Próximo"
-    },
-     "onboarding": {
-    "all_your_favorites": "Todos os seus favoritos",
-    "foods": "COMIDAS",
-    "body_text": "Obtenha todos os seus alimentos amados em um só lugar, basta fazer o pedido que nós fazemos o resto",
-    "next": "Próximo",
-    "skip": "Pular"
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot Password?",
+    "login": "LOG IN",
+    "dont_have_account": "Don't have an account?",
+    "sign_up": "SIGN UP"
+    ,
+    "langPage":{
+        "welcome": "WELCOME",
+        "restaurant_name": "Os Magalhães - Sushi",
+        "default_language": "Default Language",
+        "select_language": "Select Language",
+        "english": "English",
+        "portuguese": "Portuguese",
+        "cancel": "Cancel",
+        "next": "Next"
+      },
+       "onboarding": {
+    "all_your_favorites": "All your favorites",
+    "foods": "FOODS",
+    "body_text": "Get all your loved foods in one place, you just place the order we do the rest",
+    "next": "Next",
+    "skip": "Skip"
   },
   "onboarding2": {
-    "all_your_favorites": "Todos os seus favoritos",
-    "restaurants": "RESTAURANTES",
-    "body_text": "Encontre todos os restaurantes que você ama em um só lugar, você só faz o pedido, nós fazemos o resto.",
-    "next": "Próximo",
-    "skip": "Pular"
+    "all_your_favorites": "All your favorites",
+    "restaurants": "RESTAURANTS",
+    "body_text": "Get all your loved restaurants in one place, you just place the order, we do the rest.",
+    "next": "Next",
+    "skip": "Skip"
   },
   "onboarding3": {
-    "order_from_chosen": "Peça do escolhido",
+    "order_from_chosen": "Order from chosen",
     "chef": "CHEF",
-    "body_text": "Peça do chef escolhido. Você só faz o pedido, nós fazemos o resto.",
-    "next": "Próximo",
-    "skip": "Pular"
+    "body_text": "Order from your chosen chef. You just place the order, we do the rest.",
+    "next": "Next",
+    "skip": "Skip"
   },
   "signup": {
-    "title": "Inscrever-se",
-    "subtitle": "Por favor, inscreva-se para começar",
-    "name": "Nome",
-    "name_placeholder": "João Silva",
-    "phone": "Telefone (+351)",
+    "title": "Sign up",
+    "subtitle": "Please sign up to get started",
+    "name": "Name",
+    "name_placeholder": "John Doe",
+    "phone": "Phone (+351)",
     "phone_placeholder": "2xx xxx xxx",
     "email": "Email",
-    "email_placeholder": "exemplo@gmail.com",
-    "password": "Senha",
+    "email_placeholder": "example@gmail.com",
+    "password": "Password",
     "password_placeholder": "*************",
-    "password_confirm": "Re-Digitar Senha",
+    "password_confirm": "Re-Type Password",
     "password_confirm_placeholder": "*************",
-    "button": "INSCREVA-SE"
+    "button": "SIGN UP"
   },
   "onboarding4": {
-    "free_delivery_offers": "Ofertas de entrega gratuita",
-    "feeless": "SEM TAXA",
-    "body_text": "Peça ao seu chef escolhido sem taxa de entrega. Você faz o pedido, nós fazemos o resto.",
-    "next": "Próximo",
-    "skip": "Pular"
+    "free_delivery_offers": "Free delivery offers",
+    "feeless": "FEELESS",
+    "body_text": "Order from your chosen chef with no delivery fee. You just place the order, we do the rest.",
+    "next": "Next",
+    "skip": "Skip"
   },
   "welcomeModal": {
-    "hurry_offers": "Ofertas Rápidas!",
-    "order_favorite_dishes": "Peça seus pratos favoritos",
-    "discount_text": "Onde refeições deliciosas estão a apenas um toque!",
-    "got_it": "ENTENDI"
+    "hurry_offers": "Hurry Offers!",
+    "order_favorite_dishes": "Order your favorite dishes",
+    "discount_text": "Where delicious meals are just a tap away!",
+    "got_it": "GOT IT"
   },
   "home": {
-    "deliver_to": "Entregar a",
-    "greetings_name": "Olá ",
-    "favorite_dishes": "Peça seus pratos favoritos",
-    "all_categories": "Todas as Categorias",
-    "best_seller": "Mais Vendidos",
-    "see_all": "Ver Tudo",
-    "search_placeholder": "Buscar pratos, restaurantes"
-},
-    "drawerLabel": {
-      "home": "Início",
-      "orders": "Pedidos",
-      "search": "Buscar",
-      "delivery_address": "Endereço de Entrega",
-      "notifications": "Notificações"
-    },
-    "setting_draw": {
-        "PersonalInfo": "Informações Pessoais",
-        "Addresses": "Endereços",
-        "Cart": "Carrinho",
-        "Notifications": "Notificações",
-        "FAQs": "Perguntas Frequentes",
-        "Settings": "Configurações",
-        "Logout": "Sair"
-      },
-      "setting_lang":{
-        "enable_notification" : "Ativar notificações",
-        "Currency" : "Moeda",
-        "Select_Currency" : "Selecionar moeda",
-        "language" : "Idioma"
-      },
-      "faqs": {
+    "deliver_to": "Deliver To",
+    "greetings_name": "Hey ",
+    "favorite_dishes": "Order your favorite dishes",
+    "all_categories": "All Categories",
+    "best_seller": "Best Seller",
+    "see_all": "See All",
+    "search_placeholder": "Search dishes, restaurants"
+
+  },
+  "drawerLabel": {
+    "home": "Home",
+    "orders": "Orders",
+    "search": "Search",
+    "delivery_address": "Delivery Address",
+    "notifications": "Notifications"
+  },
+  "setting_draw": {
+    "PersonalInfo": "Personal Info",
+    "Addresses": "Addresses",
+    "Cart": "Cart",
+    "Notifications": "Notifications",
+    "FAQs": "FAQs",
+    "Settings": "Settings",
+    "Logout": "Logout"
+  },
+  "setting_lang":{
+    "enable_notification" : "Enable Notifications",
+    "Currency" : "Currency",
+    "Select_Currency" : "Select Currency",
+    "language" : "language"
+
+  },
+  "faqs": {
     "q1": {
-      "question": "Posso pedir entrega do Os Magalhães - Sushi em Lisboa?",
-      "answer": "Sim. A entrega do Os Magalhães - Sushi em Lisboa está disponível no Uber Eats."
+      "question": "Can I order delivery from Os Magalhães - Sushi in Lisbon?",
+      "answer": "Yes. Delivery from Os Magalhães - Sushi in Lisbon is available on Uber Eats."
     },
     "q2": {
-      "question": "Os Magalhães - Sushi entrega na minha área?",
-      "answer": "Insira seu endereço para ver se as entregas do Os Magalhães - Sushi estão disponíveis na sua localização em Lisboa."
+      "question": "Does Os Magalhães - Sushi deliver in my area?",
+      "answer": "Enter your address to see if Os Magalhães - Sushi deliveries are available at your location in Lisbon."
     },
     "q3": {
-      "question": "Como faço para pedir entrega online do Os Magalhães - Sushi em Lisboa?",
-      "answer": "Após navegar pelo menu do Os Magalhães - Sushi, escolha os itens e adicione-os ao seu carrinho. Você pode então revisar, fazer e acompanhar seu pedido."
+      "question": "How do I order online delivery from Os Magalhães - Sushi in Lisbon?",
+      "answer": "After browsing the Os Magalhães - Sushi menu, simply choose the items and add them to your cart. You can then review, place and track your order."
     },
     "q4": {
-      "question": "Onde posso encontrar os preços do menu online do Os Magalhães - Sushi?",
-      "answer": "Veja as informações de preço dos vários itens oferecidos pelo Os Magalhães - Sushi nesta página."
+      "question": "Where can I find the online menu prices for Os Magalhães - Sushi?",
+      "answer": "See advance rate information for the various items offered by Os Magalhães - Sushi on this page."
     },
     "q5": {
-      "question": "Como obtenho entrega gratuita no meu pedido do Os Magalhães - Sushi?",
-      "answer": "Se disponível na sua área, um dos benefícios é entrega gratuita em determinados pedidos."
+      "question": "How do I get free delivery on my Os Magalhães - Sushi order?",
+      "answer": "One of the perks is free delivery on certain orders, if available in your area."
     },
     "q6": {
-      "question": "Como pago pelo meu pedido no Os Magalhães - Sushi?",
-      "answer": "O pagamento é processado pelo seu cartão de crédito ou em dinheiro na entrega."
+      "question": "How do I pay for my order at Os Magalhães - Sushi?",
+      "answer": "Payment is processed through your credit card or cash on delivery."
     }
   },
   "new_address": {
-    "address": "Endereço",
-    "city": "Cidade",
-    "street": "Rua",
-    "postal_code": "Código Postal",
-    "deliver_time": "Tempo de Entrega",
-    "home": "Casa",
-    "work": "Trabalho",
-    "other": "Outro",
-    "save_location": "Salvar Localização",
-    "go_back": "Voltar",
-    "success_message": "Endereço adicionado com sucesso",
-    "error_message": "Ocorreu um erro"
+    "address": "Address",
+    "city": "City",
+    "street": "Street",
+    "postal_code": "Post Code",
+    "deliver_time": "Deliver Time",
+    "home": "Home",
+    "work": "Work",
+    "other": "Other",
+    "save_location": "Save Location",
+    "go_back": "Go Back",
+    "success_message": "Address added successfully",
+    "error_message": "An error occurred"
   },
   "edit_address": {
-    "add_new_address": "Adicionar Novo Endereço"
-  },
+    "add_new_address": "Add New Address"
+  }, 
   "personal_profile": {
-    "full_name": "Nome Completo",
+    "full_name": "Full Name",
     "email": "Email",
-    "phone_number": "Número de Telefone"
+    "phone_number": "Phone Number"
   },
   "product_section": {
-    "add_to_cart": "ADICIONAR AO CARRINHO",
-    "view_cart": "VER CARRINHO"
+    "add_to_cart": "ADD TO CART",
+    "view_cart": "VIEW CART"
   },
   "cart_page": {
-    "delivery_address": "Endereço de Entrega",
-    "edit": "Editar",
+    "delivery_address": "Delivery Address",
+    "edit": "Edit",
     "total": "Total",
-    "add_item_message": "Adicione um item no valor de €{{amount}} para obter entrega grátis",
-    "place_order": "FAZER PEDIDO",
-    "address_error": "Você precisa adicionar um endereço"
+    "add_item_message": "Add Item Worth €{{amount}} to get free delivery",
+    "place_order": "PLACE ORDER",
+    "address_error": "You need to add an address"
   },
   "payment_method": {
     "mbway_title": "MBWay",
-    "mbway_description": "Pague através do MBWay",
-    "payconfirm":"PAGUE E CONFIRME"
+    "mbway_description": "Pay through MBWay",
+        "payconfirm":"PAY & CONFIRM"
   },
   "mbway": {
     "title": "MBWay",
-    "subtitle": "Por favor insira o seu número MBWay",
-    "pay_button": "Pagar",
-        "timer_message": "Você tem 3 minutos para autenticar esta transação",
-    "time_remaining": "Tempo Restante:"
+    "subtitle": "Please enter your MBWay number",
+    "pay_button": "Pay",
+        "timer_message": "You have 3 minutes to authenticate this transaction",
+    "time_remaining": "Time Remaining:"
   },
   "payment_success": {
-    "title": "Parabéns!",
-    "subtitle": "Você fez o pagamento com sucesso, aproveite nosso serviço!",
-    "track_order_button": "ACOMPANHAR PEDIDO"
+    "title": "Congratulations!",
+    "subtitle": "You successfully made a payment, enjoy our service!",
+    "track_order_button": "TRACK ORDER"
   },
   "payment_fail": {
-    "title": "Desculpe!",
-    "subtitle": "Pagamento falhou! Por favor, tente novamente mais tarde",
-    "view_cart_button": "VER CARRINHO"
+    "title": "Sorry!",
+    "subtitle": "Payment failed! Please try again later",
+    "view_cart_button": "VIEW CART"
   },
   "forgot_password_phone": {
-    "header_title": "Esqueceu a Senha",
-    "sub_header_title": "Por favor, insira o número do telefone registrado",
-    "phone_number_label": "Número de Telefone",
+    "header_title": "Forgot Password",
+    "sub_header_title": "Please enter your registered phone number",
+    "phone_number_label": "Phone Number",
     "phone_placeholder": "2xx xxx xxx",
-    "verify_button": "Verificar",
-    "already_have_account": "Já tem uma conta",
-    "sign_in": "Entrar"
+    "verify_button": "Verify",
+    "already_have_account": "Already have an account",
+    "sign_in": "Sign In"
   },
   "verification_code": {
-    "header_title": "Verificação",
-    "sub_header_title": "Enviamos um código para o seu telefone",
-    "enter_code": "Por favor, insira o código abaixo",
-    "verify_button": "VERIFICAR"
+    "header_title": "Verification",
+    "sub_header_title": "We have sent a code to your phone",
+    "enter_code": "Please enter the code below",
+    "verify_button": "VERIFY"
   },
   "forgot_pass_verification": {
-    "header_title": "Verificação",
-    "sub_header_title": "Enviamos um código para o seu telefone",
-    "enter_code": "Por favor, insira o código abaixo",
-    "verify_button": "VERIFICAR"
+    "header_title": "Verification",
+    "sub_header_title": "We have sent a code to your phone",
+    "enter_code": "Please enter the code below",
+    "verify_button": "VERIFY"
   },
   "changepassword": {
-    "header_title": "Alterar Senha",
-    "sub_header_title": "Digite sua nova senha",
-    "password": "Senha",
-    "password_placeholder": "Digite sua senha",
-    "password_confirm": "Confirmar Senha",
-    "password_confirm_placeholder": "Digite novamente sua senha",
-    "change_button": "Alterar Senha"
+    "header_title": "Change Password",
+    "sub_header_title": "Enter your new password",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "password_confirm": "Confirm Password",
+    "password_confirm_placeholder": "Re-enter your password",
+    "change_button": "Change Password"
   }
-  
+      
   }
   
