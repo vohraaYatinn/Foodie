@@ -17,7 +17,11 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
         classpath 'com.google.gms:google-services:4.4.2'
     }
-
+afterEvaluate {
+    tasks.matching { it.name == "generateDebugLintReportModel" }.configureEach {
+        dependsOn("copyReactNativeVectorIcons")
+    }
+}
 
 }
 
