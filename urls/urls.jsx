@@ -85,3 +85,9 @@ export const FetchPaymentStatus = (payload_data) => {
 export const PlaceOrderAfterPayment = (payload_data) => {
   return project.post(Urls.PLACE_ORDER_AFTER_PAYMENT, payload_data);
 };
+export const ForgotPasswordOtpSend = (payload_data) => {
+  return project.post(Urls.FORGOT_PASSWORD_OTP_SEND, payload_data);
+};
+export const ChangePasswordCustomer = (payload_data) => {
+  return project.post(Urls.CHANGE_PASSWORD_CUSTOMER, payload_data);
+};

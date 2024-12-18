@@ -45,7 +45,10 @@ import { Onboarding1,
     SubmitQuestion,
     Mbwayphonenumber,
     Mbwaytimer,
-    PaymentFail
+    PaymentFail,
+    Forgotpasswordphone,
+    Forgotpasswordverification,
+    Passwordchange
 } from '../screens'
 import { NavigationContainer } from '@react-navigation/native'
 import BottomTabNavigation from './BottomTabNavigation'
@@ -104,6 +107,10 @@ const AppNavigation = () => {
                 <Stack.Screen
                     name="Signupwithphone"
                     component={Signupwithphone}
+                />
+                <Stack.Screen
+                    name="Forgotpasswordphone"
+                    component={Forgotpasswordphone}
                 />
                 <Stack.Screen
                     name="Onboarding2"
@@ -252,6 +259,14 @@ const AppNavigation = () => {
                 <Stack.Screen
                   name="UserReviews"
                   component={UserReviews}
+                />
+                <Stack.Screen
+                  name="Passwordchange"
+                  component={Passwordchange}
+                />
+                <Stack.Screen
+                  name="Forgotpasswordverification"
+                  component={Forgotpasswordverification}
                 />
                 <Stack.Screen
                   name="Faqs"

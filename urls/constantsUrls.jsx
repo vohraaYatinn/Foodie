@@ -17,6 +17,8 @@ export class Urls {
     static VERIFY_CODE = Urls.MPHRMS_API_PREFIX + 'users/phone-otp-verify/';
     static INITIATE_PAYMENT_STATUS = Urls.MPHRMS_API_PREFIX + 'users/initiate-mb-pay/';
     static FETCH_PAYMENT_STATUS = Urls.MPHRMS_API_PREFIX + 'users/check-status-mbway/';
+    static FORGOT_PASSWORD_OTP_SEND = Urls.MPHRMS_API_PREFIX + 'users/send-user-otp-for-forgot-password/';
+    static CHANGE_PASSWORD_CUSTOMER = Urls.MPHRMS_API_PREFIX + 'users/change-password-customer/';
 
 
     //menu

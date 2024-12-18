@@ -7,6 +7,7 @@ import Login from "./Login";
 import Mbwayphonenumber from "./Mbwayphonenumber"
 import Mbwaytimer from "./Mbwaytimer"
 import Signupwithphone from "./Signupwithphone";
+import Forgotpasswordphone from "./Forgotpasswordphone";
 import Signup from "./Signup";
 import ResetPassword from "./ResetPassword";
 import ForgotPassword from "./ForgotPassword";
@@ -47,8 +48,10 @@ import MessageV2 from "./MessageV2";
 import Chat from "./Chat";
 import Faqs from "./Faqs";
 import UserReviews from "./UserReviews";
+import Forgotpasswordverification from "./Forgotpasswordverification";
 import Settings from "./Settings";
 import SubmitQuestion from "./SubmitQuestion";
+import Passwordchange from "./Passwordchange";
 
 export {
     Onboarding1,
@@ -101,5 +104,8 @@ export {
     UserReviews,
     Settings,
     SubmitQuestion,
-    Mbwaytimer
+    Mbwaytimer,
+    Forgotpasswordphone,
+    Forgotpasswordverification,
+    Passwordchange
 }

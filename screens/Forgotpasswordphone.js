@@ -9,7 +9,7 @@ import { validateInput } from '../utils/actions/formActions'
 import { reducer } from '../utils/reducers/formReducers'
 import { commonStyles } from '../styles/CommonStyles'
 import useAxios from '../network/useAxios'
-import { LoginCustomer } from '../urls/urls'
+import { ForgotPasswordOtpSend } from '../urls/urls'
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,7 @@ const initialState = {
     formIsValid: false,
 }
 
-const Login = ({ navigation }) => {
+const Forgotpasswordphone = ({ navigation }) => {
     const { t, i18n } = useTranslation();
     const [lang, setLang] = useState("en")
     const switchLanguage = () => {
@@ -110,88 +110,55 @@ const Login = ({ navigation }) => {
       }, [responseError])
     useEffect(()=>{
         if(responseLogin?.result == "success"){
-            addToken(responseLogin?.token)
-            addUser(responseLogin?.user)
-            notify(responseLogin?.message, "success")
-            setTimeout(() => {
-                navigation.navigate('LocationAccess')
-
-            }, 1000);
+         navigation.navigate('Forgotpasswordverification', { phone: responseLogin?.phone, verification :responseLogin?.verification_code });
         }
     },[responseLogin])
 
 
-    const fetchLoginFunc = async() => {
-        const token = await AsyncStorage.getItem('token')
-        responseFetch(LoginCustomer({...formState, token:token}))
+    const fetchLoginFunc = () => {
+        responseFetch(ForgotPasswordOtpSend(formState))
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
         <StatusBar hidden />
         <View style={commonStyles.header}>
-            <Text style={commonStyles.headerTitle}>{t('welcome')}</Text>
-            <Text style={commonStyles.subHeaderTitle}>{t('sign_in_to_account')}</Text>
+            <Text style={commonStyles.headerTitle}>Forgot Password</Text>
+            <Text style={commonStyles.subHeaderTitle}>Please enter your register phone number</Text>
         </View>
         <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
-            <Text style={commonStyles.inputHeader}>{t('email')}</Text>
+            <Text style={commonStyles.inputHeader}>Phone Number</Text>
             <Input
-                id="email"
+                id="phone"
                 onInputChanged={inputChangedHandler}
-                placeholder={t('email_placeholder')}
+                errorText={formState.inputValidities['phone']}
+                placeholder={"2xx xxx xxx"}
                 placeholderTextColor={COLORS.black}
-                keyboardType="email-address"
+                maxLength={9}
+                keyboardType="numeric"
             />
-            <Text style={commonStyles.inputHeader}>{t('password')}</Text>
-            <Input
-                onInputChanged={inputChangedHandler}
-                autoCapitalize="none"
-                id="password"
-                placeholder={t('password_placeholder')}
-                placeholderTextColor={COLORS.black}
-                secureTextEntry={true}
-            />
+
 
             <View style={commonStyles.checkBoxContainer}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <CheckBox
-                        style={commonStyles.checkbox}
-                        value={isChecked}
-                        tintColor={isChecked ? COLORS.primary : "gray"}
-                        onValueChange={setChecked}
-                        boxType="square"
-                        onTintColor={COLORS.primary}
-                        onFillColor={COLORS.primary}
-                        onCheckColor={COLORS.white}
-                    />
-                    <Text style={{ ...FONTS.body4 }}>{t('remember_me')}</Text>
-                </View>
-                <TouchableOpacity onPress={() => {
-                // navigation.navigate("Forgotpasswordphone")
-         navigation.navigate('Passwordchange', { phone: "870003555" });
-
-                }}>
-                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{t('forgot_password')}</Text>
-                </TouchableOpacity>
+               
+                {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>forgot_password</Text>
+                </TouchableOpacity> */}
             </View>
 
             <Button
-                title={t('login')}
+                title={"Verify"}
                 isLoading={responseLoading}
                 filled
                 onPress={() => fetchLoginFunc()}
                 style={commonStyles.btn}
             />
             <View style={commonStyles.center}>
-                <Text style={{ ...FONTS.body4, color: COLORS.black }}>{t('dont_have_account')}{' '}</Text>
+                <Text style={{ ...FONTS.body4, color: COLORS.black }}>{"Already have an account"}{' '}</Text>
                 <TouchableOpacity onPress={() => 
-                    
-                    navigation.navigate("Signupwithphone")
-                    // navigation.navigate("Verification")
-                    
-                    
+                    navigation.navigate("Login")
                     }>
-                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{t('sign_up')}</Text>
+                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{"Sign In"}</Text>
                 </TouchableOpacity>
             </View>
         </Animatable.View>
@@ -200,4 +167,4 @@ const Login = ({ navigation }) => {
     )
 }
 
-export default Login
+export default Forgotpasswordphone
