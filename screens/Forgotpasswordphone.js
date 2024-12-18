@@ -123,47 +123,48 @@ const Forgotpasswordphone = ({ navigation }) => {
         <View style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
         <StatusBar hidden />
         <View style={commonStyles.header}>
-            <Text style={commonStyles.headerTitle}>Forgot Password</Text>
-            <Text style={commonStyles.subHeaderTitle}>Please enter your register phone number</Text>
+          <Text style={commonStyles.headerTitle}>{t('forgot_password_phone.header_title')}</Text>
+          <Text style={commonStyles.subHeaderTitle}>{t('forgot_password_phone.sub_header_title')}</Text>
         </View>
         <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
-            <Text style={commonStyles.inputHeader}>Phone Number</Text>
-            <Input
-                id="phone"
-                onInputChanged={inputChangedHandler}
-                errorText={formState.inputValidities['phone']}
-                placeholder={"2xx xxx xxx"}
-                placeholderTextColor={COLORS.black}
-                maxLength={9}
-                keyboardType="numeric"
-            />
+          <Text style={commonStyles.inputHeader}>{t('forgot_password_phone.phone_number_label')}</Text>
+          <Input
+            id="phone"
+            onInputChanged={inputChangedHandler}
+            errorText={formState.inputValidities['phone']}
+            placeholder={t('forgot_password_phone.phone_placeholder')}
+            placeholderTextColor={COLORS.black}
+            maxLength={9}
+            keyboardType="numeric"
+          />
+  
+          <Button
+            title={t('forgot_password_phone.verify_button')}
+            isLoading={responseLoading}
+            filled
+            onPress={fetchLoginFunc}
+            style={commonStyles.btn}
+          />
+          <View style={commonStyles.center}>
+            <Text style={{ ...FONTS.body4, color: COLORS.black }}>
+              {t('forgot_password_phone.already_have_account')}{' '}
+            </Text>
+            <TouchableOpacity onPress={() => {
+                            navigation.navigate('Login')
 
+            }
+        }
 
-            <View style={commonStyles.checkBoxContainer}>
-               
-                {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
-                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>forgot_password</Text>
-                </TouchableOpacity> */}
-            </View>
-
-            <Button
-                title={"Verify"}
-                isLoading={responseLoading}
-                filled
-                onPress={() => fetchLoginFunc()}
-                style={commonStyles.btn}
-            />
-            <View style={commonStyles.center}>
-                <Text style={{ ...FONTS.body4, color: COLORS.black }}>{"Already have an account"}{' '}</Text>
-                <TouchableOpacity onPress={() => 
-                    navigation.navigate("Login")
-                    }>
-                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{"Sign In"}</Text>
-                </TouchableOpacity>
-            </View>
+            
+            >
+              <Text style={{ ...FONTS.body4, color: COLORS.primary }}>
+                {t('forgot_password_phone.sign_in')}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </Animatable.View>
-        <Toast/>
-    </View>
+        <Toast />
+      </View>
     )
 }
 

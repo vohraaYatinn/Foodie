@@ -2,6 +2,7 @@
     "welcome": "Welcome",
     "sign_in_to_account": "Please sign in to your existing account",
     "email": "Email",
+    "email__phone_number":"Email / Phone Number",
     "email_placeholder": "example@gmail.com",
     "password": "Password",
     "password_placeholder": "*************",
@@ -184,6 +185,36 @@
     "title": "Sorry!",
     "subtitle": "Payment failed! Please try again later",
     "view_cart_button": "VIEW CART"
+  },
+  "forgot_password_phone": {
+    "header_title": "Forgot Password",
+    "sub_header_title": "Please enter your registered phone number",
+    "phone_number_label": "Phone Number",
+    "phone_placeholder": "2xx xxx xxx",
+    "verify_button": "Verify",
+    "already_have_account": "Already have an account",
+    "sign_in": "Sign In"
+  },
+  "verification_code": {
+    "header_title": "Verification",
+    "sub_header_title": "We have sent a code to your phone",
+    "enter_code": "Please enter the code below",
+    "verify_button": "VERIFY"
+  },
+  "forgot_pass_verification": {
+    "header_title": "Verification",
+    "sub_header_title": "We have sent a code to your phone",
+    "enter_code": "Please enter the code below",
+    "verify_button": "VERIFY"
+  },
+  "changepassword": {
+    "header_title": "Change Password",
+    "sub_header_title": "Enter your new password",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "password_confirm": "Confirm Password",
+    "password_confirm_placeholder": "Re-enter your password",
+    "change_button": "Change Password"
   }
       
   }

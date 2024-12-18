@@ -134,7 +134,7 @@ const Login = ({ navigation }) => {
             <Text style={commonStyles.subHeaderTitle}>{t('sign_in_to_account')}</Text>
         </View>
         <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
-            <Text style={commonStyles.inputHeader}>{t('email')}</Text>
+            <Text style={commonStyles.inputHeader}>{t('email__phone_number')}</Text>
             <Input
                 id="email"
                 onInputChanged={inputChangedHandler}
@@ -167,8 +167,7 @@ const Login = ({ navigation }) => {
                     <Text style={{ ...FONTS.body4 }}>{t('remember_me')}</Text>
                 </View>
                 <TouchableOpacity onPress={() => {
-                // navigation.navigate("Forgotpasswordphone")
-         navigation.navigate('Passwordchange', { phone: "870003555" });
+                navigation.navigate("Forgotpasswordphone")
 
                 }}>
                     <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{t('forgot_password')}</Text>

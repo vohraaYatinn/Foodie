@@ -238,12 +238,7 @@ useEffect(()=>{
     onPressGotIt={()=>{}}
   />
   }
-  <CustomModal
-    modalVisible={modalVisible}
-    setModalVisible={setModalVisible}
-    onPressGotIt={handlePressGotIt}
-    code={t('home.favorite_dishes')}
-  />
+
   <Toast />
 </SafeAreaView>
 

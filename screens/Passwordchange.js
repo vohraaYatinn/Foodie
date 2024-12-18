@@ -94,50 +94,50 @@ const Passwordchange = ({ navigation, route }) => {
     }, [error])
 
     return (
-<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
-    <StatusBar hidden={true} />
-    <View style={commonStyles.header}>
-        <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={commonStyles.backIcon}>
-            <MaterialIcons name="keyboard-arrow-left" size={24} color={COLORS.black} />
-        </TouchableOpacity>
-        <Text style={commonStyles.headerTitle}>{"Change Password"}</Text>
-        <Text style={commonStyles.subHeaderTitle}>{"Enter your new password"}</Text>
-    </View>
-    <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
-        <KeyboardAwareScrollView>
-            <Text style={commonStyles.inputHeader}>{t('signup.password')}</Text>
-            <Input
-                id="password"
-                onInputChanged={inputChangedHandler}
-                errorText={formState.inputValidities['password']}
-                autoCapitalize="none"
-                placeholder={t('signup.password_placeholder')}
-                placeholderTextColor={COLORS.black}
-                secureTextEntry={true}
-            />
-            <Text style={commonStyles.inputHeader}>{t('signup.password_confirm')}</Text>
-            <Input
-                id="passwordConfirm"
-                onInputChanged={inputChangedHandler}
-                errorText={formState.inputValidities['passwordConfirm']}
-                autoCapitalize="none"
-                placeholder={t('signup.password_confirm_placeholder')}
-                placeholderTextColor={COLORS.black}
-                secureTextEntry={true}
-            />
-            <Button
-                title={"Change Password"}
-                isLoading={responseLoading}
-                filled
-                onPress={() => ChangePasswordFunc() }
-                style={commonStyles.btn1}
-            />
-        </KeyboardAwareScrollView>
-    </Animatable.View>
-    <Toast />
-</SafeAreaView>
+            <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.cover_purple }}>
+              <StatusBar hidden={true} />
+              <View style={commonStyles.header}>
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={commonStyles.backIcon}>
+                  <MaterialIcons name="keyboard-arrow-left" size={24} color={COLORS.black} />
+                </TouchableOpacity>
+                <Text style={commonStyles.headerTitle}>{t('changepassword.header_title')}</Text>
+                <Text style={commonStyles.subHeaderTitle}>{t('changepassword.sub_header_title')}</Text>
+              </View>
+              <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
+                <KeyboardAwareScrollView>
+                  <Text style={commonStyles.inputHeader}>{t('changepassword.password')}</Text>
+                  <Input
+                    id="password"
+                    onInputChanged={inputChangedHandler}
+                    errorText={formState.inputValidities['password']}
+                    autoCapitalize="none"
+                    placeholder={t('changepassword.password_placeholder')}
+                    placeholderTextColor={COLORS.black}
+                    secureTextEntry={true}
+                  />
+                  <Text style={commonStyles.inputHeader}>{t('changepassword.password_confirm')}</Text>
+                  <Input
+                    id="passwordConfirm"
+                    onInputChanged={inputChangedHandler}
+                    errorText={formState.inputValidities['passwordConfirm']}
+                    autoCapitalize="none"
+                    placeholder={t('changepassword.password_confirm_placeholder')}
+                    placeholderTextColor={COLORS.black}
+                    secureTextEntry={true}
+                  />
+                  <Button
+                    title={t('changepassword.change_button')}
+                    isLoading={responseLoading}
+                    filled
+                    onPress={() => ChangePasswordFunc()}
+                    style={commonStyles.btn1}
+                  />
+                </KeyboardAwareScrollView>
+              </Animatable.View>
+              <Toast />
+            </SafeAreaView>
     )
 }
 

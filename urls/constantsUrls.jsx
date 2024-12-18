@@ -26,7 +26,7 @@ export class Urls {
     static GET_ALL_MENU_ITEMS = Urls.MPHRMS_API_PREFIX + 'menu/get-all-menu-items/';
     static CATEGORY_MENU = Urls.MPHRMS_API_PREFIX + 'menu/category-menu/';
     static CHECK_REST_ONLINE = Urls.MPHRMS_API_PREFIX + 'menu/check-rest-online/';
-
+    static GET_ALL_SIDE_ITEMS = Urls.MPHRMS_API_PREFIX + 'menu/get-all-side-items/';
 
     //orders
     static ADD_TO_CART = Urls.MPHRMS_API_PREFIX + 'orders/add-to-cart/';

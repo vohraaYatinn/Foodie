@@ -3,6 +3,8 @@
     "sign_in_to_account": "Por favor, faça login na sua conta existente",
     "email": "Email",
     "email_placeholder": "exemplo@gmail.com",
+    "email__phone_number":"E-mail / número de telefone",
+
     "password": "Senha",
     "password_placeholder": "*************",
     "remember_me": "Lembre-se de mim",
@@ -181,6 +183,36 @@
     "title": "Desculpe!",
     "subtitle": "Pagamento falhou! Por favor, tente novamente mais tarde",
     "view_cart_button": "VER CARRINHO"
+  },
+  "forgot_password_phone": {
+    "header_title": "Esqueceu a Senha",
+    "sub_header_title": "Por favor, insira o número do telefone registrado",
+    "phone_number_label": "Número de Telefone",
+    "phone_placeholder": "2xx xxx xxx",
+    "verify_button": "Verificar",
+    "already_have_account": "Já tem uma conta",
+    "sign_in": "Entrar"
+  },
+  "verification_code": {
+    "header_title": "Verificação",
+    "sub_header_title": "Enviamos um código para o seu telefone",
+    "enter_code": "Por favor, insira o código abaixo",
+    "verify_button": "VERIFICAR"
+  },
+  "forgot_pass_verification": {
+    "header_title": "Verificação",
+    "sub_header_title": "Enviamos um código para o seu telefone",
+    "enter_code": "Por favor, insira o código abaixo",
+    "verify_button": "VERIFICAR"
+  },
+  "changepassword": {
+    "header_title": "Alterar Senha",
+    "sub_header_title": "Digite sua nova senha",
+    "password": "Senha",
+    "password_placeholder": "Digite sua senha",
+    "password_confirm": "Confirmar Senha",
+    "password_confirm_placeholder": "Digite novamente sua senha",
+    "change_button": "Alterar Senha"
   }
   
   }

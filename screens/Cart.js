@@ -9,14 +9,16 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import { cartData } from '../data/utils'
 import useAxios from '../network/useAxios'
-import { CartAction, fetchCartCustomer } from '../urls/urls'
+import { addToCartCustomer, CartAction, fetchCartCustomer, getAllSideItems } from '../urls/urls'
 import Toast from 'react-native-toast-message'; // Import Toast
 import { test_url_images } from '../config/environment'
 import { useFocusEffect } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next';
+import AddOnProductSlider from '../common/Components/SliderComponent'
 
 const Cart = ({ navigation }) => {
   const { t } = useTranslation();
+  const [addonData, setAddonData] = useState([])
 
   const notify = (message, action) =>{
     Toast.show({
@@ -28,7 +30,10 @@ const Cart = ({ navigation }) => {
   const [data, setData] = useState([])
   const [totalAmount, setTotalAmount] = useState(0)
   const [address, setAddress] = useState([])
+  const [AddcartResponse, AddcartError, AddcartLoading, AddcartFetch] = useAxios()
+
   const [cartResponse, cartError, cartLoading, cartFetch] = useAxios()
+  const [getAllSideItemsResponse, getAllSideItemsError, getAllSideItemsLoading, getAllSideItemsFetch] = useAxios()
   const [cartActionResponse, cartActionError, cartActionLoading, cartActionFetch] = useAxios()
   const calculatePrice = (data) => {
     let price = 0;
@@ -42,11 +47,22 @@ const Cart = ({ navigation }) => {
       action:action
     }))
 }
+const getAllSideitems = () => {
+  getAllSideItemsFetch(getAllSideItems())
+  
+}
+
+const addToCart = (itemId) => {
+  AddcartFetch(addToCartCustomer({
+    menuId:itemId,
+    quantity:1
+  }))
+} 
 useFocusEffect(
   useCallback(() => {
     // Code here runs every time the screen comes into focus
     fetchCustomerCart()
-
+    getAllSideitems()
     // Cleanup (optional) runs when the screen loses focus
     return () => {
      
@@ -69,6 +85,12 @@ useEffect(()=>{
     setAddress(cartResponse?.address)
   }
 },[cartResponse])
+
+useEffect(()=>{
+  if(getAllSideItemsResponse?.result == "success"){
+    setAddonData(getAllSideItemsResponse?.data)
+  }
+},[getAllSideItemsResponse])
 useEffect(() => {
   if (cartActionError?.response) {
       notify(cartActionError?.response?.data, "error")
@@ -76,10 +98,10 @@ useEffect(() => {
 }, [cartActionError])
 
 useEffect(()=>{
-  if(cartActionResponse?.result == "success"){
+  if(cartActionResponse?.result == "success" || AddcartResponse?.result == "success"){
     fetchCustomerCart()
   }
-},[cartActionResponse])
+},[cartActionResponse, AddcartResponse])
   const [quantity, setQuantity] = useState(1);
 
   const decreaseQuantity = () => {
@@ -91,6 +113,12 @@ useEffect(()=>{
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
+  const addOnProducts = [
+    { id: 1, name: 'Product 1', price: 10, image: 'https://via.placeholder.com/100' },
+    { id: 2, name: 'Product 2', price: 20, image: 'https://via.placeholder.com/100' },
+    { id: 3, name: 'Product 3', price: 15, image: 'https://via.placeholder.com/100' },
+  ];
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blue }}>
@@ -244,6 +272,8 @@ useEffect(()=>{
         />
 
       </View>
+      <AddOnProductSlider products={addonData} addToCart={addToCart}/>
+
       <Animatable.View animation="fadeInUpBig" style={cartStyles.footer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
                 <Text style={cartStyles.body3}>{t("cart_page.delivery_address")}</Text>

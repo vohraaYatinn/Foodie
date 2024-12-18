@@ -91,3 +91,6 @@ export const ForgotPasswordOtpSend = (payload_data) => {
 export const ChangePasswordCustomer = (payload_data) => {
   return project.post(Urls.CHANGE_PASSWORD_CUSTOMER, payload_data);
 };
+export const getAllSideItems = (payload_data) => {
+  return project.get(Urls.GET_ALL_SIDE_ITEMS, payload_data);
+};

@@ -9,6 +9,7 @@ import SmoothOtpInput from "../common/Components/SmoothOtpInput"
 import useAxios from '../network/useAxios'
 import { VerifyCode } from '../urls/urls'
 import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next'
 
 const Forgotpasswordverification = ({ navigation, route }) => {
     const { phone, verification } = route.params;
@@ -16,6 +17,7 @@ const Forgotpasswordverification = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [responseLogin, responseError, responseLoading, responseFetch] = useAxios();
     const [otp, setOtp] = useState('');
+    const { t } = useTranslation(); // Use i18n translation hook
 
     useEffect(() => {
         if (error) {
@@ -48,52 +50,46 @@ const Forgotpasswordverification = ({ navigation, route }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
-            <StatusBar hidden={true} />
-            <View style={commonStyles.header}>
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={commonStyles.backIcon}>
-                    <MaterialIcons name="keyboard-arrow-left" size={24} color={COLORS.black} />
-                </TouchableOpacity>
-                <Text style={commonStyles.headerTitle}>Verification</Text>
-                <Text style={commonStyles.subHeaderTitle}>We have sent a code to your phone</Text>
-            </View>
-            <Animatable.View
-                animation="fadeInUpBig"
-                style={commonStyles.footer}>
-                <View style={styles.center}>
-                    <Text style={commonStyles.inputHeader}>Please enter the code below</Text>
-                  
-                </View>
-                <View style={{ width: "100vw", height: 88, paddingHorizontal: 8, display:"flex", alignItems:"center", marginTop:50}}>
-      <SmoothOtpInput 
-            value={otp}
-            codeLength={4} // Length of OTP
-            onTextChange={setOtp} // Update OTP state as the user types
-            cellSize={50} // Size of each input cell
-            cellSpacing={10} // Space between cells
-            placeholder="-" // Placeholder in empty cells
-            password={false} // Set to true for masking OTP
-            mask="*" // Character used for masking if password is true
-            autoFocus={true} // Automatically focus the input on load
-            keyboardType="numeric" // Use numeric keyboard
-            animated={true} // Enable animations
-            onFulfill={(code) => {}} // Triggered when OTP is complete
-      />
-      </View>
-                <Button
-                    title="VERIFY"
-                    isLoading={isLoading}
-                    filled
-                    onPress={() => 
-                        verifyCode()
-                    }
-                    style={commonStyles.btn1}
-                />
-            </Animatable.View>
-            <Toast/>
-
+        <StatusBar hidden={true} />
+        <View style={commonStyles.header}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={commonStyles.backIcon}>
+            <MaterialIcons name="keyboard-arrow-left" size={24} color={COLORS.black} />
+          </TouchableOpacity>
+          <Text style={commonStyles.headerTitle}>{t('forgot_pass_verification.header_title')}</Text>
+          <Text style={commonStyles.subHeaderTitle}>{t('forgot_pass_verification.sub_header_title')}</Text>
         </View>
+        <Animatable.View animation="fadeInUpBig" style={commonStyles.footer}>
+          <View style={styles.center}>
+            <Text style={commonStyles.inputHeader}>{t('forgot_pass_verification.enter_code')}</Text>
+          </View>
+          <View style={{ width: '100vw', height: 88, paddingHorizontal: 8, display: 'flex', alignItems: 'center', marginTop: 50 }}>
+            <SmoothOtpInput
+              value={otp}
+              codeLength={4} // Length of OTP
+              onTextChange={setOtp} // Update OTP state as the user types
+              cellSize={50} // Size of each input cell
+              cellSpacing={10} // Space between cells
+              placeholder="-" // Placeholder in empty cells
+              password={false} // Set to true for masking OTP
+              mask="*" // Character used for masking if password is true
+              autoFocus={true} // Automatically focus the input on load
+              keyboardType="numeric" // Use numeric keyboard
+              animated={true} // Enable animations
+              onFulfill={(code) => {}} // Triggered when OTP is complete
+            />
+          </View>
+          <Button
+            title={t('forgot_pass_verification.verify_button')}
+            isLoading={isLoading}
+            filled
+            onPress={() => verifyCode()}
+            style={commonStyles.btn1}
+          />
+        </Animatable.View>
+        <Toast />
+      </View>
     )
 }
 
