@@ -65,6 +65,7 @@ const Mbwaytimer = ({ navigation, route }) => {
         await AsyncStorage.setItem('phoneNumber', user?.phone_number)
 
     }
+    const [orderOneTime, setOrderOneTime] = useState(true)
 
     const [responseLogin, responseError, responseLoading, responseFetch] = useAxios()
     const [orderAfterPaymentresponse, orderAfterPaymentError, orderAfterPaymentLoading, orderAfterPaymentFetch] = useAxios()
@@ -106,7 +107,9 @@ const Mbwaytimer = ({ navigation, route }) => {
       }, [orderAfterPaymentError])
     useEffect(()=>{
         if(responseLogin?.result == "success"){
-            if(responseLogin?.response?.Message == "Success"){
+
+            if(responseLogin?.response?.Message == "Success" && orderOneTime){
+                setOrderOneTime(false)
                 orderAfterPaymentFetch(PlaceOrderAfterPayment())
 
             }
